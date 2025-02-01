@@ -7,6 +7,7 @@ module fp.assignments.assignment_2 {
     requires net.synedra.validatorfx;
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.bootstrapfx.core;
+    requires java.sql;
 
     opens fp.assignments.assignment_2 to javafx.fxml;
     exports fp.assignments.assignment_2;

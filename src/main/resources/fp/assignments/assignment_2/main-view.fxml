@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fp.assignments.assignment_2.MainController">
+
+    <MenuBar>
+        <Menu text="File">
+            <Menu text="Import">
+                <MenuItem onAction="#handleImportVenues" text="Import Venues" />
+                <MenuItem onAction="#handleImportEvents" text="Import Job Requests" />
+            </Menu>
+            <MenuItem onAction="#handleExportData" text="Export Data" />
+            <SeparatorMenuItem />
+            <MenuItem onAction="#handleExit" text="Exit" />
+        </Menu>
+        <Menu text="Tools">
+            <MenuItem onAction="#handleAutoMatch" text="Auto-Match" />
+            <MenuItem onAction="#handleBackup" text="Backup Data" />
+        </Menu>
+    </MenuBar>
+
+    <TabPane fx:id="mainTabPane" VBox.vgrow="ALWAYS">
+        <Tab closable="false" text="Events">
+            <TableView fx:id="eventsTable" VBox.vgrow="ALWAYS" />
+        </Tab>
+        <Tab closable="false" text="Venues">
+            <TableView fx:id="venuesTable" VBox.vgrow="ALWAYS" />
+        </Tab>
+        <Tab closable="false" text="Statistics">
+            <VBox spacing="10">
+                <PieChart fx:id="venueUtilizationChart" />
+                <BarChart fx:id="incomeChart">
+                    <xAxis>
+                        <CategoryAxis label="Orders" />
+                    </xAxis>
+                    <yAxis>
+                        <NumberAxis label="Amount ($)" />
+                    </yAxis>
+                </BarChart>
+            </VBox>
+        </Tab>
+    </TabPane>
+</VBox>
