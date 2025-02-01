@@ -10,7 +10,7 @@ import java.io.IOException;
 public class LMVMApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(LMVMApplication.class.getResource("views/main-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(LMVMApplication.class.getResource("views/home-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1024, 768);
         stage.setTitle("Live Music Venue Matchmaker");
         stage.setScene(scene);

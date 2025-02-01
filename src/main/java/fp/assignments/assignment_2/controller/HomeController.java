@@ -23,7 +23,7 @@ import java.util.Locale;
 import java.sql.Date;
 import java.sql.Time;
 
-public class MainController {
+public class HomeController {
     @FXML
     private TabPane mainTabPane;
 
