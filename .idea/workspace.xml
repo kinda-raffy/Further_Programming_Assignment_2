@@ -54,7 +54,7 @@
 }]]></component>
   <component name="RunManager">
     <configuration name="Run" type="Application" factoryName="Application">
-      <option name="MAIN_CLASS_NAME" value="fp.assignments.assignment_2.HelloApplication" />
+      <option name="MAIN_CLASS_NAME" value="fp.assignments.assignment_2.LMVMApplication" />
       <module name="assignment_2" />
       <method v="2">
         <option name="Make" enabled="true" />

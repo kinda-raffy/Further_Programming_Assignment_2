@@ -101,7 +101,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>fp.assignments.assignment_2/fp.assignments.assignment_2.HelloApplication
+                            <mainClass>fp.assignments.assignment_2/fp.assignments.assignment_2.LMVMApplication
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
