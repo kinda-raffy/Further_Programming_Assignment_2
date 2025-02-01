@@ -1,4 +1,4 @@
-package fp.assignments.assignment_2;
+package fp.assignments.assignment_2.controller;
 
 import fp.assignments.assignment_2.model.Event;
 import javafx.fxml.FXML;

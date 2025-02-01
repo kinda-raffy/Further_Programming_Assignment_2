@@ -10,5 +10,10 @@ module fp.assignments.assignment_2 {
     requires java.sql;
 
     opens fp.assignments.assignment_2 to javafx.fxml;
+
     exports fp.assignments.assignment_2;
+
+    opens fp.assignments.assignment_2.controller to javafx.fxml;
+
+    exports fp.assignments.assignment_2.controller;
 }
