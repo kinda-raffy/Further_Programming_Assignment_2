@@ -2,7 +2,6 @@ package fp.assignments.assignment_2.controller;
 
 import fp.assignments.assignment_2.model.Event;
 import fp.assignments.assignment_2.model.Venue;
-import fp.assignments.assignment_2.service.DatabaseService;
 import fp.assignments.assignment_2.service.HomeService;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -18,7 +17,11 @@ import javafx.scene.control.TableCell;
 import javafx.beans.property.SimpleObjectProperty;
 import java.time.format.DateTimeParseException;
 import java.time.LocalDate;
-import java.time.LocalTime;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import fp.assignments.assignment_2.LMVMApplication;
 
 public class HomeController {
     @FXML
@@ -47,27 +50,16 @@ public class HomeController {
     }
 
     private void setupTables() {
-        // Setup events table
+        // Setup events table with fewer columns
         TableColumn<Event, String> clientCol = new TableColumn<>("Client");
         TableColumn<Event, String> titleCol = new TableColumn<>("Title");
-        TableColumn<Event, String> artistCol = new TableColumn<>("Artist");
         TableColumn<Event, LocalDate> dateCol = new TableColumn<>("Date");
-        TableColumn<Event, LocalTime> timeCol = new TableColumn<>("Time");
-        TableColumn<Event, Integer> attendanceCol = new TableColumn<>("Target Audience");
-        TableColumn<Event, String> typeCol = new TableColumn<>("Type");
-        TableColumn<Event, String> categoryCol = new TableColumn<>("Category");
 
         clientCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getClientName()));
         titleCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getName()));
-        artistCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getMainArtist()));
         dateCol.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getEventDate()));
-        timeCol.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getEventTime()));
-        attendanceCol.setCellValueFactory(
-                data -> new SimpleIntegerProperty(data.getValue().getExpectedAttendance()).asObject());
-        typeCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getEventType()));
-        categoryCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getCategory()));
 
-        // Format the date/time column
+        // Format the date column
         dateCol.setCellFactory(column -> new TableCell<>() {
             private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yy");
 
@@ -82,8 +74,18 @@ public class HomeController {
             }
         });
 
-        eventsTable.getColumns().addAll(clientCol, titleCol, artistCol, dateCol, timeCol,
-                attendanceCol, typeCol, categoryCol);
+        eventsTable.getColumns().addAll(clientCol, titleCol, dateCol);
+
+        // Add double-click handler for the events table
+        eventsTable.setRowFactory(tv -> {
+            TableRow<Event> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && !row.isEmpty()) {
+                    showEventDetails(row.getItem());
+                }
+            });
+            return row;
+        });
 
         // Setup venues table
         TableColumn<Venue, String> nameCol = new TableColumn<>("Name");
@@ -197,5 +199,13 @@ public class HomeController {
     @FXML
     private void handleBackup() {
         // Backup logic
+    }
+
+    private void showEventDetails(Event event) {
+        try {
+            LMVMApplication.navigateToEventDetails(event);
+        } catch (IOException e) {
+            showError("Error", "Could not open event details: " + e.getMessage());
+        }
     }
 }

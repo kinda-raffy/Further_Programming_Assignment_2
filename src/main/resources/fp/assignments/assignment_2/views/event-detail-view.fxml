@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox spacing="10" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="fp.assignments.assignment_2.controller.EventDetailsController">
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Button text="← Back" onAction="#handleBack"/>
+    </HBox>
+
+    <GridPane hgap="10" vgap="10">
+        <Label text="Client:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+        <Label fx:id="clientLabel" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+        <Label text="Title:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+        <Label fx:id="titleLabel" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+        <Label text="Artist:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+        <Label fx:id="artistLabel" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+        <Label text="Date:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+        <Label fx:id="dateLabel" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+
+        <Label text="Time:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+        <Label fx:id="timeLabel" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+
+        <Label text="Target Audience:" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+        <Label fx:id="attendanceLabel" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+
+        <Label text="Type:" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
+        <Label fx:id="typeLabel" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+
+        <Label text="Category:" GridPane.columnIndex="0" GridPane.rowIndex="7"/>
+        <Label fx:id="categoryLabel" GridPane.columnIndex="1" GridPane.rowIndex="7"/>
+    </GridPane>
+
+    <Separator/>
+
+    <Label text="Venue Bookings" style="-fx-font-size: 16; -fx-font-weight: bold"/>
+
+    <Button fx:id="createBookingButton" text="Create Booking"
+            onAction="#handleCreateBooking"
+            style="-fx-background-color: #4CAF50; -fx-text-fill: white;"/>
+
+    <TableView fx:id="bookingsTable" VBox.vgrow="ALWAYS">
+        <!-- TableColumns will be added programmatically -->
+    </TableView>
+</VBox>

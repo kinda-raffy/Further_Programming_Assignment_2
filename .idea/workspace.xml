@@ -5,8 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a972194c-40e2-4ece-9f1b-a834a8007c96" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/HomeService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/fp/assignments/assignment_2/views/event-detail-view.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/LMVMApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/LMVMApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/EventDetailsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/EventDetailsController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/HomeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/HomeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/model/Booking.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/model/Booking.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/model/Event.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/model/Event.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/model/Venue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/model/Venue.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/DatabaseService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/DatabaseService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/HomeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/HomeService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,7 +71,7 @@
       <updated>1737897713988</updated>
       <workItem from="1737897715005" duration="1084000" />
       <workItem from="1738109663184" duration="225000" />
-      <workItem from="1738382163868" duration="10964000" />
+      <workItem from="1738382163868" duration="14377000" />
     </task>
     <servers />
   </component>
