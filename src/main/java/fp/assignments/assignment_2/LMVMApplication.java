@@ -33,11 +33,22 @@ public class LMVMApplication extends Application {
 
     public static void navigateToEventDetails(Event eventData) throws IOException {
         FXMLLoader loader = new FXMLLoader(LMVMApplication.class.getResource("view/event-detail-view.fxml"));
-        mainContainer.getChildren().clear();
         mainContainer.getChildren().add(loader.load());
 
         EventDetailsController controller = loader.getController();
         controller.setEvent(eventData);
+    }
+
+    public static void goBack() {
+        if (mainContainer.getChildren().size() > 1) {
+            mainContainer.getChildren().remove(mainContainer.getChildren().size() - 1);
+        } else {
+            try {
+                navigateToHome();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public static void main(String[] args) {

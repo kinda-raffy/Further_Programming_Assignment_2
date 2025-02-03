@@ -2,8 +2,21 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Text?>
 
 <VBox xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="fp.assignments.assignment_2.controller.BacklogController">
-    <TableView fx:id="eventsTable" VBox.vgrow="ALWAYS" />
+      fx:controller="fp.assignments.assignment_2.controller.BacklogController"
+      spacing="10">
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <Label text="Events to Schedule" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+
+    <TableView fx:id="eventsTable" VBox.vgrow="ALWAYS" maxHeight="400">
+        <placeholder>
+            <Label text="No events to schedule."/>
+        </placeholder>
+    </TableView>
 </VBox>

@@ -4,51 +4,42 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
-<VBox spacing="10" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="fp.assignments.assignment_2.controller.EventDetailsController">
+<VBox spacing="20" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="fp.assignments.assignment_2.controller.EventDetailsController"
+      style="-fx-background-color: white;">
     <padding>
         <Insets top="20" right="20" bottom="20" left="20"/>
     </padding>
 
-    <HBox spacing="10" alignment="CENTER_LEFT">
-        <Button text="← Back" onAction="#handleBack"/>
-    </HBox>
+    <Label fx:id="titleLabel" style="-fx-font-size: 24; -fx-font-weight: bold"/>
 
-    <GridPane hgap="10" vgap="10">
-        <Label text="Client:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+    <GridPane hgap="10" vgap="8">
+        <Label text="Client:" style="-fx-font-weight: bold" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
         <Label fx:id="clientLabel" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
 
-        <Label text="Title:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-        <Label fx:id="titleLabel" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+        <Label text="Artist:" style="-fx-font-weight: bold" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+        <Label fx:id="artistLabel" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
 
-        <Label text="Artist:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-        <Label fx:id="artistLabel" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+        <Label text="Attendance:" style="-fx-font-weight: bold" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+        <Label fx:id="attendanceLabel" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
 
-        <Label text="Date:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+        <Label text="Date/Time:" style="-fx-font-weight: bold" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
         <Label fx:id="dateLabel" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
 
-        <Label text="Time:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-        <Label fx:id="timeLabel" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+        <Label text="Type:" style="-fx-font-weight: bold" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+        <Label fx:id="typeLabel" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
 
-        <Label text="Target Audience:" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
-        <Label fx:id="attendanceLabel" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
-
-        <Label text="Type:" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
-        <Label fx:id="typeLabel" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
-
-        <Label text="Category:" GridPane.columnIndex="0" GridPane.rowIndex="7"/>
-        <Label fx:id="categoryLabel" GridPane.columnIndex="1" GridPane.rowIndex="7"/>
+        <Label text="Category:" style="-fx-font-weight: bold" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+        <Label fx:id="categoryLabel" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
     </GridPane>
 
-    <Separator/>
+    <VBox spacing="10">
+        <Label text="Current Bookings" style="-fx-font-size: 16; -fx-font-weight: bold"/>
 
-    <Label text="Venue Bookings" style="-fx-font-size: 16; -fx-font-weight: bold"/>
+        <Label text="This event has not been assigned to a booking." fx:id="noBookingLabel"/>
 
-    <Button fx:id="createBookingButton" text="Create Booking"
-            onAction="#handleCreateBooking"
-            style="-fx-background-color: #4CAF50; -fx-text-fill: white;"/>
-
-    <TableView fx:id="bookingsTable" VBox.vgrow="ALWAYS">
-        <!-- TableColumns will be added programmatically -->
-    </TableView>
+        <Button text="Re/assign Booking"
+                style="-fx-background-color: #e0e0e0;"
+                onAction="#handleReassignBooking"/>
+    </VBox>
 </VBox>

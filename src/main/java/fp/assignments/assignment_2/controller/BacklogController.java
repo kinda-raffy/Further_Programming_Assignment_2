@@ -6,8 +6,6 @@ import fp.assignments.assignment_2.LMVMApplication;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.sql.SQLException;
 import java.io.IOException;
@@ -26,29 +24,28 @@ public class BacklogController extends BaseController {
   }
 
   private void setupEventsTable() {
+    // Create columns
     TableColumn<Event, String> clientCol = new TableColumn<>("Client");
     TableColumn<Event, String> titleCol = new TableColumn<>("Title");
-    TableColumn<Event, LocalDateTime> dateTimeCol = new TableColumn<>("Date");
+    TableColumn<Event, String> artistCol = new TableColumn<>("Artist");
+    TableColumn<Event, String> dateCol = new TableColumn<>("Date");
 
+    // Set column widths to fill the table
+    clientCol.prefWidthProperty().bind(eventsTable.widthProperty().multiply(0.27));
+    titleCol.prefWidthProperty().bind(eventsTable.widthProperty().multiply(0.27));
+    artistCol.prefWidthProperty().bind(eventsTable.widthProperty().multiply(0.27));
+    dateCol.prefWidthProperty().bind(eventsTable.widthProperty().multiply(0.187));
+
+    // Set cell value factories
     clientCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().clientName()));
     titleCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().title()));
-    dateTimeCol.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().eventDateTime()));
+    artistCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().mainArtist()));
 
-    dateTimeCol.setCellFactory(column -> new TableCell<>() {
-      private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yy h:mm a");
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yy");
+    dateCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().eventDateTime().format(formatter)));
 
-      @Override
-      protected void updateItem(LocalDateTime item, boolean empty) {
-        super.updateItem(item, empty);
-        if (empty || item == null) {
-          setText(null);
-        } else {
-          setText(formatter.format(item));
-        }
-      }
-    });
-
-    eventsTable.getColumns().addAll(clientCol, titleCol, dateTimeCol);
+    // Add columns to table
+    eventsTable.getColumns().addAll(clientCol, titleCol, artistCol, dateCol);
 
     // Add double-click handler
     eventsTable.setRowFactory(tv -> {
