@@ -12,7 +12,7 @@ import java.time.format.DateTimeFormatter;
 import java.sql.SQLException;
 import java.io.IOException;
 
-public class BacklogController {
+public class BacklogController extends BaseController {
   @FXML
   private TableView<Event> eventsTable;
 
@@ -77,13 +77,5 @@ public class BacklogController {
     } catch (IOException e) {
       showError("Error", "Could not open event details: " + e.getMessage());
     }
-  }
-
-  private void showError(String header, String content) {
-    Alert alert = new Alert(Alert.AlertType.ERROR);
-    alert.setTitle("Error");
-    alert.setHeaderText(header);
-    alert.setContentText(content);
-    alert.showAndWait();
   }
 }

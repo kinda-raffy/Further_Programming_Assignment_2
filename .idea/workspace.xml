@@ -5,27 +5,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a972194c-40e2-4ece-9f1b-a834a8007c96" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/AllVenueController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/BacklogController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/BookingsController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/MembershipController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/DatabaseConnection.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/fp/assignments/assignment_2/events.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/fp/assignments/assignment_2/views/all-venues-view.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/fp/assignments/assignment_2/views/backlog-view.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/fp/assignments/assignment_2/views/bookings-view.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/fp/assignments/assignment_2/views/membership-view.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/BaseController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/model/User.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/fp/assignments/assignment_2/view/all-venues-view.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/fp/assignments/assignment_2/view/backlog-view.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/fp/assignments/assignment_2/view/bookings-view.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/fp/assignments/assignment_2/view/event-detail-view.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/fp/assignments/assignment_2/view/home-view.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/fp/assignments/assignment_2/view/membership-view.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/LMVMApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/LMVMApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/AllVenueController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/AllVenueController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/BacklogController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/BacklogController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/BookingsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/BookingsController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/EventDetailsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/EventDetailsController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/HomeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/HomeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/model/Booking.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/model/Booking.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/model/Event.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/model/Event.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/model/Venue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/model/Venue.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/DatabaseService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/HomeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/HomeService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/fp/assignments/assignment_2/requests.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/fp/assignments/assignment_2/views/home-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fp/assignments/assignment_2/views/home-view.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/MembershipController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/MembershipController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/fp/assignments/assignment_2/views/all-venues-view.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/fp/assignments/assignment_2/views/backlog-view.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/fp/assignments/assignment_2/views/bookings-view.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/fp/assignments/assignment_2/views/event-detail-view.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/fp/assignments/assignment_2/views/home-view.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/fp/assignments/assignment_2/views/membership-view.fxml" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -82,7 +82,7 @@
       <workItem from="1737897715005" duration="1084000" />
       <workItem from="1738109663184" duration="225000" />
       <workItem from="1738382163868" duration="14377000" />
-      <workItem from="1738507019742" duration="3423000" />
+      <workItem from="1738507019742" duration="4101000" />
     </task>
     <servers />
   </component>

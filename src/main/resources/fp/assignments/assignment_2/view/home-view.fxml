@@ -14,10 +14,6 @@
             <SeparatorMenuItem />
             <MenuItem onAction="#handleExit" text="Exit" />
         </Menu>
-        <Menu text="Tools">
-            <MenuItem onAction="#handleAutoMatch" text="Auto-Match" />
-            <MenuItem onAction="#handleBackup" text="Backup Data" />
-        </Menu>
     </MenuBar>
 
     <TabPane fx:id="mainTabPane" VBox.vgrow="ALWAYS">

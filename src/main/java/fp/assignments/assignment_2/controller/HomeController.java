@@ -1,26 +1,14 @@
 package fp.assignments.assignment_2.controller;
 
-import fp.assignments.assignment_2.model.Event;
-import fp.assignments.assignment_2.model.Venue;
 import fp.assignments.assignment_2.service.HomeService;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.chart.*;
 import javafx.stage.FileChooser;
 import java.io.*;
 import java.sql.*;
-import java.time.format.DateTimeFormatter;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.scene.control.TableCell;
-import javafx.beans.property.SimpleObjectProperty;
 import java.time.format.DateTimeParseException;
-import java.time.LocalDateTime;
 
-import fp.assignments.assignment_2.LMVMApplication;
-
-public class HomeController {
+public class HomeController extends BaseController {
     @FXML
     private TabPane mainTabPane;
 
@@ -91,31 +79,5 @@ public class HomeController {
     @FXML
     private void handleExit() {
         System.exit(0);
-    }
-
-    @FXML
-    private void handleAutoMatch() {
-        // Auto-match logic
-    }
-
-    @FXML
-    private void handleBackup() {
-        // Backup logic
-    }
-
-    private void showError(String header, String content) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error");
-        alert.setHeaderText(header);
-        alert.setContentText(content);
-        alert.showAndWait();
-    }
-
-    private void showEventDetails(Event event) {
-        try {
-            LMVMApplication.navigateToEventDetails(event);
-        } catch (IOException e) {
-            showError("Error", "Could not open event details: " + e.getMessage());
-        }
     }
 }

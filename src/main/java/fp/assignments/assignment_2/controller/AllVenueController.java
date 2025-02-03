@@ -9,7 +9,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import java.sql.SQLException;
 
-public class AllVenueController {
+public class AllVenueController extends BaseController {
   @FXML
   private TableView<Venue> venuesTable;
 
@@ -59,13 +59,5 @@ public class AllVenueController {
     } catch (SQLException e) {
       showError("Error loading data", e.getMessage());
     }
-  }
-
-  private void showError(String header, String content) {
-    Alert alert = new Alert(Alert.AlertType.ERROR);
-    alert.setTitle("Error");
-    alert.setHeaderText(header);
-    alert.setContentText(content);
-    alert.showAndWait();
   }
 }

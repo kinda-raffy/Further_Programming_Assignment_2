@@ -1,5 +1,5 @@
 package fp.assignments.assignment_2.controller;
 
-public class MembershipController {
+public class MembershipController extends BaseController {
 
 }

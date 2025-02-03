@@ -26,13 +26,13 @@ public class LMVMApplication extends Application {
     }
 
     public static void navigateToHome() throws IOException {
-        FXMLLoader loader = new FXMLLoader(LMVMApplication.class.getResource("views/home-view.fxml"));
+        FXMLLoader loader = new FXMLLoader(LMVMApplication.class.getResource("view/home-view.fxml"));
         mainContainer.getChildren().clear();
         mainContainer.getChildren().add(loader.load());
     }
 
     public static void navigateToEventDetails(Event eventData) throws IOException {
-        FXMLLoader loader = new FXMLLoader(LMVMApplication.class.getResource("views/event-detail-view.fxml"));
+        FXMLLoader loader = new FXMLLoader(LMVMApplication.class.getResource("view/event-detail-view.fxml"));
         mainContainer.getChildren().clear();
         mainContainer.getChildren().add(loader.load());
 

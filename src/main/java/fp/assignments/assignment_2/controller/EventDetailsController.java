@@ -5,7 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import java.time.format.DateTimeFormatter;
 
-public class EventDetailsController {
+public class EventDetailsController extends BaseController {
   @FXML
   private Label clientLabel;
   @FXML
