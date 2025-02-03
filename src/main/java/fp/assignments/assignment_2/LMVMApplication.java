@@ -21,10 +21,7 @@ public class LMVMApplication extends Application {
         stage.setTitle("Live Music Venue Matchmaker");
         stage.setScene(scene);
         stage.setMaximized(true);
-
-        // Load the initial view
         navigateToHome();
-
         stage.show();
     }
 

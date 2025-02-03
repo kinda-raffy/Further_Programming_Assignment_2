@@ -6,18 +6,18 @@ import java.io.*;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Scanner;
 
 public class HomeService {
-  private final DatabaseService dbService;
+  private final DatabaseConnection dbService;
 
   public HomeService() {
-    this.dbService = DatabaseService.getInstance();
+    this.dbService = DatabaseConnection.getInstance();
   }
 
   public List<Venue> loadVenues() throws SQLException {
@@ -46,16 +46,19 @@ public class HomeService {
 
     try (Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery(sql)) {
+
       while (rs.next()) {
         events.add(new Event(
-            rs.getString("client_id"),
+            rs.getInt("id"),
             rs.getString("name"),
             rs.getString("main_artist"),
-            new Date(rs.getLong("event_date")).toLocalDate(),
-            new Time(rs.getLong("event_time")).toLocalTime(),
             rs.getInt("expected_attendance"),
+            LocalDateTime.parse(rs.getString("event_datetime")),
+            rs.getInt("duration"),
             rs.getString("event_type"),
-            rs.getString("category")));
+            rs.getString("category"),
+            rs.getBoolean("is_booked"),
+            rs.getString("client_id")));
       }
     }
     return events;
@@ -63,7 +66,7 @@ public class HomeService {
 
   public void importVenues(File file) throws SQLException, IOException {
     Connection conn = dbService.getConnection();
-    String sql = "INSERT INTO venues (name, capacity, suitability_keywords, category, hire_price) VALUES (?, ?, ?, ?, ?)";
+    String sql = "INSERT OR REPLACE INTO venues (name, capacity, suitability_keywords, category, hire_price) VALUES (?, ?, ?, ?, ?)";
 
     try (Scanner scanner = new Scanner(file);
         PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -87,7 +90,7 @@ public class HomeService {
 
   public void importEvents(File file) throws IOException, SQLException, DateTimeParseException {
     Connection conn = dbService.getConnection();
-    String sql = "INSERT INTO events (client_id, name, main_artist, expected_attendance, event_date, event_time, event_type, category) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    String sql = "INSERT INTO events (client_id, name, main_artist, expected_attendance, event_datetime, event_type, category, duration) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
     try (BufferedReader reader = new BufferedReader(new FileReader(file));
         PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -98,20 +101,22 @@ public class HomeService {
       while ((line = reader.readLine()) != null) {
         String[] data = line.split(",");
 
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("d-M-yy");
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("h:mm a", Locale.US);
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
+        // Concatenate date and time.
         LocalDate date = LocalDate.parse(data[3].trim(), dateFormatter);
-        LocalTime time = LocalTime.parse(data[4].trim(), timeFormatter);
+        LocalTime time = LocalTime.parse(data[4].trim().toUpperCase(), timeFormatter);
+        LocalDateTime dateTime = LocalDateTime.of(date, time);
 
-        pstmt.setString(1, data[0].trim());
-        pstmt.setString(2, data[1].trim());
-        pstmt.setString(3, data[2].trim());
-        pstmt.setInt(4, Integer.parseInt(data[5].trim()));
-        pstmt.setDate(5, java.sql.Date.valueOf(date));
-        pstmt.setTime(6, java.sql.Time.valueOf(time));
-        pstmt.setString(7, data[6].trim());
-        pstmt.setString(8, data[7].trim());
+        pstmt.setString(1, data[0].trim()); // Client
+        pstmt.setString(2, data[1].trim()); // Title
+        pstmt.setString(3, data[2].trim()); // Artist
+        pstmt.setInt(4, Integer.parseInt(data[6].trim())); // Target Audience (expected_attendance)
+        pstmt.setString(5, dateTime.toString()); // Date/Time
+        pstmt.setString(6, data[7].trim()); // Type
+        pstmt.setString(7, data[8].trim()); // Category
+        pstmt.setInt(8, Integer.parseInt(data[5].trim())); // Duration
         pstmt.executeUpdate();
       }
     }

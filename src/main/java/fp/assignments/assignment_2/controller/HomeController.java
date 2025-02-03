@@ -16,122 +16,19 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.control.TableCell;
 import javafx.beans.property.SimpleObjectProperty;
 import java.time.format.DateTimeParseException;
-import java.time.LocalDate;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
+import java.time.LocalDateTime;
+
 import fp.assignments.assignment_2.LMVMApplication;
 
 public class HomeController {
     @FXML
     private TabPane mainTabPane;
 
-    @FXML
-    private TableView<Event> eventsTable;
-
-    @FXML
-    private TableView<Venue> venuesTable;
-
-    @FXML
-    private PieChart venueUtilizationChart;
-
-    @FXML
-    private BarChart<String, Number> incomeChart;
-
     private HomeService homeService;
 
     @FXML
-    private void initialize() {
+    public void initialize() {
         homeService = new HomeService();
-        setupTables();
-        setupCharts();
-        loadData();
-    }
-
-    private void setupTables() {
-        // Setup events table with fewer columns
-        TableColumn<Event, String> clientCol = new TableColumn<>("Client");
-        TableColumn<Event, String> titleCol = new TableColumn<>("Title");
-        TableColumn<Event, LocalDate> dateCol = new TableColumn<>("Date");
-
-        clientCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getClientName()));
-        titleCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getName()));
-        dateCol.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getEventDate()));
-
-        // Format the date column
-        dateCol.setCellFactory(column -> new TableCell<>() {
-            private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yy");
-
-            @Override
-            protected void updateItem(LocalDate item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                    setText(null);
-                } else {
-                    setText(formatter.format(item));
-                }
-            }
-        });
-
-        eventsTable.getColumns().addAll(clientCol, titleCol, dateCol);
-
-        // Add double-click handler for the events table
-        eventsTable.setRowFactory(tv -> {
-            TableRow<Event> row = new TableRow<>();
-            row.setOnMouseClicked(event -> {
-                if (event.getClickCount() == 2 && !row.isEmpty()) {
-                    showEventDetails(row.getItem());
-                }
-            });
-            return row;
-        });
-
-        // Setup venues table
-        TableColumn<Venue, String> nameCol = new TableColumn<>("Name");
-        TableColumn<Venue, Integer> capacityCol = new TableColumn<>("Capacity");
-        TableColumn<Venue, String> suitabilityCol = new TableColumn<>("Suitable for");
-        TableColumn<Venue, String> venueCategoryCol = new TableColumn<>("Category");
-        TableColumn<Venue, Double> priceCol = new TableColumn<>("Booking price / hour");
-
-        nameCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getName()));
-        capacityCol.setCellValueFactory(data -> new SimpleIntegerProperty(data.getValue().getCapacity()).asObject());
-        suitabilityCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getSuitabilityKeywords()));
-        venueCategoryCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getCategory()));
-        priceCol.setCellValueFactory(data -> new SimpleDoubleProperty(data.getValue().getHirePrice()).asObject());
-
-        // Format the price column.
-        priceCol.setCellFactory(column -> new TableCell<>() {
-            @Override
-            protected void updateItem(Double item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                    setText(null);
-                } else {
-                    setText(String.format("$%.2f", item));
-                }
-            }
-        });
-
-        venuesTable.getColumns().addAll(nameCol, capacityCol, suitabilityCol,
-                venueCategoryCol, priceCol);
-    }
-
-    private void setupCharts() {
-        venueUtilizationChart.setTitle("Venue Utilization");
-        incomeChart.setTitle("Income vs Commission per Order");
-    }
-
-    private void loadData() {
-        eventsTable.getItems().clear();
-        venuesTable.getItems().clear();
-
-        try {
-            venuesTable.getItems().addAll(homeService.loadVenues());
-            eventsTable.getItems().addAll(homeService.loadEvents());
-        } catch (SQLException e) {
-            showError("Error loading data", e.getMessage());
-        }
     }
 
     @FXML
@@ -144,7 +41,7 @@ public class HomeController {
         if (file != null) {
             try {
                 homeService.importVenues(file);
-                loadData();
+                refreshAllControllers();
             } catch (Exception e) {
                 showError("Error importing venues", e.getMessage());
             }
@@ -161,7 +58,7 @@ public class HomeController {
         if (file != null) {
             try {
                 homeService.importEvents(file);
-                loadData();
+                refreshAllControllers();
             } catch (IOException e) {
                 showError("Error reading file", e.getMessage());
             } catch (DateTimeParseException e) {
@@ -173,12 +70,17 @@ public class HomeController {
         }
     }
 
-    private void showError(String header, String content) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error");
-        alert.setHeaderText(header);
-        alert.setContentText(content);
-        alert.showAndWait();
+    private void refreshAllControllers() {
+        // Get references to child controllers and refresh their data
+        for (Tab tab : mainTabPane.getTabs()) {
+            if (tab.getContent() != null) {
+                if (tab.getContent().getId().equals("backlogView")) {
+                    ((BacklogController) tab.getContent().getUserData()).loadEvents();
+                } else if (tab.getContent().getId().equals("venuesView")) {
+                    ((AllVenueController) tab.getContent().getUserData()).loadVenues();
+                }
+            }
+        }
     }
 
     @FXML
@@ -199,6 +101,14 @@ public class HomeController {
     @FXML
     private void handleBackup() {
         // Backup logic
+    }
+
+    private void showError(String header, String content) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 
     private void showEventDetails(Event event) {

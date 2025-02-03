@@ -13,9 +13,7 @@ public class EventDetailsController {
   @FXML
   private Label artistLabel;
   @FXML
-  private Label dateLabel;
-  @FXML
-  private Label timeLabel;
+  private Label dateTimeLabel;
   @FXML
   private Label attendanceLabel;
   @FXML
@@ -24,13 +22,12 @@ public class EventDetailsController {
   private Label categoryLabel;
 
   public void setEvent(Event event) {
-    clientLabel.setText(event.getClientName());
-    titleLabel.setText(event.getName());
-    artistLabel.setText(event.getMainArtist());
-    dateLabel.setText(event.getEventDate().format(DateTimeFormatter.ofPattern("dd-MM-yy")));
-    timeLabel.setText(event.getEventTime().format(DateTimeFormatter.ofPattern("h:mm a")));
-    attendanceLabel.setText(String.valueOf(event.getExpectedAttendance()));
-    typeLabel.setText(event.getEventType());
-    categoryLabel.setText(event.getCategory());
+    titleLabel.setText(event.title());
+    typeLabel.setText(event.eventType());
+    clientLabel.setText(event.clientName());
+    artistLabel.setText(event.mainArtist());
+    categoryLabel.setText(event.category());
+    attendanceLabel.setText(String.valueOf(event.expectedAttendance()));
+    dateTimeLabel.setText(event.eventDateTime().format(DateTimeFormatter.ofPattern("dd-MM-yy h:mm a")));
   }
 }

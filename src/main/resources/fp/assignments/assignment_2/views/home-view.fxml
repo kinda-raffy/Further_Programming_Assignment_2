@@ -8,10 +8,8 @@
 
     <MenuBar>
         <Menu text="File">
-            <Menu text="Import">
-                <MenuItem onAction="#handleImportVenues" text="Import Venues" />
-                <MenuItem onAction="#handleImportEvents" text="Import Job Requests" />
-            </Menu>
+            <MenuItem onAction="#handleImportVenues" text="Import Venues" />
+            <MenuItem onAction="#handleImportEvents" text="Import Events" />
             <MenuItem onAction="#handleExportData" text="Export Data" />
             <SeparatorMenuItem />
             <MenuItem onAction="#handleExit" text="Exit" />
@@ -23,24 +21,17 @@
     </MenuBar>
 
     <TabPane fx:id="mainTabPane" VBox.vgrow="ALWAYS">
-        <Tab closable="false" text="Events">
-            <TableView fx:id="eventsTable" VBox.vgrow="ALWAYS" />
+        <Tab closable="false" text="Backlog">
+            <fx:include source="backlog-view.fxml" />
         </Tab>
-        <Tab closable="false" text="Venues">
-            <TableView fx:id="venuesTable" VBox.vgrow="ALWAYS" />
+        <Tab closable="false" text="Bookings">
+            <fx:include source="bookings-view.fxml" />
         </Tab>
-        <Tab closable="false" text="Statistics">
-            <VBox spacing="10">
-                <PieChart fx:id="venueUtilizationChart" />
-                <BarChart fx:id="incomeChart">
-                    <xAxis>
-                        <CategoryAxis label="Orders" />
-                    </xAxis>
-                    <yAxis>
-                        <NumberAxis label="Amount ($)" />
-                    </yAxis>
-                </BarChart>
-            </VBox>
+        <Tab closable="false" text="All Venues">
+            <fx:include source="all-venues-view.fxml" />
+        </Tab>
+        <Tab closable="false" text="Memberships">
+            <fx:include source="membership-view.fxml" />
         </Tab>
     </TabPane>
 </VBox>
