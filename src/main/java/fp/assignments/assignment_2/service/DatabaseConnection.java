@@ -66,10 +66,22 @@ public class DatabaseConnection {
             )
         """;
 
+    String createUsersTable = """
+            CREATE TABLE IF NOT EXISTS users (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_name TEXT NOT NULL UNIQUE,
+                password TEXT NOT NULL,
+                first_name TEXT NOT NULL,
+                last_name TEXT NOT NULL,
+                type TEXT NOT NULL CHECK (type IN ('manager', 'staff'))
+            )
+        """;
+
     try (var statement = connection.createStatement()) {
       statement.execute(createEventsTable);
       statement.execute(createVenuesTable);
       statement.execute(createBookingsTable);
+      statement.execute(createUsersTable);
     }
   }
 

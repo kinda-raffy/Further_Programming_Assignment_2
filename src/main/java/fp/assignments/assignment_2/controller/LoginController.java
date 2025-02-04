@@ -1,0 +1,5 @@
+package fp.assignments.assignment_2.controller;
+
+public class LoginController extends BaseController {
+
+}
