@@ -45,6 +45,7 @@ public class HomeController extends BaseController {
         if (file != null) {
             try {
                 homeService.importEvents(file);
+                BacklogController.reloadEvents();
             } catch (IOException e) {
                 showError("Error reading file", e.getMessage());
             } catch (DateTimeParseException e) {

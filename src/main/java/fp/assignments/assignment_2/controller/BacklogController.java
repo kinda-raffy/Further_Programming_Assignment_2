@@ -9,16 +9,19 @@ import javafx.beans.property.SimpleStringProperty;
 import java.time.format.DateTimeFormatter;
 import java.sql.SQLException;
 import java.io.IOException;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class BacklogController extends BaseController {
   @FXML
   private TableView<Event> eventsTable;
 
-  private HomeService homeService;
+  private static HomeService homeService = new HomeService();
+  private static ObservableList<Event> eventsList = FXCollections.observableArrayList();
 
   @FXML
   public void initialize() {
-    homeService = new HomeService();
+    eventsTable.setItems(eventsList);
     setupEventsTable();
     loadEvents();
   }
@@ -59,12 +62,15 @@ public class BacklogController extends BaseController {
     });
   }
 
-  public void loadEvents() {
-    eventsTable.getItems().clear();
+  public static void loadEvents() {
+    eventsList.clear();
     try {
-      eventsTable.getItems().addAll(homeService.loadEvents());
+      eventsList.addAll(homeService.loadEvents());
     } catch (SQLException e) {
-      showError("Error loading data", e.getMessage());
+      Alert alert = new Alert(Alert.AlertType.ERROR);
+      alert.setTitle("Error loading data");
+      alert.setContentText(e.getMessage());
+      alert.showAndWait();
     }
   }
 
@@ -76,7 +82,7 @@ public class BacklogController extends BaseController {
     }
   }
 
-  public void reloadEvents() {
+  public static void reloadEvents() {
     loadEvents();
   }
 }
