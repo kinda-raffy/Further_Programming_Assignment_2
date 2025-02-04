@@ -3,6 +3,8 @@ package fp.assignments.assignment_2;
 import fp.assignments.assignment_2.controller.BacklogController;
 import fp.assignments.assignment_2.controller.EventDetailsController;
 import fp.assignments.assignment_2.model.Event;
+import fp.assignments.assignment_2.model.User;
+import fp.assignments.assignment_2.controller.UserDetailController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -37,6 +39,17 @@ public class LMVMApplication extends Application {
 
         EventDetailsController controller = loader.getController();
         controller.setEvent(eventData);
+    }
+
+    public static void navigateToUserDetails(User userData, Runnable onUserDeleted, Runnable onUserUpdated)
+            throws IOException {
+        FXMLLoader loader = new FXMLLoader(LMVMApplication.class.getResource("view/user-detail-view.fxml"));
+        mainContainer.getChildren().add(loader.load());
+
+        UserDetailController controller = loader.getController();
+        controller.setUser(userData);
+        controller.setOnUserDeleted(onUserDeleted);
+        controller.setOnUserUpdated(onUserUpdated);
     }
 
     public static void goBack() {

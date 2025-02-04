@@ -6,7 +6,7 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import java.sql.SQLException;
 
-public class AddEmployeeFormController {
+public class AddUserFormController {
   @FXML
   private TextField userNameField;
   @FXML
@@ -19,6 +19,12 @@ public class AddEmployeeFormController {
   private ComboBox<String> typeComboBox;
   @FXML
   private Label errorLabel;
+
+  private Runnable onUserAdded;
+
+  public void setOnUserAdded(Runnable callback) {
+    this.onUserAdded = callback;
+  }
 
   @FXML
   public void initialize() {
@@ -43,6 +49,9 @@ public class AddEmployeeFormController {
           ps.setString(5, typeComboBox.getValue());
         });
 
+        if (onUserAdded != null) {
+          onUserAdded.run();
+        }
         closeWindow();
       } catch (SQLException e) {
         errorLabel.setText("Error creating user: " + e.getMessage());

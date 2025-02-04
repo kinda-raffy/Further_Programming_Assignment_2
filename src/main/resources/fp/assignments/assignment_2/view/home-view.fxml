@@ -27,7 +27,7 @@
             <fx:include source="all-venues-view.fxml" />
         </Tab>
         <Tab closable="false" text="Employees">
-            <fx:include source="employee-view.fxml" />
+            <fx:include source="all-user-view.fxml" />
         </Tab>
     </TabPane>
 </VBox>

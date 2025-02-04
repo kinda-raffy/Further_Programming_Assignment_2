@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="fp.assignments.assignment_2.controller.EditUserFormController"
+      spacing="10">
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <Label text="Add New Staff Member" style="-fx-font-size: 16; -fx-font-weight: bold"/>
+
+    <Label text="Username:"/>
+    <TextField fx:id="userNameField"/>
+
+    <Label text="Password:"/>
+    <PasswordField fx:id="passwordField"/>
+
+    <Label text="First Name:"/>
+    <TextField fx:id="firstNameField"/>
+
+    <Label text="Last Name:"/>
+    <TextField fx:id="lastNameField"/>
+
+    <Label text="Type:"/>
+    <ComboBox fx:id="typeComboBox"/>
+
+    <HBox spacing="10" alignment="CENTER">
+        <Label fx:id="errorLabel" textFill="red" alignment="CENTER"/>
+    </HBox>
+
+    <HBox spacing="10">
+        <Button text="Cancel" onAction="#handleCancel"/>
+        <Button text="Submit" onAction="#handleSubmit" defaultButton="true"/>
+    </HBox>
+</VBox>
