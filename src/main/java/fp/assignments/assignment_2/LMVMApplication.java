@@ -57,6 +57,12 @@ public class LMVMApplication extends Application {
         controller.setOnUserUpdated(onUserUpdated);
     }
 
+    public static void navigateToManagerSignUp() throws IOException {
+        FXMLLoader loader = new FXMLLoader(LMVMApplication.class.getResource("view/manager-sign-up-view.fxml"));
+        mainContainer.getChildren().clear();
+        mainContainer.getChildren().add(loader.load());
+    }
+
     public static void goBack() {
         if (mainContainer.getChildren().size() > 1) {
             mainContainer.getChildren().remove(mainContainer.getChildren().size() - 1);

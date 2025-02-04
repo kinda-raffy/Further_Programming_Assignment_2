@@ -5,5 +5,33 @@
 <?import javafx.geometry.Insets?>
 
 <VBox xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="fp.assignments.assignment_2.controller.ManagerSignUpController" spacing="10">
+      fx:controller="fp.assignments.assignment_2.controller.ManagerSignUpController"
+      spacing="20" alignment="CENTER">
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <Label text="Create Manager Account" style="-fx-font-size: 24; -fx-font-weight: bold"/>
+
+    <VBox spacing="10" maxWidth="300">
+        <Label text="Username:"/>
+        <TextField fx:id="userNameField"/>
+
+        <Label text="Password:"/>
+        <PasswordField fx:id="passwordField"/>
+
+        <Label text="First Name:"/>
+        <TextField fx:id="firstNameField"/>
+
+        <Label text="Last Name:"/>
+        <TextField fx:id="lastNameField"/>
+
+        <Label fx:id="errorLabel" textFill="red"/>
+
+        <HBox spacing="10">
+            <Button text="Cancel" onAction="#handleCancel" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+            <Button text="Create Account" onAction="#handleCreate" defaultButton="true"
+                    maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+        </HBox>
+    </VBox>
 </VBox>

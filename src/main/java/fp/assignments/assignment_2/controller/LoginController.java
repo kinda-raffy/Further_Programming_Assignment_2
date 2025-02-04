@@ -55,4 +55,13 @@ public class LoginController extends BaseController {
       errorLabel.setText("Invalid username or password");
     }
   }
+
+  @FXML
+  private void handleManagerSignup() {
+    try {
+      LMVMApplication.navigateToManagerSignUp();
+    } catch (IOException e) {
+      errorLabel.setText("Error navigating to sign-up: " + e.getMessage());
+    }
+  }
 }

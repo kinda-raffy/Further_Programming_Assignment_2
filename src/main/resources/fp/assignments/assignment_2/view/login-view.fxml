@@ -23,5 +23,7 @@
         <Label fx:id="errorLabel" textFill="red"/>
 
         <Button text="Login" onAction="#handleLogin" defaultButton="true" maxWidth="Infinity"/>
+        <Button text="Manager Sign-up" onAction="#handleManagerSignup" maxWidth="Infinity"
+                style="-fx-background-color: #e0e0e0;"/>
     </VBox>
 </VBox>
