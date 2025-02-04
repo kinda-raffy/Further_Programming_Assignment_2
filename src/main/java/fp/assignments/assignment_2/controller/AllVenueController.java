@@ -14,15 +14,52 @@ import javafx.collections.ObservableList;
 public class AllVenueController extends BaseController {
   @FXML
   private TableView<Venue> venuesTable;
+  @FXML
+  private TextField nameSearchField;
+  @FXML
+  private TextField categorySearchField;
 
   private static HomeService homeService = new HomeService();
   private static ObservableList<Venue> venuesList = FXCollections.observableArrayList();
+  private static ObservableList<Venue> filteredVenuesList = FXCollections.observableArrayList();
 
   @FXML
   public void initialize() {
-    venuesTable.setItems(venuesList);
+    venuesTable.setItems(filteredVenuesList);
     setupVenuesTable();
-    loadVenues();
+    setupSearchListeners();
+    loadAllVenues();
+  }
+
+  private void setupSearchListeners() {
+    nameSearchField.textProperty().addListener((observable, oldValue, newValue) -> filterVenues());
+    categorySearchField.textProperty().addListener((observable, oldValue, newValue) -> filterVenues());
+  }
+
+  private void filterVenues() {
+    String nameQuery = nameSearchField.getText().toLowerCase();
+    String categoryQuery = categorySearchField.getText().toLowerCase();
+
+    filteredVenuesList.clear();
+
+    if (nameQuery.isEmpty() && categoryQuery.isEmpty()) {
+      filteredVenuesList.addAll(venuesList);
+    } else {
+      for (Venue venue : venuesList) {
+        boolean nameMatch = nameQuery.isEmpty() ||
+            venue.nameId().toLowerCase().contains(nameQuery);
+        boolean categoryMatch = categoryQuery.isEmpty() ||
+            venue.category().toLowerCase().contains(categoryQuery);
+
+        if (nameMatch && categoryMatch) {
+          filteredVenuesList.add(venue);
+        }
+      }
+    }
+
+    if (filteredVenuesList.isEmpty()) {
+      venuesTable.setPlaceholder(new Label("No venues found"));
+    }
   }
 
   private void setupVenuesTable() {
@@ -35,7 +72,7 @@ public class AllVenueController extends BaseController {
     nameCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().nameId()));
     capacityCol.setCellValueFactory(data -> new SimpleIntegerProperty(data.getValue().capacity()).asObject());
     suitabilityCol.setCellValueFactory(
-        data -> new SimpleStringProperty(String.join("& ", data.getValue().suitabilityKeywords())));
+        data -> new SimpleStringProperty(String.join(" & ", data.getValue().suitabilityKeywords())));
     venueCategoryCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().category()));
     priceCol.setCellValueFactory(data -> new SimpleDoubleProperty(data.getValue().hirePrice()).asObject());
 
@@ -53,12 +90,20 @@ public class AllVenueController extends BaseController {
 
     venuesTable.getColumns().addAll(nameCol, capacityCol, suitabilityCol,
         venueCategoryCol, priceCol);
+
+    nameCol.prefWidthProperty().bind(venuesTable.widthProperty().multiply(0.25));
+    capacityCol.prefWidthProperty().bind(venuesTable.widthProperty().multiply(0.15));
+    suitabilityCol.prefWidthProperty().bind(venuesTable.widthProperty().multiply(0.25));
+    venueCategoryCol.prefWidthProperty().bind(venuesTable.widthProperty().multiply(0.20));
+    priceCol.prefWidthProperty().bind(venuesTable.widthProperty().multiply(0.15));
   }
 
-  public static void loadVenues() {
+  public static void loadAllVenues() {
     venuesList.clear();
+    filteredVenuesList.clear();
     try {
       venuesList.addAll(homeService.loadVenues());
+      filteredVenuesList.addAll(homeService.loadVenues());
     } catch (SQLException e) {
       Alert alert = new Alert(Alert.AlertType.ERROR);
       alert.setTitle("Error loading data");
@@ -68,6 +113,6 @@ public class AllVenueController extends BaseController {
   }
 
   public static void reloadVenues() {
-    loadVenues();
+    loadAllVenues();
   }
 }

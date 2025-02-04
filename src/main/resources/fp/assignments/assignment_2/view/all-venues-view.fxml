@@ -2,8 +2,21 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
 
 <VBox xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="fp.assignments.assignment_2.controller.AllVenueController">
-    <TableView fx:id="venuesTable" VBox.vgrow="ALWAYS" />
+      fx:controller="fp.assignments.assignment_2.controller.AllVenueController" spacing="10">
+    <padding>
+        <Insets top="10" right="10" bottom="10" left="10"/>
+    </padding>
+
+    <GridPane hgap="10" vgap="5">
+        <Label text="Name:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+        <TextField fx:id="nameSearchField" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+        <Label text="Category:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+        <TextField fx:id="categorySearchField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+    </GridPane>
+
+    <TableView fx:id="venuesTable" VBox.vgrow="ALWAYS"/>
 </VBox>
