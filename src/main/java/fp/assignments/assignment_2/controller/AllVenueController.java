@@ -8,16 +8,19 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import java.sql.SQLException;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class AllVenueController extends BaseController {
   @FXML
   private TableView<Venue> venuesTable;
 
-  private HomeService homeService;
+  private static HomeService homeService = new HomeService();
+  private static ObservableList<Venue> venuesList = FXCollections.observableArrayList();
 
   @FXML
   public void initialize() {
-    homeService = new HomeService();
+    venuesTable.setItems(venuesList);
     setupVenuesTable();
     loadVenues();
   }
@@ -52,12 +55,19 @@ public class AllVenueController extends BaseController {
         venueCategoryCol, priceCol);
   }
 
-  public void loadVenues() {
-    venuesTable.getItems().clear();
+  public static void loadVenues() {
+    venuesList.clear();
     try {
-      venuesTable.getItems().addAll(homeService.loadVenues());
+      venuesList.addAll(homeService.loadVenues());
     } catch (SQLException e) {
-      showError("Error loading data", e.getMessage());
+      Alert alert = new Alert(Alert.AlertType.ERROR);
+      alert.setTitle("Error loading data");
+      alert.setContentText(e.getMessage());
+      alert.showAndWait();
     }
+  }
+
+  public static void reloadVenues() {
+    loadVenues();
   }
 }

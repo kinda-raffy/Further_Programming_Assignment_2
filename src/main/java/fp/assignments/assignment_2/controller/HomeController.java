@@ -29,6 +29,7 @@ public class HomeController extends BaseController {
         if (file != null) {
             try {
                 homeService.importVenues(file);
+                AllVenueController.reloadVenues();
             } catch (Exception e) {
                 showError("Error importing venues", e.getMessage());
             }
