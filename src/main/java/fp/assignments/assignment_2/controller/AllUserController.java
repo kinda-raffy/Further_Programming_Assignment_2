@@ -9,24 +9,39 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javafx.scene.input.MouseButton;
+import javafx.beans.binding.Bindings;
+import fp.assignments.assignment_2.service.SessionManager;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 
 public class AllUserController extends BaseController {
   @FXML
   private TableView<User> userTable;
-  private final ObservableList<User> users = FXCollections.observableArrayList();
+  private final ObservableList<User> userTableList = FXCollections.observableArrayList();
+
+  @FXML
+  private Label userNameLabel;
 
   @FXML
   public void initialize() {
     setupTableColumns();
     loadUsers();
+
+    userNameLabel.textProperty().bind(
+        Bindings.createStringBinding(
+            () -> {
+              User user = SessionManager.getInstance().getCurrentUser();
+              String userName = user != null ? user.userName() : "Anonymous";
+              String accountType = user != null ? user.type() : "Unknown";
+              return "Logged in as: " + userName + " (" + accountType + ")";
+            },
+            SessionManager.getInstance().currentUserProperty()));
   }
 
   private void setupTableColumns() {
@@ -37,25 +52,21 @@ public class AllUserController extends BaseController {
     TableColumn<User, String> lastNameCol = new TableColumn<>("Last Name");
     TableColumn<User, String> typeCol = new TableColumn<>("Type");
 
-    // Set cell value factories
     idCol.setCellValueFactory(data -> new SimpleIntegerProperty(data.getValue().id()).asObject());
     usernameCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().userName()));
     firstNameCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().firstName()));
     lastNameCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().lastName()));
     typeCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().type()));
 
-    // Set column widths
     idCol.prefWidthProperty().bind(userTable.widthProperty().multiply(0.1));
     usernameCol.prefWidthProperty().bind(userTable.widthProperty().multiply(0.25));
     firstNameCol.prefWidthProperty().bind(userTable.widthProperty().multiply(0.25));
     lastNameCol.prefWidthProperty().bind(userTable.widthProperty().multiply(0.25));
     typeCol.prefWidthProperty().bind(userTable.widthProperty().multiply(0.15));
 
-    // Add columns to table
     userTable.getColumns().addAll(idCol, usernameCol, firstNameCol, lastNameCol, typeCol);
-    userTable.setItems(users);
+    userTable.setItems(userTableList);
 
-    // Add double click handler
     userTable.setRowFactory(tv -> {
       TableRow<User> row = new TableRow<>();
       row.setOnMouseClicked(event -> {
@@ -68,13 +79,13 @@ public class AllUserController extends BaseController {
   }
 
   public void loadUsers() {
-    users.clear();
+    userTableList.clear();
     try {
       String sql = "SELECT * FROM users ORDER BY id";
       ResultSet rs = DatabaseConnection.getInstance().executeQuery(sql);
 
       while (rs.next()) {
-        users.add(new User(
+        userTableList.add(new User(
             rs.getInt("id"),
             rs.getString("user_name"),
             rs.getString("password"),
@@ -82,6 +93,12 @@ public class AllUserController extends BaseController {
             rs.getString("last_name"),
             rs.getString("type")));
       }
+
+      userTableList.stream()
+          .filter(u -> u.id() == SessionManager.getInstance().getCurrentUser().id())
+          .findFirst()
+          .ifPresent(user -> SessionManager.getInstance().setCurrentUser(user));
+
     } catch (SQLException e) {
       e.printStackTrace();
     }

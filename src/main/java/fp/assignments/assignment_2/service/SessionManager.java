@@ -1,10 +1,12 @@
 package fp.assignments.assignment_2.service;
 
 import fp.assignments.assignment_2.model.User;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 
 public class SessionManager {
   private static SessionManager instance;
-  private User currentUser;
+  private final ObjectProperty<User> currentUser = new SimpleObjectProperty<>();
 
   private SessionManager() {
   }
@@ -17,18 +19,23 @@ public class SessionManager {
   }
 
   public void setCurrentUser(User user) {
-    this.currentUser = user;
+    this.currentUser.set(user);
   }
 
   public User getCurrentUser() {
+    return currentUser.get();
+  }
+
+  public ObjectProperty<User> currentUserProperty() {
     return currentUser;
   }
 
   public boolean isManager() {
-    return currentUser != null && "manager".equals(currentUser.type());
+    User user = getCurrentUser();
+    return user != null && "manager".equals(user.type());
   }
 
   public void logout() {
-    currentUser = null;
+    currentUser.set(null);
   }
 }

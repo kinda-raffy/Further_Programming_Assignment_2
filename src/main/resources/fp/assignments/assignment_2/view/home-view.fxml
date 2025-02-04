@@ -29,7 +29,7 @@
         <Tab closable="false" text="All Venues">
             <fx:include source="all-venues-view.fxml" />
         </Tab>
-        <Tab closable="false" text="Employees">
+        <Tab closable="false" text="Staff Directory">
             <fx:include source="all-user-view.fxml" />
         </Tab>
     </TabPane>
