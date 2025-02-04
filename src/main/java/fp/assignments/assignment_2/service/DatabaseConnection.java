@@ -3,9 +3,12 @@ package fp.assignments.assignment_2.service;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.ResultSet;
+import java.sql.PreparedStatement;
 
 public class DatabaseConnection {
-  private static final String DB_URL = "jdbc:sqlite:venue_matchmaker.db";
+  private static final String DB_URL = "jdbc:sqlite:src/main/resources/fp/assignments/assignment_2/data/venue_matchmaker.db";
   private static DatabaseConnection instance;
   private Connection connection;
 
@@ -36,8 +39,7 @@ public class DatabaseConnection {
                 duration INTEGER,
                 event_type TEXT,
                 category TEXT,
-                is_booked BOOLEAN DEFAULT 0,
-                client_id INTEGER
+                client_id TEXT
             )
         """;
 
@@ -47,8 +49,7 @@ public class DatabaseConnection {
                 capacity INTEGER,
                 hire_price REAL,
                 category TEXT,
-                suitability_keywords TEXT,
-                is_available BOOLEAN DEFAULT 1
+                suitability_keywords TEXT
             )
         """;
 
@@ -74,5 +75,28 @@ public class DatabaseConnection {
 
   public Connection getConnection() {
     return connection;
+  }
+
+  public ResultSet executeQuery(String sql) throws SQLException {
+    Connection conn = getConnection();
+    Statement stmt = conn.createStatement();
+    return stmt.executeQuery(sql);
+  }
+
+  public PreparedStatement prepareStatement(String sql) throws SQLException {
+    return connection.prepareStatement(sql);
+  }
+
+  public int executeUpdate(String sql, PreparedStatementSetter setter) throws SQLException {
+    try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+      setter.setValues(pstmt);
+      return pstmt.executeUpdate();
+    }
+  }
+
+  // Functional interface for setting PreparedStatement values
+  @FunctionalInterface
+  public interface PreparedStatementSetter {
+    void setValues(PreparedStatement ps) throws SQLException;
   }
 }

@@ -29,7 +29,6 @@ public class HomeController extends BaseController {
         if (file != null) {
             try {
                 homeService.importVenues(file);
-                refreshAllControllers();
             } catch (Exception e) {
                 showError("Error importing venues", e.getMessage());
             }
@@ -46,7 +45,6 @@ public class HomeController extends BaseController {
         if (file != null) {
             try {
                 homeService.importEvents(file);
-                refreshAllControllers();
             } catch (IOException e) {
                 showError("Error reading file", e.getMessage());
             } catch (DateTimeParseException e) {
@@ -54,19 +52,6 @@ public class HomeController extends BaseController {
                         "Please ensure dates are in format DD-MM-YY and times in HH:MM AM/PM: " + e);
             } catch (SQLException e) {
                 showError("Error saving to database", e.getMessage());
-            }
-        }
-    }
-
-    private void refreshAllControllers() {
-        // Get references to child controllers and refresh their data
-        for (Tab tab : mainTabPane.getTabs()) {
-            if (tab.getContent() != null) {
-                if (tab.getContent().getId().equals("backlogView")) {
-                    ((BacklogController) tab.getContent().getUserData()).loadEvents();
-                } else if (tab.getContent().getId().equals("venuesView")) {
-                    ((AllVenueController) tab.getContent().getUserData()).loadVenues();
-                }
             }
         }
     }

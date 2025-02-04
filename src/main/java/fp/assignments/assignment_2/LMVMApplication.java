@@ -1,5 +1,6 @@
 package fp.assignments.assignment_2;
 
+import fp.assignments.assignment_2.controller.BacklogController;
 import fp.assignments.assignment_2.controller.EventDetailsController;
 import fp.assignments.assignment_2.model.Event;
 import javafx.application.Application;
@@ -17,10 +18,9 @@ public class LMVMApplication extends Application {
     public void start(Stage stage) throws IOException {
         mainContainer = new StackPane();
 
-        Scene scene = new Scene(mainContainer, 1024, 768);
+        Scene scene = new Scene(mainContainer, 1710, 900);
         stage.setTitle("Live Music Venue Matchmaker");
         stage.setScene(scene);
-        stage.setMaximized(true);
         navigateToHome();
         stage.show();
     }

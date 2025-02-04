@@ -75,4 +75,8 @@ public class BacklogController extends BaseController {
       showError("Error", "Could not open event details: " + e.getMessage());
     }
   }
+
+  public void reloadEvents() {
+    loadEvents();
+  }
 }

@@ -17,10 +17,10 @@
     </MenuBar>
 
     <TabPane fx:id="mainTabPane" VBox.vgrow="ALWAYS">
-        <Tab closable="false" text="Backlog">
+        <Tab id="backlogTab" closable="false" text="Backlog">
             <fx:include source="backlog-view.fxml" />
         </Tab>
-        <Tab closable="false" text="Bookings">
+        <Tab id="bookingsTab" closable="false" text="Bookings">
             <fx:include source="bookings-view.fxml" />
         </Tab>
         <Tab closable="false" text="All Venues">

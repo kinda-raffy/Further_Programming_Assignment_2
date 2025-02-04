@@ -11,6 +11,14 @@
         <Insets top="20" right="20" bottom="20" left="20"/>
     </padding>
 
+    <Button text="Back"
+            onAction="#goBack"
+            style="-fx-background-color: #e0e0e0;">
+        <VBox.margin>
+            <Insets bottom="-10"/>
+        </VBox.margin>
+    </Button>
+
     <Label fx:id="titleLabel" style="-fx-font-size: 24; -fx-font-weight: bold"/>
 
     <GridPane hgap="10" vgap="8">
