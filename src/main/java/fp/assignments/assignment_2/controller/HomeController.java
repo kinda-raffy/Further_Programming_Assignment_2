@@ -1,6 +1,8 @@
 package fp.assignments.assignment_2.controller;
 
+import fp.assignments.assignment_2.LMVMApplication;
 import fp.assignments.assignment_2.service.HomeService;
+import fp.assignments.assignment_2.service.SessionManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.FileChooser;
@@ -66,5 +68,15 @@ public class HomeController extends BaseController {
     @FXML
     private void handleExit() {
         System.exit(0);
+    }
+
+    @FXML
+    private void handleLogout() {
+        SessionManager.getInstance().logout();
+        try {
+            LMVMApplication.navigateToLogin();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

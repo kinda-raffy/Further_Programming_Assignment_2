@@ -5,5 +5,23 @@
 <?import javafx.geometry.Insets?>
 
 <VBox xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="fp.assignments.assignment_2.controller.LoginController" spacing="10">
+      fx:controller="fp.assignments.assignment_2.controller.LoginController"
+      spacing="20" alignment="CENTER">
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <Label text="Live Music Venue Matchmaker" style="-fx-font-size: 24; -fx-font-weight: bold"/>
+
+    <VBox spacing="10" maxWidth="300">
+        <Label text="Username:"/>
+        <TextField fx:id="usernameField"/>
+
+        <Label text="Password:"/>
+        <PasswordField fx:id="passwordField"/>
+
+        <Label fx:id="errorLabel" textFill="red"/>
+
+        <Button text="Login" onAction="#handleLogin" defaultButton="true" maxWidth="Infinity"/>
+    </VBox>
 </VBox>

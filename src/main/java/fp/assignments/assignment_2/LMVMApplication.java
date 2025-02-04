@@ -19,12 +19,17 @@ public class LMVMApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         mainContainer = new StackPane();
-
         Scene scene = new Scene(mainContainer, 1710, 900);
         stage.setTitle("Live Music Venue Matchmaker");
         stage.setScene(scene);
-        navigateToHome();
+        navigateToLogin();
         stage.show();
+    }
+
+    public static void navigateToLogin() throws IOException {
+        FXMLLoader loader = new FXMLLoader(LMVMApplication.class.getResource("view/login-view.fxml"));
+        mainContainer.getChildren().clear();
+        mainContainer.getChildren().add(loader.load());
     }
 
     public static void navigateToHome() throws IOException {

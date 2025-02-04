@@ -14,6 +14,9 @@
             <SeparatorMenuItem />
             <MenuItem onAction="#handleExit" text="Exit" />
         </Menu>
+        <Menu text="Account">
+            <MenuItem onAction="#handleLogout" text="Logout" />
+        </Menu>
     </MenuBar>
 
     <TabPane fx:id="mainTabPane" VBox.vgrow="ALWAYS">
