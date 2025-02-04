@@ -37,6 +37,7 @@
 
     <HBox spacing="10">
         <Button text="Edit" onAction="#handleEdit" style="-fx-background-color: #e0e0e0;"/>
-        <Button text="Delete" onAction="#handleDelete" style="-fx-background-color: #ff4444; -fx-text-fill: white;"/>
+        <Button fx:id="deleteButton" text="Delete" onAction="#handleDelete"
+                style="-fx-background-color: #ff4444; -fx-text-fill: white;"/>
     </HBox>
 </VBox>

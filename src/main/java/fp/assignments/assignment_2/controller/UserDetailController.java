@@ -3,6 +3,7 @@ package fp.assignments.assignment_2.controller;
 import fp.assignments.assignment_2.LMVMApplication;
 import fp.assignments.assignment_2.model.User;
 import fp.assignments.assignment_2.service.DatabaseConnection;
+import fp.assignments.assignment_2.service.SessionManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -24,6 +25,8 @@ public class UserDetailController extends BaseController {
   private Label lastNameLabel;
   @FXML
   private Label typeLabel;
+  @FXML
+  private Button deleteButton;
 
   private User user;
   private Runnable onUserDeleted;
@@ -32,6 +35,7 @@ public class UserDetailController extends BaseController {
   public void setUser(User user) {
     this.user = user;
     updateLabels();
+    updateDeleteButton();
   }
 
   public void setOnUserDeleted(Runnable callback) {
@@ -48,6 +52,11 @@ public class UserDetailController extends BaseController {
     firstNameLabel.setText(user.firstName());
     lastNameLabel.setText(user.lastName());
     typeLabel.setText(user.type());
+  }
+
+  private void updateDeleteButton() {
+    User currentUser = SessionManager.getInstance().getCurrentUser();
+    deleteButton.setDisable(currentUser != null && currentUser.id().equals(user.id()));
   }
 
   @FXML
