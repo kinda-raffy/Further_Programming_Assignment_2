@@ -1,6 +1,7 @@
 package fp.assignments.assignment_2.controller;
 
 import fp.assignments.assignment_2.model.Venue;
+import fp.assignments.assignment_2.service.BookingService;
 import fp.assignments.assignment_2.service.HomeService;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -10,6 +11,13 @@ import javafx.beans.property.SimpleDoubleProperty;
 import java.sql.SQLException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.Arrays;
+import java.util.List;
 
 public class AllVenueController extends BaseController {
   @FXML
@@ -18,8 +26,19 @@ public class AllVenueController extends BaseController {
   private TextField nameSearchField;
   @FXML
   private TextField categorySearchField;
+  @FXML
+  private TextField capacitySearchField;
+  @FXML
+  private TextField keywordsSearchField;
+  @FXML
+  private DatePicker availabilityDatePicker;
+  @FXML
+  private TextField startTimeField;
+  @FXML
+  private TextField endTimeField;
 
   private static HomeService homeService = new HomeService();
+  private static BookingService bookingService = BookingService.getInstance();
   private static ObservableList<Venue> venuesList = FXCollections.observableArrayList();
   private static ObservableList<Venue> filteredVenuesList = FXCollections.observableArrayList();
 
@@ -34,24 +53,24 @@ public class AllVenueController extends BaseController {
   private void setupSearchListeners() {
     nameSearchField.textProperty().addListener((observable, oldValue, newValue) -> filterVenues());
     categorySearchField.textProperty().addListener((observable, oldValue, newValue) -> filterVenues());
+    capacitySearchField.textProperty().addListener((observable, oldValue, newValue) -> filterVenues());
+    keywordsSearchField.textProperty().addListener((observable, oldValue, newValue) -> filterVenues());
+    availabilityDatePicker.valueProperty().addListener((observable, oldValue, newValue) -> filterVenues());
+    startTimeField.textProperty().addListener((observable, oldValue, newValue) -> filterVenues());
+    endTimeField.textProperty().addListener((observable, oldValue, newValue) -> filterVenues());
   }
 
   private void filterVenues() {
     String nameQuery = nameSearchField.getText().toLowerCase();
     String categoryQuery = categorySearchField.getText().toLowerCase();
+    String capacityQuery = capacitySearchField.getText();
+    String keywordsQuery = keywordsSearchField.getText();
 
     filteredVenuesList.clear();
 
-    if (nameQuery.isEmpty() && categoryQuery.isEmpty()) {
-      filteredVenuesList.addAll(venuesList);
-    } else {
-      for (Venue venue : venuesList) {
-        boolean nameMatch = nameQuery.isEmpty() ||
-            venue.nameId().toLowerCase().contains(nameQuery);
-        boolean categoryMatch = categoryQuery.isEmpty() ||
-            venue.category().toLowerCase().contains(categoryQuery);
-
-        if (nameMatch && categoryMatch) {
+    for (Venue venue : venuesList) {
+      if (matchesAllCriteria(venue, nameQuery, categoryQuery, capacityQuery, keywordsQuery)) {
+        if (isAvailableForSelectedTime(venue)) {
           filteredVenuesList.add(venue);
         }
       }
@@ -59,6 +78,59 @@ public class AllVenueController extends BaseController {
 
     if (filteredVenuesList.isEmpty()) {
       venuesTable.setPlaceholder(new Label("No venues found"));
+    }
+  }
+
+  private boolean matchesAllCriteria(Venue venue, String nameQuery, String categoryQuery,
+      String capacityQuery, String keywordsQuery) {
+    boolean nameMatch = nameQuery.isEmpty() ||
+        venue.nameId().toLowerCase().contains(nameQuery);
+    boolean categoryMatch = categoryQuery.isEmpty() ||
+        venue.category().toLowerCase().contains(categoryQuery);
+    boolean capacityMatch = capacityQuery.isEmpty() ||
+        String.valueOf(venue.capacity()).startsWith(capacityQuery);
+    boolean keywordsMatch = keywordsQuery.isEmpty() || matchesKeywords(venue, keywordsQuery);
+
+    return nameMatch && categoryMatch && capacityMatch && keywordsMatch;
+  }
+
+  private boolean matchesKeywords(Venue venue, String keywordsQuery) {
+    List<String> searchKeywords = Arrays.asList(keywordsQuery.split("\\+"))
+        .stream()
+        .map(String::trim)
+        .filter(k -> !k.isEmpty())
+        .toList();
+
+    return searchKeywords.isEmpty() ||
+        searchKeywords.stream().allMatch(keyword -> venue.suitabilityKeywords().stream()
+            .anyMatch(suitability -> suitability.toLowerCase()
+                .contains(keyword.toLowerCase())));
+  }
+
+  private boolean isAvailableForSelectedTime(Venue venue) {
+    LocalDate selectedDate = availabilityDatePicker.getValue();
+    String startTimeStr = startTimeField.getText();
+    String endTimeStr = endTimeField.getText();
+
+    // If no date/time criteria specified, consider venue available
+    if (selectedDate == null || startTimeStr.isEmpty() || endTimeStr.isEmpty()) {
+      return true;
+    }
+
+    try {
+      LocalTime startTime = LocalTime.parse(startTimeStr, DateTimeFormatter.ofPattern("HH:mm"));
+      LocalTime endTime = LocalTime.parse(endTimeStr, DateTimeFormatter.ofPattern("HH:mm"));
+
+      LocalDateTime startDateTime = LocalDateTime.of(selectedDate, startTime);
+      LocalDateTime endDateTime = LocalDateTime.of(selectedDate, endTime);
+
+      return bookingService.isVenueAvailable(venue.nameId(), startDateTime, endDateTime);
+    } catch (DateTimeParseException e) {
+      // If time format is invalid, ignore availability filter
+      return true;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return true;
     }
   }
 
