@@ -11,19 +11,52 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 
 public class BookingService {
+  private static BookingService instance;
   private final DatabaseConnection dbConnection;
-  private final ObservableList<Booking> bookings = FXCollections.observableArrayList();
+  private final ObservableList<Booking> bookings;
 
-  public BookingService() {
+  private BookingService() {
     this.dbConnection = DatabaseConnection.getInstance();
+    this.bookings = FXCollections.observableArrayList();
+    loadBookings();
+  }
+
+  public static BookingService getInstance() {
+    if (instance == null) {
+      instance = new BookingService();
+    }
+    return instance;
   }
 
   public ObservableList<Booking> getBookings() {
     return bookings;
   }
 
+  private void loadBookings() {
+    try {
+      String sql = "SELECT b.*, e.duration FROM bookings b " +
+          "JOIN events e ON b.event_id = e.id";
+      ResultSet rs = dbConnection.executeQuery(sql);
+      bookings.clear();
+      while (rs.next()) {
+        bookings.add(new Booking(
+            rs.getInt("id"),
+            rs.getInt("event_id"),
+            rs.getString("venue_name"),
+            LocalDateTime.parse(rs.getString("booking_date_time")),
+            LocalDateTime.parse(rs.getString("booking_date_time")).plusHours(rs.getInt("duration")),
+            rs.getDouble("total_price"),
+            rs.getDouble("commission")));
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
   public Booking getBookingForEvent(Integer eventId) throws SQLException {
-    String sql = "SELECT * FROM bookings WHERE event_id = ?";
+    String sql = "SELECT b.*, e.duration FROM bookings b " +
+        "JOIN events e ON b.event_id = e.id " +
+        "WHERE b.event_id = ?";
     try (var pstmt = dbConnection.prepareStatement(sql)) {
       pstmt.setInt(1, eventId);
       ResultSet rs = pstmt.executeQuery();
@@ -33,7 +66,7 @@ public class BookingService {
             rs.getInt("event_id"),
             rs.getString("venue_name"),
             LocalDateTime.parse(rs.getString("booking_date_time")),
-            LocalDateTime.parse(rs.getString("booking_date_time")).plusHours(2), // Assuming 2-hour duration
+            LocalDateTime.parse(rs.getString("booking_date_time")).plusHours(rs.getInt("duration")),
             rs.getDouble("total_price"),
             rs.getDouble("commission"));
       }
@@ -61,28 +94,26 @@ public class BookingService {
     }
   }
 
-  public void createOrUpdateBooking(Event event, Venue venue, LocalDateTime bookingDateTime) throws SQLException {
-    String deleteSql = "DELETE FROM bookings WHERE event_id = ?";
-    dbConnection.executeUpdate(deleteSql, pstmt -> pstmt.setInt(1, event.id()));
-
+  public void createBooking(Event event, Venue venue, LocalDateTime bookingDateTime) throws SQLException {
     double totalPrice = venue.hirePricePerHour() * event.durationHours();
     double commission = calculateCommission(totalPrice, event.clientName());
 
-    String insertSql = "INSERT INTO bookings (event_id, venue_name, booking_date_time, total_price, commission) " +
-        "VALUES (?, ?, ?, ?, ?)";
-
-    dbConnection.executeUpdate(insertSql, pstmt -> {
+    String sql = "INSERT INTO bookings (event_id, venue_name, booking_date_time, total_price, commission) VALUES (?, ?, ?, ?, ?)";
+    dbConnection.executeUpdate(sql, pstmt -> {
       pstmt.setInt(1, event.id());
       pstmt.setString(2, venue.nameId());
       pstmt.setString(3, bookingDateTime.toString());
       pstmt.setDouble(4, totalPrice);
       pstmt.setDouble(5, commission);
     });
+
+    loadBookings(); // Refresh the observable list
   }
 
   public void deleteBooking(Integer eventId) throws SQLException {
     String sql = "DELETE FROM bookings WHERE event_id = ?";
     dbConnection.executeUpdate(sql, pstmt -> pstmt.setInt(1, eventId));
+    loadBookings(); // Refresh the observable list
   }
 
   public boolean hasMultipleBookings(String clientName) throws SQLException {

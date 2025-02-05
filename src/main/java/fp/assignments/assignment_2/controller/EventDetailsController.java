@@ -49,7 +49,7 @@ public class EventDetailsController extends BaseController {
   @FXML
   private Button deleteBookingButton;
   private Event currentEvent;
-  private final BookingService bookingService = new BookingService();
+  private final BookingService bookingService = BookingService.getInstance();
 
   public void setEvent(Event event) {
     this.currentEvent = event;
@@ -124,7 +124,7 @@ public class EventDetailsController extends BaseController {
       bookingService.deleteBooking(currentEvent.id());
       refreshBookingDetails();
     } catch (SQLException e) {
-      e.printStackTrace();
+      showError("Error", "Could not delete booking: " + e.getMessage());
     }
   }
 

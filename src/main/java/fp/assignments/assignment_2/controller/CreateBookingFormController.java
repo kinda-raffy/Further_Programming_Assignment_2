@@ -31,7 +31,7 @@ public class CreateBookingFormController extends BaseController {
   private Label commissionLabel;
 
   private Event event;
-  private final BookingService bookingService = new BookingService();
+  private final BookingService bookingService = BookingService.getInstance();
   private final HomeService homeService = new HomeService();
   private Consumer<Void> onBookingComplete;
 
@@ -73,26 +73,14 @@ public class CreateBookingFormController extends BaseController {
 
   @FXML
   private void handleCreateBooking() {
-    if (!validateForm()) {
-      return;
-    }
-
-    Venue selectedVenue = venueComboBox.getValue();
-
-    try {
-      if (!bookingService.isVenueAvailable(selectedVenue.nameId(), event.eventDateTime(),
-          event.eventDateTime().plusHours(event.durationHours()))) {
-        errorLabel.setText("Venue is already booked for this time slot");
-        return;
+    if (validateForm()) {
+      try {
+        Venue selectedVenue = venueComboBox.getValue();
+        bookingService.createBooking(event, selectedVenue, event.eventDateTime());
+        closeDialog();
+      } catch (SQLException e) {
+        errorLabel.setText("Error creating booking: " + e.getMessage());
       }
-
-      bookingService.createOrUpdateBooking(event, selectedVenue, event.eventDateTime());
-      if (onBookingComplete != null) {
-        onBookingComplete.accept(null);
-      }
-      closeDialog();
-    } catch (SQLException e) {
-      errorLabel.setText("Error creating booking: " + e.getMessage());
     }
   }
 
