@@ -2,6 +2,7 @@ package fp.assignments.assignment_2.controller;
 
 import fp.assignments.assignment_2.model.Booking;
 import fp.assignments.assignment_2.model.Event;
+import fp.assignments.assignment_2.model.Venue;
 import fp.assignments.assignment_2.service.HomeService;
 import fp.assignments.assignment_2.service.BookingService;
 import fp.assignments.assignment_2.LMVMApplication;
@@ -14,24 +15,44 @@ import java.io.IOException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ListChangeListener;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class BacklogController extends BaseController {
   @FXML
   private TableView<Event> eventsTable;
+  @FXML
+  private TableView<VenueRecommendation> recommendedVenuesTable;
+  @FXML
+  private CheckBox availableCheck;
+  @FXML
+  private CheckBox eventTypeCheck;
+  @FXML
+  private CheckBox venueCategoryCheck;
+  @FXML
+  private CheckBox capacityCheck;
 
   private static HomeService homeService = new HomeService();
   private static BookingService bookingService = BookingService.getInstance();
   private static ObservableList<Event> eventsList = FXCollections.observableArrayList();
+  private Event selectedEvent;
 
   @FXML
   public void initialize() {
     eventsTable.setItems(eventsList);
     setupEventsTable();
+    setupRecommendedVenuesTable();
     loadEvents();
 
     bookingService.getBookings().addListener((ListChangeListener<Booking>) c -> {
       loadEvents();
     });
+
+    // Add listeners for criteria changes
+    availableCheck.selectedProperty().addListener((obs, old, newVal) -> updateRecommendations());
+    eventTypeCheck.selectedProperty().addListener((obs, old, newVal) -> updateRecommendations());
+    venueCategoryCheck.selectedProperty().addListener((obs, old, newVal) -> updateRecommendations());
+    capacityCheck.selectedProperty().addListener((obs, old, newVal) -> updateRecommendations());
   }
 
   private void setupEventsTable() {
@@ -58,11 +79,62 @@ public class BacklogController extends BaseController {
     eventsTable.setRowFactory(tv -> {
       TableRow<Event> row = new TableRow<>();
       row.setOnMouseClicked(event -> {
-        if (event.getClickCount() == 2 && !row.isEmpty()) {
-          showEventDetails(row.getItem());
+        if (!row.isEmpty()) {
+          selectedEvent = row.getItem();
+          if (event.getClickCount() == 2) {
+            showEventDetails(selectedEvent);
+          } else if (event.getClickCount() == 1) {
+            updateRecommendations();
+          }
         }
       });
       return row;
+    });
+  }
+
+  private void setupRecommendedVenuesTable() {
+    TableColumn<VenueRecommendation, String> nameCol = new TableColumn<>("Venue Name");
+    TableColumn<VenueRecommendation, String> scoreCol = new TableColumn<>("Compatibility Score");
+
+    nameCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().venue().nameId()));
+    scoreCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().compatibilityScore() + "%"));
+
+    nameCol.prefWidthProperty().bind(recommendedVenuesTable.widthProperty().multiply(0.7));
+    scoreCol.prefWidthProperty().bind(recommendedVenuesTable.widthProperty().multiply(0.3));
+
+    recommendedVenuesTable.getColumns().addAll(nameCol, scoreCol);
+
+    // Add double-click handler
+    recommendedVenuesTable.setRowFactory(tv -> {
+      TableRow<VenueRecommendation> row = new TableRow<>();
+      row.setOnMouseClicked(event -> {
+        if (!row.isEmpty() && event.getClickCount() == 2) {
+          handleVenueSelection(row.getItem());
+        }
+      });
+      return row;
+    });
+  }
+
+  private void handleVenueSelection(VenueRecommendation recommendation) {
+    Alert confirmDialog = new Alert(Alert.AlertType.CONFIRMATION);
+    confirmDialog.setTitle("Confirm Booking");
+    confirmDialog.setHeaderText("Create Booking");
+    confirmDialog.setContentText(String.format("Are you sure you want to book %s for the event '%s'?",
+        recommendation.venue().nameId(),
+        selectedEvent.title()));
+
+    confirmDialog.showAndWait().ifPresent(response -> {
+      if (response == ButtonType.OK) {
+        try {
+          bookingService.createBooking(selectedEvent, recommendation.venue(), selectedEvent.eventDateTime());
+          selectedEvent = null;
+          recommendedVenuesTable.getItems().clear();
+          eventsTable.getSelectionModel().clearSelection();
+        } catch (SQLException e) {
+          showError("Error", "Could not create booking: " + e.getMessage());
+        }
+      }
     });
   }
 
@@ -98,5 +170,67 @@ public class BacklogController extends BaseController {
 
   public static void reloadEvents() {
     loadEvents();
+  }
+
+  private void updateRecommendations() {
+    if (selectedEvent == null)
+      return;
+
+    try {
+      List<Venue> allVenues = homeService.loadVenues();
+      List<VenueRecommendation> recommendations = allVenues.stream()
+          .map(venue -> new VenueRecommendation(venue, calculateCompatibility(venue)))
+          .filter(recommendation -> recommendation.compatibilityScore() > 0)
+          .sorted((a, b) -> b.compatibilityScore() - a.compatibilityScore())
+          .collect(Collectors.toList());
+
+      recommendedVenuesTable.setItems(FXCollections.observableArrayList(recommendations));
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
+  private int calculateCompatibility(Venue venue) {
+    int enabledCriteria = 0;
+    int metCriteria = 0;
+
+    if (availableCheck.isSelected()) {
+      enabledCriteria++;
+      try {
+        if (bookingService.isVenueAvailable(venue.nameId(),
+            selectedEvent.eventDateTime(),
+            selectedEvent.eventDateTime().plusHours(selectedEvent.durationHours()))) {
+          metCriteria++;
+        }
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    }
+
+    if (eventTypeCheck.isSelected()) {
+      enabledCriteria++;
+      if (venue.isSuitable(selectedEvent.eventType())) {
+        metCriteria++;
+      }
+    }
+
+    if (venueCategoryCheck.isSelected()) {
+      enabledCriteria++;
+      if (venue.category().equals(selectedEvent.category())) {
+        metCriteria++;
+      }
+    }
+
+    if (capacityCheck.isSelected()) {
+      enabledCriteria++;
+      if (venue.capacity() >= selectedEvent.expectedAttendance()) {
+        metCriteria++;
+      }
+    }
+
+    return enabledCriteria > 0 ? (metCriteria * 100) / enabledCriteria : 0;
+  }
+
+  private record VenueRecommendation(Venue venue, int compatibilityScore) {
   }
 }
