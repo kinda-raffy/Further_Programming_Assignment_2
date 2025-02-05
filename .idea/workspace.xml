@@ -5,7 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a972194c-40e2-4ece-9f1b-a834a8007c96" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/BookingsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/BookingsController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/fp/assignments/assignment_2/view/bookings-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fp/assignments/assignment_2/view/bookings-view.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
