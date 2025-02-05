@@ -91,20 +91,26 @@ public class EventDetailsController extends BaseController {
       Booking booking = bookingService.getBookingForEvent(currentEvent.id());
       if (booking != null) {
         noBookingLabel.setVisible(false);
+        noBookingLabel.setManaged(false);
+
+        bookingDetailsGrid.setManaged(true);
         bookingDetailsGrid.setVisible(true);
+
         deleteBookingButton.setVisible(true);
 
-        // Format the date and time
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
-        // Update booking details
         bookingVenueLabel.setText(booking.venueName());
         bookingDateTimeLabel.setText(booking.startDate().format(formatter));
         bookingTotalPriceLabel.setText(String.format("$%.2f", booking.totalPrice()));
         bookingCommissionLabel.setText(String.format("$%.2f", booking.commission()));
       } else {
+        noBookingLabel.setManaged(true);
         noBookingLabel.setVisible(true);
+
         bookingDetailsGrid.setVisible(false);
+        bookingDetailsGrid.setManaged(false);
+
         deleteBookingButton.setVisible(false);
       }
     } catch (SQLException e) {

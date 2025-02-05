@@ -1,9 +1,9 @@
 package fp.assignments.assignment_2;
 
-import fp.assignments.assignment_2.controller.BacklogController;
 import fp.assignments.assignment_2.controller.EventDetailsController;
 import fp.assignments.assignment_2.model.Event;
 import fp.assignments.assignment_2.model.User;
+import fp.assignments.assignment_2.service.SessionManager;
 import fp.assignments.assignment_2.controller.UserDetailController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -15,6 +15,7 @@ import java.io.IOException;
 
 public class LMVMApplication extends Application {
     private static StackPane mainContainer;
+    private static boolean devMode = false;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -22,7 +23,15 @@ public class LMVMApplication extends Application {
         Scene scene = new Scene(mainContainer, 1710, 900);
         stage.setTitle("Live Music Venue Matchmaker");
         stage.setScene(scene);
-        navigateToLogin();
+
+        if (devMode) {
+            User devUser = new User(5, "r", "r", "r", "r", "manager");
+            SessionManager.getInstance().setCurrentUser(devUser);
+            navigateToHome();
+        } else {
+            navigateToLogin();
+        }
+
         stage.show();
     }
 
@@ -75,7 +84,12 @@ public class LMVMApplication extends Application {
         }
     }
 
+    public static void setDevMode(boolean enabled) {
+        devMode = enabled;
+    }
+
     public static void main(String[] args) {
+        setDevMode(true);
         launch();
     }
 }

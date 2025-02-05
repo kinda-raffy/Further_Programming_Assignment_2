@@ -46,7 +46,7 @@
 
         <Label text="This event has not been assigned to a booking." fx:id="noBookingLabel"/>
 
-        <GridPane fx:id="bookingDetailsGrid" hgap="10" vgap="8" visible="false">
+        <GridPane fx:id="bookingDetailsGrid" vgap="8" visible="false">
             <Label text="Venue:" style="-fx-font-weight: bold" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
             <Label fx:id="bookingVenueLabel" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
 

@@ -104,7 +104,6 @@ public class BookingService {
   }
 
   public double calculateCommission(double totalPrice, String clientName) throws SQLException {
-    System.out.println("Client has multiple bookings? " + hasMultipleBookings(clientName));
     double commissionRate = hasMultipleBookings(clientName) ? 0.09 : 0.10;
     return totalPrice * commissionRate;
   }
