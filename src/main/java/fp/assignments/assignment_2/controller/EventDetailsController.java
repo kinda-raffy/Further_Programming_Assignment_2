@@ -122,7 +122,7 @@ public class EventDetailsController extends BaseController {
   private void handleDeleteBooking() {
     try {
       bookingService.deleteBooking(currentEvent.id());
-      refreshBookingDetails();
+      LMVMApplication.goBack();
     } catch (SQLException e) {
       showError("Error", "Could not delete booking: " + e.getMessage());
     }

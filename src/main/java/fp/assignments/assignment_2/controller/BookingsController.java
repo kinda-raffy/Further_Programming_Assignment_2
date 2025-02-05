@@ -1,11 +1,13 @@
 package fp.assignments.assignment_2.controller;
 
+import fp.assignments.assignment_2.LMVMApplication;
 import fp.assignments.assignment_2.model.Booking;
 import fp.assignments.assignment_2.model.Event;
 import fp.assignments.assignment_2.service.BookingService;
 import fp.assignments.assignment_2.service.EventService;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseButton;
 import javafx.scene.chart.*;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -14,6 +16,7 @@ import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.io.IOException;
 
 public class BookingsController extends BaseController {
   @FXML
@@ -41,7 +44,6 @@ public class BookingsController extends BaseController {
     setupCommissionTable();
     bookingsTable.setItems(bookingService.getBookings());
 
-    // Add listener to bookings list to update charts when it changes
     bookingService.getBookings().addListener((javafx.collections.ListChangeListener<Booking>) c -> {
       updateCharts();
     });
@@ -50,21 +52,18 @@ public class BookingsController extends BaseController {
   }
 
   private void setupBookingsTable() {
-    // Create columns
     TableColumn<Booking, String> clientCol = new TableColumn<>("Client");
     TableColumn<Booking, String> titleCol = new TableColumn<>("Event Title");
     TableColumn<Booking, String> venueCol = new TableColumn<>("Venue Name");
     TableColumn<Booking, String> dateCol = new TableColumn<>("Date");
     TableColumn<Booking, String> commissionCol = new TableColumn<>("Commission");
 
-    // Set column widths
     clientCol.prefWidthProperty().bind(bookingsTable.widthProperty().multiply(0.2));
     titleCol.prefWidthProperty().bind(bookingsTable.widthProperty().multiply(0.3));
     venueCol.prefWidthProperty().bind(bookingsTable.widthProperty().multiply(0.2));
     dateCol.prefWidthProperty().bind(bookingsTable.widthProperty().multiply(0.15));
     commissionCol.prefWidthProperty().bind(bookingsTable.widthProperty().multiply(0.15));
 
-    // Set cell value factories
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yy");
 
     clientCol.setCellValueFactory(data -> {
@@ -92,9 +91,25 @@ public class BookingsController extends BaseController {
     commissionCol
         .setCellValueFactory(data -> new SimpleStringProperty(String.format("$%.2f", data.getValue().commission())));
 
-    // Add columns to table
     bookingsTable.getColumns().addAll(clientCol, titleCol, venueCol, dateCol, commissionCol);
     bookingsTable.setItems(bookingsList);
+
+    bookingsTable.setRowFactory(tv -> {
+      TableRow<Booking> row = new TableRow<>();
+      row.setOnMouseClicked(action -> {
+        if (action.getButton() == MouseButton.PRIMARY && action.getClickCount() == 2 && !row.isEmpty()) {
+          try {
+            Event event = eventService.getEventById(row.getItem().eventId());
+            if (event != null) {
+              LMVMApplication.navigateToEventDetails(event);
+            }
+          } catch (SQLException | IOException e) {
+            showError("Error", "Could not open event details: " + e.getMessage());
+          }
+        }
+      });
+      return row;
+    });
   }
 
   private void setupCommissionTable() {
@@ -102,7 +117,6 @@ public class BookingsController extends BaseController {
     totalCommissionColumn
         .setCellValueFactory(data -> new SimpleStringProperty(String.format("$%.2f", data.getValue().getValue())));
 
-    // Set column widths
     clientColumn.prefWidthProperty().bind(commissionTable.widthProperty().multiply(0.75));
     totalCommissionColumn.prefWidthProperty().bind(commissionTable.widthProperty().multiply(0.25));
   }
