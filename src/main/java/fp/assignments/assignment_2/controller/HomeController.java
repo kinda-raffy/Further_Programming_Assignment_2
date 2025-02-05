@@ -61,16 +61,6 @@ public class HomeController extends BaseController {
     }
 
     @FXML
-    private void handleExportData() {
-        // Export data logic
-    }
-
-    @FXML
-    private void handleExit() {
-        System.exit(0);
-    }
-
-    @FXML
     private void handleLogout() {
         SessionManager.getInstance().logout();
         try {

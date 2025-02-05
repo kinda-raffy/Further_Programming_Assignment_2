@@ -95,6 +95,8 @@ public class BookingService {
   }
 
   public void createBooking(Event event, Venue venue, LocalDateTime bookingDateTime) throws SQLException {
+    deleteBooking(event.id());
+
     double totalPrice = venue.hirePricePerHour() * event.durationHours();
     double commission = calculateCommission(totalPrice, event.clientName());
 
@@ -107,7 +109,7 @@ public class BookingService {
       pstmt.setDouble(5, commission);
     });
 
-    loadBookings(); // Refresh the observable list
+    loadBookings();
   }
 
   public void deleteBooking(Integer eventId) throws SQLException {

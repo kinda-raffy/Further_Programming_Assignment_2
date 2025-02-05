@@ -16,6 +16,7 @@ import javafx.scene.layout.VBox;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
+import javafx.collections.ListChangeListener;
 
 public class EventDetailsController extends BaseController {
   @FXML
@@ -50,6 +51,15 @@ public class EventDetailsController extends BaseController {
   private Button deleteBookingButton;
   private Event currentEvent;
   private final BookingService bookingService = BookingService.getInstance();
+
+  @FXML
+  public void initialize() {
+    bookingService.getBookings().addListener((ListChangeListener<Booking>) c -> {
+      if (currentEvent != null) {
+        refreshBookingDetails();
+      }
+    });
+  }
 
   public void setEvent(Event event) {
     this.currentEvent = event;

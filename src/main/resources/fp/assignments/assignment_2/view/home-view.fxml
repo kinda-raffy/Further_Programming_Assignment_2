@@ -7,12 +7,11 @@
 <VBox xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fp.assignments.assignment_2.controller.HomeController">
 
     <MenuBar>
-        <Menu text="File">
-            <MenuItem onAction="#handleImportVenues" text="Import Venues" />
-            <MenuItem onAction="#handleImportEvents" text="Import Events" />
-            <MenuItem onAction="#handleExportData" text="Export Data" />
-            <SeparatorMenuItem />
-            <MenuItem onAction="#handleExit" text="Exit" />
+        <Menu text="Import">
+            <MenuItem onAction="#handleImportVenues" text="Venues" />
+            <MenuItem onAction="#handleImportEvents" text="Events" />
+        </Menu>
+            <Menu text="Backup">
         </Menu>
         <Menu text="Account">
             <MenuItem onAction="#handleLogout" text="Logout" />

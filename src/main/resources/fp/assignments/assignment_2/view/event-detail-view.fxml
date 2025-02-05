@@ -61,7 +61,7 @@
         </GridPane>
 
         <HBox spacing="10">
-            <Button text="Re/assign Booking"
+            <Button text="Re-/book"
                     style="-fx-background-color: #e0e0e0;"
                     onAction="#handleReassignBooking"/>
             <Button fx:id="deleteBookingButton"
