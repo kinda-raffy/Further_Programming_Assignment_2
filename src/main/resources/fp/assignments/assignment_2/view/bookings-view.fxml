@@ -3,6 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.*?>
 
 <VBox xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="fp.assignments.assignment_2.controller.BookingsController"
@@ -10,6 +11,51 @@
     <padding>
         <Insets top="20" right="20" bottom="20" left="20"/>
     </padding>
+
+    <Label text="Summary" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+
+    <GridPane hgap="20" vgap="10">
+        <columnConstraints>
+            <ColumnConstraints percentWidth="50"/>
+            <ColumnConstraints percentWidth="50"/>
+        </columnConstraints>
+
+        <!-- Venue Utilisation -->
+        <VBox GridPane.columnIndex="0" GridPane.rowIndex="0">
+            <Label text="Venue Utilisation" style="-fx-font-weight: bold"/>
+            <PieChart fx:id="venueUtilisationChart" legendVisible="true"/>
+        </VBox>
+
+        <!-- Income-Commission/Order -->
+        <VBox GridPane.columnIndex="0" GridPane.rowIndex="1">
+            <Label text="Income-Commission / Order" style="-fx-font-weight: bold"/>
+            <BarChart fx:id="incomeChart">
+                <xAxis>
+                    <CategoryAxis label="Events"/>
+                </xAxis>
+                <yAxis>
+                    <NumberAxis label="Amount ($)"/>
+                </yAxis>
+            </BarChart>
+        </VBox>
+
+        <!-- Total Commission/Client -->
+        <VBox GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.rowSpan="2">
+            <Label text="Total Commission / Client" style="-fx-font-weight: bold"/>
+            <TableView fx:id="commissionTable" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="clientColumn" text="Client"/>
+                    <TableColumn fx:id="totalCommissionColumn" text="Total Commission"/>
+                </columns>
+                <placeholder>
+                    <Label text="Load in clients or add more bookings to view commission summaries"/>
+                </placeholder>
+            </TableView>
+            <Label fx:id="totalCommissionLabel"
+                   style="-fx-font-weight: bold; -fx-font-size: 16px; -fx-padding: 10 0 0 0;"
+                   text="Total Commission: $xxx,xxx"/>
+        </VBox>
+    </GridPane>
 
     <Label text="Order Details" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
 

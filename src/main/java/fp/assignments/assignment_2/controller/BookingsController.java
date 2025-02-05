@@ -6,15 +6,30 @@ import fp.assignments.assignment_2.service.BookingService;
 import fp.assignments.assignment_2.service.EventService;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.chart.*;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class BookingsController extends BaseController {
   @FXML
   private TableView<Booking> bookingsTable;
+  @FXML
+  private PieChart venueUtilisationChart;
+  @FXML
+  private BarChart<String, Number> incomeChart;
+  @FXML
+  private TableView<Map.Entry<String, Double>> commissionTable;
+  @FXML
+  private TableColumn<Map.Entry<String, Double>, String> clientColumn;
+  @FXML
+  private TableColumn<Map.Entry<String, Double>, String> totalCommissionColumn;
+  @FXML
+  private Label totalCommissionLabel;
 
   private final BookingService bookingService = BookingService.getInstance();
   private final EventService eventService = new EventService();
@@ -23,7 +38,15 @@ public class BookingsController extends BaseController {
   @FXML
   public void initialize() {
     setupBookingsTable();
+    setupCommissionTable();
     bookingsTable.setItems(bookingService.getBookings());
+
+    // Add listener to bookings list to update charts when it changes
+    bookingService.getBookings().addListener((javafx.collections.ListChangeListener<Booking>) c -> {
+      updateCharts();
+    });
+
+    updateCharts();
   }
 
   private void setupBookingsTable() {
@@ -72,6 +95,73 @@ public class BookingsController extends BaseController {
     // Add columns to table
     bookingsTable.getColumns().addAll(clientCol, titleCol, venueCol, dateCol, commissionCol);
     bookingsTable.setItems(bookingsList);
+  }
+
+  private void setupCommissionTable() {
+    clientColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getKey()));
+    totalCommissionColumn
+        .setCellValueFactory(data -> new SimpleStringProperty(String.format("$%.2f", data.getValue().getValue())));
+
+    // Set column widths
+    clientColumn.prefWidthProperty().bind(commissionTable.widthProperty().multiply(0.75));
+    totalCommissionColumn.prefWidthProperty().bind(commissionTable.widthProperty().multiply(0.25));
+  }
+
+  private void updateCharts() {
+    updateVenueUtilisationChart();
+    updateIncomeChart();
+    updateCommissionTable();
+  }
+
+  private void updateVenueUtilisationChart() {
+    Map<String, Long> venueCount = bookingService.getBookings().stream()
+        .collect(Collectors.groupingBy(Booking::venueName, Collectors.counting()));
+
+    ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+    venueCount.forEach((venue, count) -> pieChartData.add(new PieChart.Data(venue, count)));
+
+    venueUtilisationChart.setData(pieChartData);
+  }
+
+  private void updateIncomeChart() {
+    XYChart.Series<String, Number> incomeSeries = new XYChart.Series<>();
+    XYChart.Series<String, Number> commissionSeries = new XYChart.Series<>();
+    incomeSeries.setName("Income $");
+    commissionSeries.setName("Commission $");
+
+    bookingService.getBookings().forEach(booking -> {
+      try {
+        Event event = eventService.getEventById(booking.eventId());
+        if (event != null) {
+          incomeSeries.getData().add(new XYChart.Data<>(event.title(), booking.totalPrice()));
+          commissionSeries.getData().add(new XYChart.Data<>(event.title(), booking.commission()));
+        }
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    });
+
+    incomeChart.getData().clear();
+    incomeChart.getData().addAll(incomeSeries, commissionSeries);
+  }
+
+  private void updateCommissionTable() {
+    Map<String, Double> clientCommissions = bookingService.getBookings().stream()
+        .collect(Collectors.groupingBy(
+            booking -> {
+              try {
+                Event event = eventService.getEventById(booking.eventId());
+                return event != null ? event.clientName() : "Unknown";
+              } catch (SQLException e) {
+                return "Unknown";
+              }
+            },
+            Collectors.summingDouble(Booking::commission)));
+
+    commissionTable.setItems(FXCollections.observableArrayList(clientCommissions.entrySet()));
+
+    double totalCommission = clientCommissions.values().stream().mapToDouble(Double::doubleValue).sum();
+    totalCommissionLabel.setText(String.format("Total Commission: $%.2f", totalCommission));
   }
 
   private void loadBookings() {
