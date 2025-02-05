@@ -121,8 +121,8 @@ public class BacklogController extends BaseController {
 
   private void handleVenueSelection(VenueRecommendation recommendation) {
     Alert confirmDialog = new Alert(Alert.AlertType.CONFIRMATION);
-    confirmDialog.setTitle("Booking Editor");
-    confirmDialog.setHeaderText("Create/Edit Booking");
+    confirmDialog.setTitle("Create Booking");
+    confirmDialog.setHeaderText("Create Booking");
     confirmDialog.setContentText(String.format("Are you sure you want to book %s for the event '%s'?",
         recommendation.venue().nameId(),
         selectedEvent.title()));
