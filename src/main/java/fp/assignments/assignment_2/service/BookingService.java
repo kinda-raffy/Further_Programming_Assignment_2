@@ -1,0 +1,111 @@
+package fp.assignments.assignment_2.service;
+
+import fp.assignments.assignment_2.model.Booking;
+import fp.assignments.assignment_2.model.Event;
+import fp.assignments.assignment_2.model.Venue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDateTime;
+
+public class BookingService {
+  private final DatabaseConnection dbConnection;
+  private final ObservableList<Booking> bookings = FXCollections.observableArrayList();
+
+  public BookingService() {
+    this.dbConnection = DatabaseConnection.getInstance();
+  }
+
+  public ObservableList<Booking> getBookings() {
+    return bookings;
+  }
+
+  public Booking getBookingForEvent(Integer eventId) throws SQLException {
+    String sql = "SELECT * FROM bookings WHERE event_id = ?";
+    try (var pstmt = dbConnection.prepareStatement(sql)) {
+      pstmt.setInt(1, eventId);
+      ResultSet rs = pstmt.executeQuery();
+      if (rs.next()) {
+        return new Booking(
+            rs.getInt("id"),
+            rs.getInt("event_id"),
+            rs.getString("venue_name"),
+            LocalDateTime.parse(rs.getString("booking_date_time")),
+            LocalDateTime.parse(rs.getString("booking_date_time")).plusHours(2), // Assuming 2-hour duration
+            rs.getDouble("total_price"),
+            rs.getDouble("commission"));
+      }
+    }
+    return null;
+  }
+
+  public boolean isVenueAvailable(String venueName, LocalDateTime startDate, LocalDateTime endDate)
+      throws SQLException {
+    String sql = "SELECT COUNT(*) as count FROM bookings b " +
+        "JOIN events e ON b.event_id = e.id " +
+        "WHERE b.venue_name = ? AND " +
+        "((b.booking_date_time BETWEEN ? AND ?) OR " +
+        "(datetime(b.booking_date_time, '+' || e.duration || ' minutes') BETWEEN ? AND ?))";
+
+    try (var pstmt = dbConnection.prepareStatement(sql)) {
+      pstmt.setString(1, venueName);
+      pstmt.setString(2, startDate.toString());
+      pstmt.setString(3, endDate.toString());
+      pstmt.setString(4, startDate.toString());
+      pstmt.setString(5, endDate.toString());
+
+      ResultSet rs = pstmt.executeQuery();
+      return rs.getInt("count") == 0;
+    }
+  }
+
+  public void createOrUpdateBooking(Event event, Venue venue, LocalDateTime bookingDateTime) throws SQLException {
+    String deleteSql = "DELETE FROM bookings WHERE event_id = ?";
+    dbConnection.executeUpdate(deleteSql, pstmt -> pstmt.setInt(1, event.id()));
+
+    double totalPrice = venue.hirePricePerHour() * event.durationHours();
+    double commission = calculateCommission(totalPrice, event.clientName());
+
+    String insertSql = "INSERT INTO bookings (event_id, venue_name, booking_date_time, total_price, commission) " +
+        "VALUES (?, ?, ?, ?, ?)";
+
+    dbConnection.executeUpdate(insertSql, pstmt -> {
+      pstmt.setInt(1, event.id());
+      pstmt.setString(2, venue.nameId());
+      pstmt.setString(3, bookingDateTime.toString());
+      pstmt.setDouble(4, totalPrice);
+      pstmt.setDouble(5, commission);
+    });
+  }
+
+  public void deleteBooking(Integer eventId) throws SQLException {
+    String sql = "DELETE FROM bookings WHERE event_id = ?";
+    dbConnection.executeUpdate(sql, pstmt -> pstmt.setInt(1, eventId));
+  }
+
+  public boolean hasMultipleBookings(String clientName) throws SQLException {
+    String sql = """
+        SELECT COUNT(*) as count
+        FROM bookings b
+        JOIN events e ON b.event_id = e.id
+        WHERE e.client_id = ?
+        """;
+
+    try (var pstmt = dbConnection.prepareStatement(sql)) {
+      pstmt.setString(1, clientName);
+      ResultSet rs = pstmt.executeQuery();
+      return rs.getInt("count") >= 1;
+    } catch (SQLException e) {
+      System.out.println("Error checking if client has multiple bookings: " + e.getMessage());
+      return false;
+    }
+  }
+
+  public double calculateCommission(double totalPrice, String clientName) throws SQLException {
+    System.out.println("Client has multiple bookings? " + hasMultipleBookings(clientName));
+    double commissionRate = hasMultipleBookings(clientName) ? 0.09 : 0.10;
+    return totalPrice * commissionRate;
+  }
+}

@@ -74,7 +74,7 @@ public class AllVenueController extends BaseController {
     suitabilityCol.setCellValueFactory(
         data -> new SimpleStringProperty(String.join(" & ", data.getValue().suitabilityKeywords())));
     venueCategoryCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().category()));
-    priceCol.setCellValueFactory(data -> new SimpleDoubleProperty(data.getValue().hirePrice()).asObject());
+    priceCol.setCellValueFactory(data -> new SimpleDoubleProperty(data.getValue().hirePricePerHour()).asObject());
 
     priceCol.setCellFactory(column -> new TableCell<>() {
       @Override

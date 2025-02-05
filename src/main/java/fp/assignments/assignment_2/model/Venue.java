@@ -7,7 +7,7 @@ public record Venue(
     String nameId,
     int capacity,
     String category,
-    double hirePrice,
+    double hirePricePerHour,
     List<String> suitabilityKeywords) {
   public Venue(String nameId, int capacity, String suitabilityKeywords,
       String category, double hirePrice) {

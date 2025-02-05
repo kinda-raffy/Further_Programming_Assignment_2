@@ -1,9 +1,20 @@
 package fp.assignments.assignment_2.controller;
 
 import fp.assignments.assignment_2.LMVMApplication;
+import fp.assignments.assignment_2.model.Booking;
 import fp.assignments.assignment_2.model.Event;
+import fp.assignments.assignment_2.service.BookingService;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 
 public class EventDetailsController extends BaseController {
@@ -23,8 +34,25 @@ public class EventDetailsController extends BaseController {
   private Label categoryLabel;
   @FXML
   private Label noBookingLabel;
+  @FXML
+  private VBox bookingDetailsBox;
+  @FXML
+  private Label bookingVenueLabel;
+  @FXML
+  private Label bookingDateTimeLabel;
+  @FXML
+  private Label bookingTotalPriceLabel;
+  @FXML
+  private Label bookingCommissionLabel;
+  @FXML
+  private GridPane bookingDetailsGrid;
+  @FXML
+  private Button deleteBookingButton;
+  private Event currentEvent;
+  private final BookingService bookingService = new BookingService();
 
   public void setEvent(Event event) {
+    this.currentEvent = event;
     titleLabel.setText(event.title());
     typeLabel.setText(event.eventType());
     clientLabel.setText(event.clientName());
@@ -34,10 +62,64 @@ public class EventDetailsController extends BaseController {
     dateLabel.setText(event.eventDateTime().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")));
 
     noBookingLabel.setVisible(false);
+    refreshBookingDetails();
   }
 
   @FXML
   private void handleReassignBooking() {
+    try {
+      FXMLLoader loader = new FXMLLoader(
+          getClass().getResource("/fp/assignments/assignment_2/view/create-booking-form-view.fxml"));
+      VBox bookingForm = loader.load();
+
+      CreateBookingFormController controller = loader.getController();
+      controller.setEvent(currentEvent);
+      controller.setOnBookingComplete(unused -> refreshBookingDetails());
+
+      Stage dialog = new Stage();
+      dialog.initModality(Modality.APPLICATION_MODAL);
+      dialog.setTitle("Create Booking");
+      dialog.setScene(new Scene(bookingForm));
+      dialog.showAndWait();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  private void refreshBookingDetails() {
+    try {
+      Booking booking = bookingService.getBookingForEvent(currentEvent.id());
+      if (booking != null) {
+        noBookingLabel.setVisible(false);
+        bookingDetailsGrid.setVisible(true);
+        deleteBookingButton.setVisible(true);
+
+        // Format the date and time
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
+        // Update booking details
+        bookingVenueLabel.setText(booking.venueName());
+        bookingDateTimeLabel.setText(booking.startDate().format(formatter));
+        bookingTotalPriceLabel.setText(String.format("$%.2f", booking.totalPrice()));
+        bookingCommissionLabel.setText(String.format("$%.2f", booking.commission()));
+      } else {
+        noBookingLabel.setVisible(true);
+        bookingDetailsGrid.setVisible(false);
+        deleteBookingButton.setVisible(false);
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
+  @FXML
+  private void handleDeleteBooking() {
+    try {
+      bookingService.deleteBooking(currentEvent.id());
+      refreshBookingDetails();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
   }
 
   public void goBack() {

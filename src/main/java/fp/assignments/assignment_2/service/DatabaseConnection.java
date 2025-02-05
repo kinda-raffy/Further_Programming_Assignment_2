@@ -106,7 +106,6 @@ public class DatabaseConnection {
     }
   }
 
-  // Functional interface for setting PreparedStatement values
   @FunctionalInterface
   public interface PreparedStatementSetter {
     void setValues(PreparedStatement ps) throws SQLException;

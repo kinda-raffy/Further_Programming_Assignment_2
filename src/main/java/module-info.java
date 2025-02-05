@@ -8,6 +8,7 @@ module fp.assignments.assignment_2 {
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.bootstrapfx.core;
     requires java.sql;
+    requires javafx.graphics;
 
     opens fp.assignments.assignment_2 to javafx.fxml;
 

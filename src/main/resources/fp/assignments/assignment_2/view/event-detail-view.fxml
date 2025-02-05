@@ -42,12 +42,33 @@
     </GridPane>
 
     <VBox spacing="10">
-        <Label text="Current Bookings" style="-fx-font-size: 16; -fx-font-weight: bold"/>
+        <Label text="Current Booking" style="-fx-font-size: 16; -fx-font-weight: bold"/>
 
         <Label text="This event has not been assigned to a booking." fx:id="noBookingLabel"/>
 
-        <Button text="Re/assign Booking"
-                style="-fx-background-color: #e0e0e0;"
-                onAction="#handleReassignBooking"/>
+        <GridPane fx:id="bookingDetailsGrid" hgap="10" vgap="8" visible="false">
+            <Label text="Venue:" style="-fx-font-weight: bold" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+            <Label fx:id="bookingVenueLabel" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+            <Label text="Date/Time:" style="-fx-font-weight: bold" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+            <Label fx:id="bookingDateTimeLabel" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+            <Label text="Total Price:" style="-fx-font-weight: bold" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+            <Label fx:id="bookingTotalPriceLabel" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+            <Label text="Commission:" style="-fx-font-weight: bold" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+            <Label fx:id="bookingCommissionLabel" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+        </GridPane>
+
+        <HBox spacing="10">
+            <Button text="Re/assign Booking"
+                    style="-fx-background-color: #e0e0e0;"
+                    onAction="#handleReassignBooking"/>
+            <Button fx:id="deleteBookingButton"
+                    text="Delete Booking"
+                    style="-fx-background-color: #ff4444; -fx-text-fill: white;"
+                    onAction="#handleDeleteBooking"
+                    visible="false"/>
+        </HBox>
     </VBox>
 </VBox>
