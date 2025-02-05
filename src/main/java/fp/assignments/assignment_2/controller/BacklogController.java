@@ -45,6 +45,9 @@ public class BacklogController extends BaseController {
     loadEvents();
 
     bookingService.getBookings().addListener((ListChangeListener<Booking>) c -> {
+      selectedEvent = null;
+      recommendedVenuesTable.getItems().clear();
+      eventsTable.getSelectionModel().clearSelection();
       loadEvents();
     });
 
@@ -118,8 +121,8 @@ public class BacklogController extends BaseController {
 
   private void handleVenueSelection(VenueRecommendation recommendation) {
     Alert confirmDialog = new Alert(Alert.AlertType.CONFIRMATION);
-    confirmDialog.setTitle("Confirm Booking");
-    confirmDialog.setHeaderText("Create Booking");
+    confirmDialog.setTitle("Booking Editor");
+    confirmDialog.setHeaderText("Create/Edit Booking");
     confirmDialog.setContentText(String.format("Are you sure you want to book %s for the event '%s'?",
         recommendation.venue().nameId(),
         selectedEvent.title()));
@@ -128,9 +131,6 @@ public class BacklogController extends BaseController {
       if (response == ButtonType.OK) {
         try {
           bookingService.createBooking(selectedEvent, recommendation.venue(), selectedEvent.eventDateTime());
-          selectedEvent = null;
-          recommendedVenuesTable.getItems().clear();
-          eventsTable.getSelectionModel().clearSelection();
         } catch (SQLException e) {
           showError("Error", "Could not create booking: " + e.getMessage());
         }

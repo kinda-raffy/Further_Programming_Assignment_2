@@ -36,6 +36,6 @@
 
     <HBox spacing="10" alignment="CENTER_RIGHT">
         <Button text="Cancel" onAction="#handleCancel"/>
-        <Button text="Create Booking" onAction="#handleCreateBooking" defaultButton="true"/>
+        <Button text="Re-/book" onAction="#handleCreateBooking" defaultButton="true"/>
     </HBox>
 </VBox>
