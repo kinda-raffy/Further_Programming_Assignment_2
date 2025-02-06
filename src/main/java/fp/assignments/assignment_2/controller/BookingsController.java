@@ -147,8 +147,12 @@ public class BookingsController extends BaseController {
       try {
         Event event = eventService.getEventById(booking.eventId());
         if (event != null) {
-          incomeSeries.getData().add(new XYChart.Data<>(event.title(), booking.totalPrice()));
-          commissionSeries.getData().add(new XYChart.Data<>(event.title(), booking.commission()));
+          String truncatedTitle = event.title().length() > 20
+              ? event.title().substring(0, 17) + "..."
+              : event.title();
+
+          incomeSeries.getData().add(new XYChart.Data<>(truncatedTitle, booking.totalPrice()));
+          commissionSeries.getData().add(new XYChart.Data<>(truncatedTitle, booking.commission()));
         }
       } catch (SQLException e) {
         e.printStackTrace();

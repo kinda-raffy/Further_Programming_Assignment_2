@@ -61,6 +61,14 @@ public class HomeController extends BaseController {
     }
 
     @FXML
+    private void handleBackupExport() {
+    }
+
+    @FXML
+    private void handleBackupImport() {
+    }
+
+    @FXML
     private void handleLogout() {
         SessionManager.getInstance().logout();
         try {
