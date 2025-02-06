@@ -1,6 +1,6 @@
 package fp.assignments.assignment_2.service;
 
-import fp.assignments.assignment_2.model.User;
+import fp.assignments.assignment_2.model.entity.User;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 

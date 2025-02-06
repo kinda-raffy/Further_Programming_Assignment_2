@@ -1,4 +1,4 @@
-package fp.assignments.assignment_2.model;
+package fp.assignments.assignment_2.model.entity;
 
 import java.util.List;
 import java.util.Arrays;

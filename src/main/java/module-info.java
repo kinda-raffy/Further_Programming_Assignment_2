@@ -18,7 +18,8 @@ module fp.assignments.assignment_2 {
     opens fp.assignments.assignment_2.controller.home.detail to javafx.fxml;
     opens fp.assignments.assignment_2.controller.home.pane to javafx.fxml;
     opens fp.assignments.assignment_2.controller.landing to javafx.fxml;
-    opens fp.assignments.assignment_2.model to javafx.base, javafx.fxml;
+    opens fp.assignments.assignment_2.model.entity to javafx.base, javafx.fxml;
+    opens fp.assignments.assignment_2.model.backup to javafx.base, javafx.fxml;
 
     exports fp.assignments.assignment_2;
     exports fp.assignments.assignment_2.controller;
@@ -27,6 +28,7 @@ module fp.assignments.assignment_2 {
     exports fp.assignments.assignment_2.controller.home.detail;
     exports fp.assignments.assignment_2.controller.home.pane;
     exports fp.assignments.assignment_2.controller.landing;
-    exports fp.assignments.assignment_2.model;
+    exports fp.assignments.assignment_2.model.entity;
+    exports fp.assignments.assignment_2.model.backup;
     exports fp.assignments.assignment_2.service;
 }

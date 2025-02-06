@@ -1,9 +1,10 @@
 package fp.assignments.assignment_2.service;
 
-import fp.assignments.assignment_2.model.Event;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+
+import fp.assignments.assignment_2.model.entity.Event;
 
 public class EventService {
   private final DatabaseConnection dbService;

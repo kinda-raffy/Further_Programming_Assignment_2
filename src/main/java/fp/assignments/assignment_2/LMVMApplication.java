@@ -2,8 +2,8 @@ package fp.assignments.assignment_2;
 
 import fp.assignments.assignment_2.controller.home.detail.EventDetailsController;
 import fp.assignments.assignment_2.controller.home.detail.UserDetailController;
-import fp.assignments.assignment_2.model.Event;
-import fp.assignments.assignment_2.model.User;
+import fp.assignments.assignment_2.model.entity.Event;
+import fp.assignments.assignment_2.model.entity.User;
 import fp.assignments.assignment_2.service.SessionManager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

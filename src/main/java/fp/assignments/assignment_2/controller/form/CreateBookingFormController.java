@@ -1,8 +1,8 @@
 package fp.assignments.assignment_2.controller.form;
 
 import fp.assignments.assignment_2.controller.BaseController;
-import fp.assignments.assignment_2.model.Event;
-import fp.assignments.assignment_2.model.Venue;
+import fp.assignments.assignment_2.model.entity.Event;
+import fp.assignments.assignment_2.model.entity.Venue;
 import fp.assignments.assignment_2.service.BookingService;
 import fp.assignments.assignment_2.service.HomeService;
 import javafx.fxml.FXML;

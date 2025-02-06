@@ -1,14 +1,15 @@
 package fp.assignments.assignment_2.service;
 
-import fp.assignments.assignment_2.model.Booking;
-import fp.assignments.assignment_2.model.Event;
-import fp.assignments.assignment_2.model.Venue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+
+import fp.assignments.assignment_2.model.entity.Booking;
+import fp.assignments.assignment_2.model.entity.Event;
+import fp.assignments.assignment_2.model.entity.Venue;
 
 public class BookingService {
   private static BookingService instance;

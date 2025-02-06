@@ -1,7 +1,11 @@
-package fp.assignments.assignment_2.model;
+package fp.assignments.assignment_2.model.backup;
 
 import java.io.Serializable;
 import java.util.List;
+
+import fp.assignments.assignment_2.model.entity.Booking;
+import fp.assignments.assignment_2.model.entity.Event;
+import fp.assignments.assignment_2.model.entity.Venue;
 
 public record TransactionData(
     List<Event> events,

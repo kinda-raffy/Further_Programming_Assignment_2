@@ -2,7 +2,7 @@ package fp.assignments.assignment_2.controller.landing;
 
 import fp.assignments.assignment_2.LMVMApplication;
 import fp.assignments.assignment_2.controller.BaseController;
-import fp.assignments.assignment_2.model.User;
+import fp.assignments.assignment_2.model.entity.User;
 import fp.assignments.assignment_2.service.DatabaseConnection;
 import fp.assignments.assignment_2.service.SessionManager;
 import javafx.fxml.FXML;

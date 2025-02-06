@@ -1,6 +1,6 @@
 package fp.assignments.assignment_2.controller.form;
 
-import fp.assignments.assignment_2.model.User;
+import fp.assignments.assignment_2.model.entity.User;
 import fp.assignments.assignment_2.service.DatabaseConnection;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;

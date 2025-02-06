@@ -1,7 +1,5 @@
 package fp.assignments.assignment_2.service;
 
-import fp.assignments.assignment_2.model.Event;
-import fp.assignments.assignment_2.model.Venue;
 import java.io.*;
 import java.sql.*;
 import java.time.LocalDate;
@@ -12,6 +10,9 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+import fp.assignments.assignment_2.model.entity.Event;
+import fp.assignments.assignment_2.model.entity.Venue;
 
 public class HomeService {
   private final DatabaseConnection dbService;
