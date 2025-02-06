@@ -53,13 +53,13 @@ public class BookingsController extends BaseController {
     summarySection.visibleProperty().bind(
         Bindings.createBooleanBinding(
             () -> ServiceProvider.use(sp -> sp.session().isManager()),
-                new ObjectProperty[]{ServiceProvider.use(sp -> sp.session().currentUserProperty())}));
+            new ObjectProperty[] { ServiceProvider.use(sp -> sp.session().currentUserProperty()) }));
     summarySection.managedProperty().bind(summarySection.visibleProperty());
 
     commissionCol.visibleProperty().bind(
         Bindings.createBooleanBinding(
             () -> ServiceProvider.use(sp -> sp.session().isManager()),
-                new ObjectProperty[]{ServiceProvider.use(sp -> sp.session().currentUserProperty())}));
+            new ObjectProperty[] { ServiceProvider.use(sp -> sp.session().currentUserProperty()) }));
 
     ServiceProvider
         .run(sp -> sp.bookingService().getBookings().addListener((ListChangeListener<Booking>) c -> {
@@ -82,7 +82,7 @@ public class BookingsController extends BaseController {
     dateCol.prefWidthProperty().bind(bookingsTable.widthProperty().multiply(0.15));
     commissionCol.prefWidthProperty().bind(bookingsTable.widthProperty().multiply(0.15));
 
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yy");
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("h:mma –– dd/MM/yyyy");
 
     clientCol.setCellValueFactory(data -> {
       try {

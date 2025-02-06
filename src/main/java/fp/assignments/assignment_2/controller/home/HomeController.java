@@ -62,7 +62,10 @@ public class HomeController extends BaseController {
                 showError("Error reading file", e.getMessage());
             } catch (DateTimeParseException e) {
                 showError("Error parsing date",
-                        "Please ensure dates are in format DD-MM-YY and times in HH:MM AM/PM: " + e);
+                        "Please ensure dates are in format DD-MM-YY\n" +
+                                "and times in the following format:\n" +
+                                "HH:mm | h:mma | ha | h a | h:mm a"
+                                + e);
             } catch (Exception e) {
                 showError("Error saving to database", e.getMessage());
             }

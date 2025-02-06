@@ -72,7 +72,7 @@ public class BacklogController extends BaseController {
     titleCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().title()));
     artistCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().mainArtist()));
 
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yy");
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("h:mma –– dd/MM/yyyy");
     dateCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().eventDateTime().format(formatter)));
 
     eventsTable.getColumns().addAll(clientCol, titleCol, artistCol, dateCol);

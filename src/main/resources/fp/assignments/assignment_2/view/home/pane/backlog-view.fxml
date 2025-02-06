@@ -12,7 +12,8 @@
         <Insets top="20" right="20" bottom="20" left="20"/>
     </padding>
 
-    <Label text="Events to Schedule" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+    <Label text="Events to Schedule" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+    <Label text="Below is a backlog of events that requires a booking. Double click on an event to see further details and assign an individual booking."/>
 
     <TableView fx:id="eventsTable" VBox.vgrow="ALWAYS" maxHeight="400">
         <placeholder>
@@ -22,7 +23,9 @@
 
     <HBox spacing="20">
         <VBox spacing="10" HBox.hgrow="ALWAYS" minWidth="600">
-            <Label text="Recommended Venues" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+            <Label text="Recommended Venues" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+            <Label text="Double click on a table entry below to immediately create a booking between the venue and the selected event."/>
+
             <TableView fx:id="recommendedVenuesTable" VBox.vgrow="ALWAYS">
                 <placeholder>
                     <Label text="Unable to find a match, either select an event in the table above or loosen your criteria in the settings to the right."/>
@@ -31,7 +34,7 @@
         </VBox>
 
         <VBox spacing="10" minWidth="600">
-            <Label text="Recommendation Settings" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+            <Label text="Recommendation Settings" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
             <Label text="Influence the recommended venues based on the following event criteria:"/>
 
             <VBox spacing="5">

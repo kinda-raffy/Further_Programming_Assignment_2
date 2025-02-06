@@ -11,7 +11,7 @@
         <Insets top="20" right="20" bottom="20" left="20"/>
     </padding>
 
-    <Button text="Back"
+    <Button text="← Back"
             onAction="#goBack"
             style="-fx-background-color: #e0e0e0;">
         <VBox.margin>

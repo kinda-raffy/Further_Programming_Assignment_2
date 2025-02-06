@@ -88,8 +88,8 @@ public class EventDetailsController extends BaseController {
 
       Stage dialog = new Stage();
       dialog.initModality(Modality.APPLICATION_MODAL);
-      dialog.setTitle("Create Booking");
-      dialog.setScene(new Scene(bookingForm));
+      dialog.setTitle("Create/Edit Booking");
+      dialog.setScene(new Scene(bookingForm, 600, 500));
       dialog.showAndWait();
     } catch (IOException e) {
       e.printStackTrace();

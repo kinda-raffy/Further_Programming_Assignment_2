@@ -93,7 +93,7 @@ public class UserDetailController extends BaseController {
       Stage stage = new Stage();
       stage.initModality(Modality.APPLICATION_MODAL);
       stage.setTitle("Edit User");
-      stage.setScene(new Scene(loader.load()));
+      stage.setScene(new Scene(loader.load(), 600, 500));
 
       EditUserFormController controller = loader.getController();
       controller.setUser(user);
@@ -101,7 +101,6 @@ public class UserDetailController extends BaseController {
         if (onUserUpdated != null) {
           onUserUpdated.run();
         }
-        // Refresh the current view
         try {
           User updatedUser = ServiceProvider.use(sp -> sp.userService().getUserById(user.id()));
           if (updatedUser != null) {
@@ -134,10 +133,7 @@ public class UserDetailController extends BaseController {
         }
       } catch (SQLException e) {
         e.printStackTrace();
-        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-        errorAlert.setTitle("Error");
-        errorAlert.setContentText("Failed to delete user: " + e.getMessage());
-        errorAlert.showAndWait();
+        showError("Failed to delete user", e.getMessage());
       }
     }
   }

@@ -8,7 +8,7 @@
       fx:controller="fp.assignments.assignment_2.controller.home.pane.AllUserController"
       spacing="10">
     <padding>
-        <Insets top="10" right="10" bottom="10" left="10"/>
+        <Insets top="20" right="20" bottom="20" left="20"/>
     </padding>
 
     <HBox alignment="CENTER" spacing="10">
@@ -17,5 +17,6 @@
         <Button fx:id="addStaffButton" text="+ Add Staff Member" onAction="#showAddUserForm"/>
     </HBox>
 
+    <Label text="Double-click any staff member to view their details. You can edit or remove staff accounts if you have the appropriate permissions."/>
     <TableView fx:id="userTable" VBox.vgrow="ALWAYS"/>
 </VBox>
