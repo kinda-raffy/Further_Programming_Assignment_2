@@ -24,4 +24,9 @@ public class VenueService {
       ps.setDouble(5, hirePrice);
     });
   }
+
+  public void deleteVenue(String venueName) throws SQLException {
+    String sql = "DELETE FROM venues WHERE name = ?";
+    dbConnection.executeUpdate(sql, ps -> ps.setString(1, venueName));
+  }
 }

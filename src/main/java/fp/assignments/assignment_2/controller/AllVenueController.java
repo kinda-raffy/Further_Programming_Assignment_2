@@ -3,6 +3,7 @@ package fp.assignments.assignment_2.controller;
 import fp.assignments.assignment_2.model.Venue;
 import fp.assignments.assignment_2.service.BookingService;
 import fp.assignments.assignment_2.service.HomeService;
+import fp.assignments.assignment_2.service.VenueService;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.beans.property.SimpleStringProperty;
@@ -42,8 +43,11 @@ public class AllVenueController extends BaseController {
   private TextField startTimeField;
   @FXML
   private TextField endTimeField;
+  @FXML
+  private Button deleteButton;
 
   private static HomeService homeService = new HomeService();
+  private static VenueService venueService = new VenueService();
   private static BookingService bookingService = BookingService.getInstance();
   private static ObservableList<Venue> venuesList = FXCollections.observableArrayList();
   private static ObservableList<Venue> filteredVenuesList = FXCollections.observableArrayList();
@@ -53,6 +57,7 @@ public class AllVenueController extends BaseController {
     venuesTable.setItems(filteredVenuesList);
     setupVenuesTable();
     setupSearchListeners();
+    setupTableSelectionListener();
     loadAllVenues();
   }
 
@@ -185,6 +190,11 @@ public class AllVenueController extends BaseController {
     priceCol.prefWidthProperty().bind(venuesTable.widthProperty().multiply(0.15));
   }
 
+  private void setupTableSelectionListener() {
+    venuesTable.getSelectionModel().selectedItemProperty().addListener(
+        (obs, oldSelection, newSelection) -> deleteButton.setDisable(newSelection == null));
+  }
+
   public static void loadAllVenues() {
     venuesList.clear();
     filteredVenuesList.clear();
@@ -216,6 +226,28 @@ public class AllVenueController extends BaseController {
       stage.showAndWait();
     } catch (IOException e) {
       showError("Error", "Could not open create venue form: " + e.getMessage());
+    }
+  }
+
+  @FXML
+  private void handleDeleteVenue() {
+    Venue selectedVenue = venuesTable.getSelectionModel().getSelectedItem();
+    if (selectedVenue != null) {
+      Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+      alert.setTitle("Delete Venue");
+      alert.setHeaderText("Delete " + selectedVenue.nameId());
+      alert
+          .setContentText("Are you sure you want to delete this venue? This will also delete all associated bookings.");
+
+      if (alert.showAndWait().orElse(null) == ButtonType.OK) {
+        try {
+          venueService.deleteVenue(selectedVenue.nameId());
+          BookingService.getInstance().loadBookings();
+          reloadVenues();
+        } catch (SQLException e) {
+          showError("Error", "Could not delete venue: " + e.getMessage());
+        }
+      }
     }
   }
 }

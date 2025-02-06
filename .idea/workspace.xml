@@ -8,6 +8,8 @@
       <change afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/AddVenueFormController.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/VenueService.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/resources/fp/assignments/assignment_2/view/add-venue-form-view.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/LMVMApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/LMVMApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/AllVenueController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/AllVenueController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/fp/assignments/assignment_2/view/all-venues-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fp/assignments/assignment_2/view/all-venues-view.fxml" afterDir="false" />
     </list>

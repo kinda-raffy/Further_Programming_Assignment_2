@@ -62,7 +62,7 @@ public class DatabaseConnection {
                 total_price REAL,
                 commission REAL,
                 FOREIGN KEY (event_id) REFERENCES events(id),
-                FOREIGN KEY (venue_name) REFERENCES venues(name)
+                FOREIGN KEY (venue_name) REFERENCES venues(name) ON DELETE CASCADE
             )
         """;
 
