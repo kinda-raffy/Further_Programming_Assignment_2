@@ -1,10 +1,11 @@
 package fp.assignments.assignment_2.controller.form;
 
-import fp.assignments.assignment_2.service.DatabaseConnection;
+import fp.assignments.assignment_2.model.entity.User;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import java.sql.SQLException;
+import fp.assignments.assignment_2.service.ServiceProvider;
 
 public class AddUserFormController {
   @FXML
@@ -36,20 +37,14 @@ public class AddUserFormController {
   private void handleSubmit() {
     if (validateFields()) {
       try {
-        String sql = """
-            INSERT INTO users (user_name, password, first_name, last_name, type)
-            VALUES (?, ?, ?, ?, ?)
-            """;
+        User newUser = ServiceProvider.use(sp -> sp.userService().createUser(
+            userNameField.getText(),
+            passwordField.getText(),
+            firstNameField.getText(),
+            lastNameField.getText(),
+            typeComboBox.getValue()));
 
-        DatabaseConnection.getInstance().executeUpdate(sql, ps -> {
-          ps.setString(1, userNameField.getText());
-          ps.setString(2, passwordField.getText());
-          ps.setString(3, firstNameField.getText());
-          ps.setString(4, lastNameField.getText());
-          ps.setString(5, typeComboBox.getValue());
-        });
-
-        if (onUserAdded != null) {
+        if (newUser != null && onUserAdded != null) {
           onUserAdded.run();
         }
         closeWindow();

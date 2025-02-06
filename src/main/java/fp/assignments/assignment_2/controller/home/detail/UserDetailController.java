@@ -4,7 +4,6 @@ import fp.assignments.assignment_2.LMVMApplication;
 import fp.assignments.assignment_2.controller.BaseController;
 import fp.assignments.assignment_2.controller.form.EditUserFormController;
 import fp.assignments.assignment_2.model.entity.User;
-import fp.assignments.assignment_2.service.DatabaseConnection;
 import fp.assignments.assignment_2.service.ServiceProvider;
 import javafx.beans.property.ObjectProperty;
 import javafx.fxml.FXML;
@@ -14,7 +13,6 @@ import javafx.scene.control.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import java.io.IOException;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import javafx.beans.binding.Bindings;
 
@@ -51,7 +49,7 @@ public class UserDetailController extends BaseController {
                   (currentUser != null && user != null &&
                       currentUser.id().equals(user.id()));
             },
-                new ObjectProperty[]{ServiceProvider.use(sp -> sp.session().currentUserProperty())}));
+            new ObjectProperty[] { ServiceProvider.use(sp -> sp.session().currentUserProperty()) }));
     editButton.managedProperty().bind(editButton.visibleProperty());
   }
 
@@ -69,7 +67,7 @@ public class UserDetailController extends BaseController {
     deleteButton.visibleProperty().bind(
         Bindings.createBooleanBinding(
             () -> ServiceProvider.use(sp -> sp.session().isManager()),
-                new ObjectProperty[]{ServiceProvider.use(sp -> sp.session().currentUserProperty())}));
+            new ObjectProperty[] { ServiceProvider.use(sp -> sp.session().currentUserProperty()) }));
     deleteButton.managedProperty().bind(deleteButton.visibleProperty());
   }
 
@@ -105,16 +103,9 @@ public class UserDetailController extends BaseController {
         }
         // Refresh the current view
         try {
-          ResultSet rs = DatabaseConnection.getInstance().executeQuery(
-              "SELECT * FROM users WHERE id = " + user.id());
-          if (rs.next()) {
-            setUser(new User(
-                rs.getInt("id"),
-                rs.getString("user_name"),
-                rs.getString("password"),
-                rs.getString("first_name"),
-                rs.getString("last_name"),
-                rs.getString("type")));
+          User updatedUser = ServiceProvider.use(sp -> sp.userService().getUserById(user.id()));
+          if (updatedUser != null) {
+            setUser(updatedUser);
           }
         } catch (SQLException e) {
           e.printStackTrace();
@@ -136,8 +127,7 @@ public class UserDetailController extends BaseController {
 
     if (alert.showAndWait().orElse(null) == ButtonType.OK) {
       try {
-        String sql = "DELETE FROM users WHERE id = ?";
-        DatabaseConnection.getInstance().executeUpdate(sql, ps -> ps.setInt(1, user.id()));
+        ServiceProvider.run(sp -> sp.userService().deleteUser(user.id()));
 
         if (onUserDeleted != null) {
           onUserDeleted.run();

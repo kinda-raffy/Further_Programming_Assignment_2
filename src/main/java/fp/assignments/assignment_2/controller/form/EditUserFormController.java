@@ -1,7 +1,6 @@
 package fp.assignments.assignment_2.controller.form;
 
 import fp.assignments.assignment_2.model.entity.User;
-import fp.assignments.assignment_2.service.DatabaseConnection;
 import javafx.beans.property.ObjectProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -46,7 +45,7 @@ public class EditUserFormController {
     typeContainer.visibleProperty().bind(
         Bindings.createBooleanBinding(
             () -> ServiceProvider.use(sp -> sp.session().isManager()),
-                new ObjectProperty[]{ServiceProvider.use(sp -> sp.session().currentUserProperty())}));
+            new ObjectProperty[] { ServiceProvider.use(sp -> sp.session().currentUserProperty()) }));
     typeContainer.managedProperty().bind(typeContainer.visibleProperty());
   }
 
@@ -61,35 +60,13 @@ public class EditUserFormController {
   private void handleSubmit() {
     if (validateFields()) {
       try {
-        String sql = """
-            UPDATE users
-            SET user_name = ?, first_name = ?, last_name = ?, type = ?
-            WHERE id = ?
-            """;
-
-        if (!passwordField.getText().isEmpty()) {
-          sql = """
-              UPDATE users
-              SET user_name = ?, password = ?, first_name = ?, last_name = ?, type = ?
-              WHERE id = ?
-              """;
-        }
-
-        DatabaseConnection.getInstance().executeUpdate(sql, ps -> {
-          ps.setString(1, userNameField.getText());
-          if (!passwordField.getText().isEmpty()) {
-            ps.setString(2, passwordField.getText());
-            ps.setString(3, firstNameField.getText());
-            ps.setString(4, lastNameField.getText());
-            ps.setString(5, typeComboBox.getValue());
-            ps.setInt(6, user.id());
-          } else {
-            ps.setString(2, firstNameField.getText());
-            ps.setString(3, lastNameField.getText());
-            ps.setString(4, typeComboBox.getValue());
-            ps.setInt(5, user.id());
-          }
-        });
+        ServiceProvider.run(sp -> sp.userService().updateUser(
+            user.id(),
+            userNameField.getText(),
+            passwordField.getText(),
+            firstNameField.getText(),
+            lastNameField.getText(),
+            typeComboBox.getValue()));
 
         if (onUserUpdated != null) {
           onUserUpdated.run();

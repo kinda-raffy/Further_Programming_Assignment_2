@@ -4,7 +4,6 @@ import fp.assignments.assignment_2.LMVMApplication;
 import fp.assignments.assignment_2.controller.BaseController;
 import fp.assignments.assignment_2.controller.form.AddUserFormController;
 import fp.assignments.assignment_2.model.entity.User;
-import fp.assignments.assignment_2.service.DatabaseConnection;
 import fp.assignments.assignment_2.service.ServiceProvider;
 import javafx.beans.property.ObjectProperty;
 import javafx.collections.FXCollections;
@@ -16,12 +15,12 @@ import javafx.scene.control.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import java.io.IOException;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import javafx.scene.input.MouseButton;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+import java.util.List;
 
 public class AllUserController extends BaseController {
   @FXML
@@ -48,13 +47,13 @@ public class AllUserController extends BaseController {
               String accountType = user != null ? user.type() : "Unknown";
               return "Logged in as: " + userName + " (" + accountType + ")";
             },
-                new ObjectProperty[]{ServiceProvider.use(sp -> sp.session().currentUserProperty())}));
+            new ObjectProperty[] { ServiceProvider.use(sp -> sp.session().currentUserProperty()) }));
 
     // Add visibility binding for the add staff button
     addStaffButton.visibleProperty().bind(
         Bindings.createBooleanBinding(
             () -> ServiceProvider.use(sp -> sp.session().isManager()),
-                new ObjectProperty[]{ServiceProvider.use(sp -> sp.session().currentUserProperty())}));
+            new ObjectProperty[] { ServiceProvider.use(sp -> sp.session().currentUserProperty()) }));
     addStaffButton.managedProperty().bind(addStaffButton.visibleProperty());
   }
 
@@ -94,18 +93,8 @@ public class AllUserController extends BaseController {
   public static void loadUsers() {
     userTableList.clear();
     try {
-      String sql = "SELECT * FROM users ORDER BY id";
-      ResultSet rs = DatabaseConnection.getInstance().executeQuery(sql);
-
-      while (rs.next()) {
-        userTableList.add(new User(
-            rs.getInt("id"),
-            rs.getString("user_name"),
-            rs.getString("password"),
-            rs.getString("first_name"),
-            rs.getString("last_name"),
-            rs.getString("type")));
-      }
+      List<User> users = ServiceProvider.use(sp -> sp.userService().getAllUsers());
+      userTableList.addAll(users);
 
       userTableList.stream()
           .filter(u -> u.id() == ServiceProvider.use(sp -> sp.session().getCurrentUser()).id())

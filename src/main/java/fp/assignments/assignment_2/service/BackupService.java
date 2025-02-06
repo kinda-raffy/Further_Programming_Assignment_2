@@ -108,17 +108,7 @@ public class BackupService {
   }
 
   public void exportMasterData(File file) throws IOException, SQLException {
-    List<User> users = new ArrayList<>();
-    ResultSet rs = dbConnection.executeQuery("SELECT * FROM users");
-    while (rs.next()) {
-      users.add(new User(
-          rs.getInt("id"),
-          rs.getString("user_name"),
-          rs.getString("password"),
-          rs.getString("first_name"),
-          rs.getString("last_name"),
-          rs.getString("type")));
-    }
+    List<User> users = ServiceProvider.use(sp -> sp.userService().getAllUsers());
     MasterData data = new MasterData(users);
     try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))) {
       oos.writeObject(data);
@@ -135,15 +125,12 @@ public class BackupService {
     });
     // Import users.
     for (User user : data.users()) {
-      dbConnection.executeUpdate(
-          "INSERT INTO users (user_name, password, first_name, last_name, type) VALUES (?, ?, ?, ?, ?)",
-          ps -> {
-            ps.setString(1, user.userName());
-            ps.setString(2, user.password());
-            ps.setString(3, user.firstName());
-            ps.setString(4, user.lastName());
-            ps.setString(5, user.type());
-          });
+      ServiceProvider.run(sp -> sp.userService().createUser(
+          user.userName(),
+          user.password(),
+          user.firstName(),
+          user.lastName(),
+          user.type()));
     }
   }
 }
