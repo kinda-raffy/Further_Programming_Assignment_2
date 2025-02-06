@@ -5,7 +5,7 @@ import fp.assignments.assignment_2.controller.BaseController;
 import fp.assignments.assignment_2.controller.form.CreateBookingFormController;
 import fp.assignments.assignment_2.model.entity.Booking;
 import fp.assignments.assignment_2.model.entity.Event;
-import fp.assignments.assignment_2.service.BookingService;
+import fp.assignments.assignment_2.service.ServiceProvider;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -52,15 +52,14 @@ public class EventDetailsController extends BaseController {
   @FXML
   private Button deleteBookingButton;
   private Event currentEvent;
-  private final BookingService bookingService = BookingService.getInstance();
 
   @FXML
   public void initialize() {
-    bookingService.getBookings().addListener((ListChangeListener<Booking>) c -> {
+    ServiceProvider.run(sp -> sp.bookingService().getBookings().addListener((ListChangeListener<Booking>) c -> {
       if (currentEvent != null) {
         refreshBookingDetails();
       }
-    });
+    }));
   }
 
   public void setEvent(Event event) {
@@ -99,7 +98,7 @@ public class EventDetailsController extends BaseController {
 
   private void refreshBookingDetails() {
     try {
-      Booking booking = bookingService.getBookingForEvent(currentEvent.id());
+      Booking booking = ServiceProvider.use(sp -> sp.bookingService().getBookingForEvent(currentEvent.id()));
       if (booking != null) {
         noBookingLabel.setVisible(false);
         noBookingLabel.setManaged(false);
@@ -132,7 +131,7 @@ public class EventDetailsController extends BaseController {
   @FXML
   private void handleDeleteBooking() {
     try {
-      bookingService.deleteBooking(currentEvent.id());
+      ServiceProvider.run(sp -> sp.bookingService().deleteBooking(currentEvent.id()));
       LMVMApplication.goBack();
     } catch (SQLException e) {
       showError("Error", "Could not delete booking: " + e.getMessage());

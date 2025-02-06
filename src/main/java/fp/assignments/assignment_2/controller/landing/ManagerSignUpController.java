@@ -4,7 +4,7 @@ import fp.assignments.assignment_2.LMVMApplication;
 import fp.assignments.assignment_2.controller.BaseController;
 import fp.assignments.assignment_2.model.entity.User;
 import fp.assignments.assignment_2.service.DatabaseConnection;
-import fp.assignments.assignment_2.service.SessionManager;
+import fp.assignments.assignment_2.service.ServiceProvider;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -56,7 +56,7 @@ public class ManagerSignUpController extends BaseController {
                 "manager");
 
             // Auto-login with new account
-            SessionManager.getInstance().setCurrentUser(newUser);
+            ServiceProvider.run(sp -> sp.session().setCurrentUser(newUser));
             try {
               LMVMApplication.navigateToHome();
             } catch (IOException e) {

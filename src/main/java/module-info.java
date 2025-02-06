@@ -2,8 +2,8 @@ module fp.assignments.assignment_2 {
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.base;
-    requires javafx.graphics;
-    requires java.sql;
+    requires transitive javafx.graphics;
+    requires transitive java.sql;
 
     requires org.controlsfx.controls;
     requires com.dlsc.formsfx;

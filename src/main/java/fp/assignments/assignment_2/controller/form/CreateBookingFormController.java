@@ -3,8 +3,7 @@ package fp.assignments.assignment_2.controller.form;
 import fp.assignments.assignment_2.controller.BaseController;
 import fp.assignments.assignment_2.model.entity.Event;
 import fp.assignments.assignment_2.model.entity.Venue;
-import fp.assignments.assignment_2.service.BookingService;
-import fp.assignments.assignment_2.service.HomeService;
+import fp.assignments.assignment_2.service.ServiceProvider;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
@@ -31,13 +30,13 @@ public class CreateBookingFormController extends BaseController {
   private Label commissionLabel;
 
   private Event event;
-  private final BookingService bookingService = BookingService.getInstance();
-  private final HomeService homeService = new HomeService();
 
   @FXML
   public void initialize() {
     try {
-      venueComboBox.getItems().addAll(homeService.loadVenues());
+      ServiceProvider.run(sp -> {
+        venueComboBox.getItems().addAll(sp.venueService().getVenues());
+      });
       venueComboBox.setCellFactory(param -> new ListCell<>() {
         @Override
         protected void updateItem(Venue venue, boolean empty) {
@@ -71,7 +70,7 @@ public class CreateBookingFormController extends BaseController {
     if (validateForm()) {
       try {
         Venue selectedVenue = venueComboBox.getValue();
-        bookingService.createBooking(event, selectedVenue, event.eventDateTime());
+        ServiceProvider.run(sp -> sp.bookingService().createBooking(event, selectedVenue, event.eventDateTime()));
         closeDialog();
       } catch (SQLException e) {
         errorLabel.setText("Error creating booking: " + e.getMessage());
@@ -99,11 +98,11 @@ public class CreateBookingFormController extends BaseController {
   private void updatePriceDetails(Venue venue) {
     double totalPrice = venue.hirePricePerHour() * event.durationHours();
     try {
-      double commission = bookingService.calculateCommission(totalPrice, event.clientName());
+      double commission = ServiceProvider
+          .use(sp -> sp.bookingService().calculateCommission(totalPrice, event.clientName()));
       totalPriceLabel.setText(String.format("Total Price: $%.2f", totalPrice));
-      commissionLabel.setText(String.format("Commission: $%.2f (%d%%)",
-          commission,
-          bookingService.hasMultipleBookings(event.clientName()) ? 9 : 10));
+      commissionLabel.setText(String.format("Commission: $%.2f (%d%%)", commission,
+          ServiceProvider.use(sp -> sp.bookingService().hasMultipleBookings(event.clientName()) ? 9 : 10)));
     } catch (SQLException e) {
       errorLabel.setText("Error calculating commission: " + e.getMessage());
     }

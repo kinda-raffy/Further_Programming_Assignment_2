@@ -5,6 +5,8 @@ import fp.assignments.assignment_2.controller.BaseController;
 import fp.assignments.assignment_2.controller.form.AddUserFormController;
 import fp.assignments.assignment_2.model.entity.User;
 import fp.assignments.assignment_2.service.DatabaseConnection;
+import fp.assignments.assignment_2.service.ServiceProvider;
+import javafx.beans.property.ObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -18,7 +20,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import javafx.scene.input.MouseButton;
 import javafx.beans.binding.Bindings;
-import fp.assignments.assignment_2.service.SessionManager;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
@@ -42,18 +43,18 @@ public class AllUserController extends BaseController {
     userNameLabel.textProperty().bind(
         Bindings.createStringBinding(
             () -> {
-              User user = SessionManager.getInstance().getCurrentUser();
+              User user = ServiceProvider.use(sp -> sp.session().getCurrentUser());
               String userName = user != null ? user.userName() : "Anonymous";
               String accountType = user != null ? user.type() : "Unknown";
               return "Logged in as: " + userName + " (" + accountType + ")";
             },
-            SessionManager.getInstance().currentUserProperty()));
+                new ObjectProperty[]{ServiceProvider.use(sp -> sp.session().currentUserProperty())}));
 
     // Add visibility binding for the add staff button
     addStaffButton.visibleProperty().bind(
         Bindings.createBooleanBinding(
-            () -> SessionManager.getInstance().isManager(),
-            SessionManager.getInstance().currentUserProperty()));
+            () -> ServiceProvider.use(sp -> sp.session().isManager()),
+                new ObjectProperty[]{ServiceProvider.use(sp -> sp.session().currentUserProperty())}));
     addStaffButton.managedProperty().bind(addStaffButton.visibleProperty());
   }
 
@@ -107,9 +108,9 @@ public class AllUserController extends BaseController {
       }
 
       userTableList.stream()
-          .filter(u -> u.id() == SessionManager.getInstance().getCurrentUser().id())
+          .filter(u -> u.id() == ServiceProvider.use(sp -> sp.session().getCurrentUser()).id())
           .findFirst()
-          .ifPresent(user -> SessionManager.getInstance().setCurrentUser(user));
+          .ifPresent(user -> ServiceProvider.run(sp -> sp.session().setCurrentUser(user)));
 
     } catch (SQLException e) {
       e.printStackTrace();

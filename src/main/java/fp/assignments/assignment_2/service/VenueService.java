@@ -1,12 +1,17 @@
 package fp.assignments.assignment_2.service;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import fp.assignments.assignment_2.model.entity.Venue;
 
 public class VenueService {
-  private final DatabaseConnection dbConnection;
+  private final DatabaseConnection db;
 
   public VenueService() {
-    this.dbConnection = DatabaseConnection.getInstance();
+    this.db = DatabaseConnection.getInstance();
   }
 
   public void createVenue(String name, int capacity, String keywords, String category, double hirePrice)
@@ -16,7 +21,7 @@ public class VenueService {
         VALUES (?, ?, ?, ?, ?)
         """;
 
-    dbConnection.executeUpdate(sql, ps -> {
+    db.executeUpdate(sql, ps -> {
       ps.setString(1, name);
       ps.setInt(2, capacity);
       ps.setString(3, keywords);
@@ -27,6 +32,23 @@ public class VenueService {
 
   public void deleteVenue(String venueName) throws SQLException {
     String sql = "DELETE FROM venues WHERE name = ?";
-    dbConnection.executeUpdate(sql, ps -> ps.setString(1, venueName));
+    db.executeUpdate(sql, ps -> ps.setString(1, venueName));
+  }
+
+  public List<Venue> getVenues() throws SQLException {
+    List<Venue> venues = new ArrayList<>();
+    String sql = "SELECT * FROM venues";
+
+    try (ResultSet rs = db.executeQuery(sql)) {
+      while (rs.next()) {
+        venues.add(new Venue(
+            rs.getString("name"),
+            rs.getInt("capacity"),
+            rs.getString("suitability_keywords"),
+            rs.getString("category"),
+            rs.getDouble("hire_price")));
+      }
+    }
+    return venues;
   }
 }

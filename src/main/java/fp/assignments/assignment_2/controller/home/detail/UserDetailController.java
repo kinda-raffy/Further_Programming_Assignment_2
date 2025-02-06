@@ -5,7 +5,8 @@ import fp.assignments.assignment_2.controller.BaseController;
 import fp.assignments.assignment_2.controller.form.EditUserFormController;
 import fp.assignments.assignment_2.model.entity.User;
 import fp.assignments.assignment_2.service.DatabaseConnection;
-import fp.assignments.assignment_2.service.SessionManager;
+import fp.assignments.assignment_2.service.ServiceProvider;
+import javafx.beans.property.ObjectProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -45,12 +46,12 @@ public class UserDetailController extends BaseController {
     editButton.visibleProperty().bind(
         Bindings.createBooleanBinding(
             () -> {
-              User currentUser = SessionManager.getInstance().getCurrentUser();
-              return SessionManager.getInstance().isManager() ||
+              User currentUser = ServiceProvider.use(sp -> sp.session().getCurrentUser());
+              return ServiceProvider.use(sp -> sp.session().isManager()) ||
                   (currentUser != null && user != null &&
                       currentUser.id().equals(user.id()));
             },
-            SessionManager.getInstance().currentUserProperty()));
+                new ObjectProperty[]{ServiceProvider.use(sp -> sp.session().currentUserProperty())}));
     editButton.managedProperty().bind(editButton.visibleProperty());
   }
 
@@ -67,8 +68,8 @@ public class UserDetailController extends BaseController {
     // Show delete button to only managers.
     deleteButton.visibleProperty().bind(
         Bindings.createBooleanBinding(
-            () -> SessionManager.getInstance().isManager(),
-            SessionManager.getInstance().currentUserProperty()));
+            () -> ServiceProvider.use(sp -> sp.session().isManager()),
+                new ObjectProperty[]{ServiceProvider.use(sp -> sp.session().currentUserProperty())}));
     deleteButton.managedProperty().bind(deleteButton.visibleProperty());
   }
 
@@ -81,7 +82,7 @@ public class UserDetailController extends BaseController {
   }
 
   private void updateDeleteButton() {
-    User currentUser = SessionManager.getInstance().getCurrentUser();
+    User currentUser = ServiceProvider.use(sp -> sp.session().getCurrentUser());
     // Enable delete button if the user isn't themselves.
     deleteButton.setDisable(currentUser != null && currentUser.id().equals(user.id()));
   }

@@ -4,9 +4,8 @@ import fp.assignments.assignment_2.LMVMApplication;
 import fp.assignments.assignment_2.controller.BaseController;
 import fp.assignments.assignment_2.model.entity.Booking;
 import fp.assignments.assignment_2.model.entity.Event;
-import fp.assignments.assignment_2.service.BookingService;
-import fp.assignments.assignment_2.service.EventService;
-import fp.assignments.assignment_2.service.SessionManager;
+import fp.assignments.assignment_2.service.ServiceProvider;
+import javafx.beans.property.ObjectProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
@@ -14,6 +13,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.chart.*;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
@@ -42,30 +42,29 @@ public class BookingsController extends BaseController {
   @FXML
   private TableColumn<Booking, String> commissionCol;
 
-  private final BookingService bookingService = BookingService.getInstance();
-  private final EventService eventService = new EventService();
   private final ObservableList<Booking> bookingsList = FXCollections.observableArrayList();
 
   @FXML
   public void initialize() {
     setupBookingsTable();
     setupCommissionTable();
-    bookingsTable.setItems(bookingService.getBookings());
+    ServiceProvider.run(sp -> bookingsTable.setItems(sp.bookingService().getBookings()));
 
     summarySection.visibleProperty().bind(
         Bindings.createBooleanBinding(
-            () -> SessionManager.getInstance().isManager(),
-            SessionManager.getInstance().currentUserProperty()));
+            () -> ServiceProvider.use(sp -> sp.session().isManager()),
+                new ObjectProperty[]{ServiceProvider.use(sp -> sp.session().currentUserProperty())}));
     summarySection.managedProperty().bind(summarySection.visibleProperty());
 
     commissionCol.visibleProperty().bind(
         Bindings.createBooleanBinding(
-            () -> SessionManager.getInstance().isManager(),
-            SessionManager.getInstance().currentUserProperty()));
+            () -> ServiceProvider.use(sp -> sp.session().isManager()),
+                new ObjectProperty[]{ServiceProvider.use(sp -> sp.session().currentUserProperty())}));
 
-    bookingService.getBookings().addListener((javafx.collections.ListChangeListener<Booking>) c -> {
-      updateCharts();
-    });
+    ServiceProvider
+        .run(sp -> sp.bookingService().getBookings().addListener((ListChangeListener<Booking>) c -> {
+          updateCharts();
+        }));
 
     updateCharts();
   }
@@ -87,8 +86,10 @@ public class BookingsController extends BaseController {
 
     clientCol.setCellValueFactory(data -> {
       try {
-        Event event = eventService.getEventById(data.getValue().eventId());
-        return new SimpleStringProperty(event != null ? event.clientName() : "");
+        return ServiceProvider.use(sp -> {
+          Event event = sp.eventService().getEventById(data.getValue().eventId());
+          return new SimpleStringProperty(event != null ? event.clientName() : "");
+        });
       } catch (SQLException e) {
         return new SimpleStringProperty("");
       }
@@ -96,8 +97,10 @@ public class BookingsController extends BaseController {
 
     titleCol.setCellValueFactory(data -> {
       try {
-        Event event = eventService.getEventById(data.getValue().eventId());
-        return new SimpleStringProperty(event != null ? event.title() : "");
+        return ServiceProvider.use(sp -> {
+          Event event = sp.eventService().getEventById(data.getValue().eventId());
+          return new SimpleStringProperty(event != null ? event.title() : "");
+        });
       } catch (SQLException e) {
         return new SimpleStringProperty("");
       }
@@ -116,7 +119,7 @@ public class BookingsController extends BaseController {
       row.setOnMouseClicked(action -> {
         if (action.getButton() == MouseButton.PRIMARY && action.getClickCount() == 2 && !row.isEmpty()) {
           try {
-            Event event = eventService.getEventById(row.getItem().eventId());
+            Event event = ServiceProvider.use(sp -> sp.eventService().getEventById(row.getItem().eventId()));
             if (event != null) {
               LMVMApplication.navigateToEventDetails(event);
             }
@@ -145,8 +148,8 @@ public class BookingsController extends BaseController {
   }
 
   private void updateVenueUtilisationChart() {
-    Map<String, Long> venueCount = bookingService.getBookings().stream()
-        .collect(Collectors.groupingBy(Booking::venueName, Collectors.counting()));
+    Map<String, Long> venueCount = ServiceProvider.use(sp -> sp.bookingService().getBookings().stream()
+        .collect(Collectors.groupingBy(Booking::venueName, Collectors.counting())));
 
     ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
     venueCount.forEach((venue, count) -> pieChartData.add(new PieChart.Data(venue, count)));
@@ -160,9 +163,9 @@ public class BookingsController extends BaseController {
     incomeSeries.setName("Income $");
     commissionSeries.setName("Commission $");
 
-    bookingService.getBookings().forEach(booking -> {
+    ServiceProvider.run(sp -> sp.bookingService().getBookings().forEach(booking -> {
       try {
-        Event event = eventService.getEventById(booking.eventId());
+        Event event = sp.eventService().getEventById(booking.eventId());
         if (event != null) {
           String truncatedTitle = event.title().length() > 20
               ? event.title().substring(0, 17) + "..."
@@ -174,24 +177,24 @@ public class BookingsController extends BaseController {
       } catch (SQLException e) {
         e.printStackTrace();
       }
-    });
+    }));
 
     incomeChart.getData().clear();
     incomeChart.getData().addAll(incomeSeries, commissionSeries);
   }
 
   private void updateCommissionTable() {
-    Map<String, Double> clientCommissions = bookingService.getBookings().stream()
+    Map<String, Double> clientCommissions = ServiceProvider.use(sp -> sp.bookingService().getBookings().stream()
         .collect(Collectors.groupingBy(
             booking -> {
               try {
-                Event event = eventService.getEventById(booking.eventId());
+                Event event = sp.eventService().getEventById(booking.eventId());
                 return event != null ? event.clientName() : "Unknown";
               } catch (SQLException e) {
                 return "Unknown";
               }
             },
-            Collectors.summingDouble(Booking::commission)));
+            Collectors.summingDouble(Booking::commission))));
 
     commissionTable.setItems(FXCollections.observableArrayList(clientCommissions.entrySet()));
 

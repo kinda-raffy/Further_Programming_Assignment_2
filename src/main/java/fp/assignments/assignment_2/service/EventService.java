@@ -3,20 +3,22 @@ package fp.assignments.assignment_2.service;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import fp.assignments.assignment_2.model.entity.Event;
 
 public class EventService {
-  private final DatabaseConnection dbService;
+  private final DatabaseConnection db;
 
   public EventService() {
-    this.dbService = DatabaseConnection.getInstance();
+    this.db = DatabaseConnection.getInstance();
   }
 
   public Event getEventById(Integer eventId) throws SQLException {
     String sql = "SELECT * FROM events WHERE id = ?";
 
-    try (var pstmt = dbService.prepareStatement(sql)) {
+    try (var pstmt = db.prepareStatement(sql)) {
       pstmt.setInt(1, eventId);
       ResultSet rs = pstmt.executeQuery();
 
@@ -34,5 +36,26 @@ public class EventService {
       }
     }
     return null;
+  }
+
+  public List<Event> getEvents() throws SQLException {
+    List<Event> events = new ArrayList<>();
+    String sql = "SELECT * FROM events";
+
+    try (ResultSet rs = db.executeQuery(sql)) {
+      while (rs.next()) {
+        events.add(new Event(
+            rs.getInt("id"),
+            rs.getString("name"),
+            rs.getString("main_artist"),
+            rs.getInt("expected_attendance"),
+            LocalDateTime.parse(rs.getString("event_datetime")),
+            rs.getInt("duration"),
+            rs.getString("event_type"),
+            rs.getString("category"),
+            rs.getString("client_id")));
+      }
+    }
+    return events;
   }
 }

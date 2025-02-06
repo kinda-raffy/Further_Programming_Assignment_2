@@ -1,7 +1,6 @@
 package fp.assignments.assignment_2.controller.home.pane;
 
-import fp.assignments.assignment_2.service.HomeService;
-import fp.assignments.assignment_2.service.BookingService;
+import fp.assignments.assignment_2.service.ServiceProvider;
 import fp.assignments.assignment_2.LMVMApplication;
 import fp.assignments.assignment_2.controller.BaseController;
 import fp.assignments.assignment_2.model.entity.Booking;
@@ -33,8 +32,6 @@ public class BacklogController extends BaseController {
   @FXML
   private CheckBox capacityCheck;
 
-  private static HomeService homeService = new HomeService();
-  private static BookingService bookingService = BookingService.getInstance();
   private static ObservableList<Event> eventsList = FXCollections.observableArrayList();
   private Event selectedEvent;
 
@@ -45,12 +42,12 @@ public class BacklogController extends BaseController {
     setupRecommendedVenuesTable();
     loadEvents();
 
-    bookingService.getBookings().addListener((ListChangeListener<Booking>) c -> {
+    ServiceProvider.run(sp -> sp.bookingService().getBookings().addListener((ListChangeListener<Booking>) c -> {
       selectedEvent = null;
       recommendedVenuesTable.getItems().clear();
       eventsTable.getSelectionModel().clearSelection();
       loadEvents();
-    });
+    }));
 
     // Add listeners for criteria changes
     availableCheck.selectedProperty().addListener((obs, old, newVal) -> updateRecommendations());
@@ -131,7 +128,8 @@ public class BacklogController extends BaseController {
     confirmDialog.showAndWait().ifPresent(response -> {
       if (response == ButtonType.OK) {
         try {
-          bookingService.createBooking(selectedEvent, recommendation.venue(), selectedEvent.eventDateTime());
+          ServiceProvider.run(sp -> sp.bookingService().createBooking(selectedEvent, recommendation.venue(),
+              selectedEvent.eventDateTime()));
         } catch (SQLException e) {
           showError("Error", "Could not create booking: " + e.getMessage());
         }
@@ -142,11 +140,12 @@ public class BacklogController extends BaseController {
   public static void loadEvents() {
     eventsList.clear();
     try {
-      var allEvents = homeService.loadEvents();
+      List<Event> allEvents = ServiceProvider.use(sp -> sp.eventService().getEvents());
 
       for (Event event : allEvents) {
         try {
-          if (bookingService.getBookingForEvent(event.id()) == null) {
+          boolean hasBooking = ServiceProvider.use(sp -> sp.bookingService().getBookingForEvent(event.id()) != null);
+          if (!hasBooking) {
             eventsList.add(event);
           }
         } catch (SQLException e) {
@@ -178,7 +177,7 @@ public class BacklogController extends BaseController {
       return;
 
     try {
-      List<Venue> allVenues = homeService.loadVenues();
+      List<Venue> allVenues = ServiceProvider.use(sp -> sp.venueService().getVenues());
       List<VenueRecommendation> recommendations = allVenues.stream()
           .map(venue -> new VenueRecommendation(venue, calculateCompatibility(venue)))
           .filter(recommendation -> recommendation.compatibilityScore() > 0)
@@ -198,9 +197,10 @@ public class BacklogController extends BaseController {
     if (availableCheck.isSelected()) {
       enabledCriteria++;
       try {
-        if (bookingService.isVenueAvailable(venue.nameId(),
+        boolean isAvailable = ServiceProvider.use(sp -> sp.bookingService().isVenueAvailable(venue.nameId(),
             selectedEvent.eventDateTime(),
-            selectedEvent.eventDateTime().plusHours(selectedEvent.durationHours()))) {
+            selectedEvent.eventDateTime().plusHours(selectedEvent.durationHours())));
+        if (isAvailable) {
           metCriteria++;
         }
       } catch (SQLException e) {

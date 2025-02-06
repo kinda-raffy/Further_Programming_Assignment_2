@@ -2,13 +2,14 @@ package fp.assignments.assignment_2.controller.form;
 
 import fp.assignments.assignment_2.model.entity.User;
 import fp.assignments.assignment_2.service.DatabaseConnection;
+import javafx.beans.property.ObjectProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import java.sql.SQLException;
 import javafx.beans.binding.Bindings;
-import fp.assignments.assignment_2.service.SessionManager;
+import fp.assignments.assignment_2.service.ServiceProvider;
 
 public class EditUserFormController {
   @FXML
@@ -44,8 +45,8 @@ public class EditUserFormController {
 
     typeContainer.visibleProperty().bind(
         Bindings.createBooleanBinding(
-            () -> SessionManager.getInstance().isManager(),
-            SessionManager.getInstance().currentUserProperty()));
+            () -> ServiceProvider.use(sp -> sp.session().isManager()),
+                new ObjectProperty[]{ServiceProvider.use(sp -> sp.session().currentUserProperty())}));
     typeContainer.managedProperty().bind(typeContainer.visibleProperty());
   }
 

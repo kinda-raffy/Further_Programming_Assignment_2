@@ -16,13 +16,9 @@ import java.util.List;
 public class BackupService {
   private static BackupService instance;
   private final DatabaseConnection dbConnection;
-  private final HomeService homeService;
-  private final BookingService bookingService;
 
   private BackupService() {
     this.dbConnection = DatabaseConnection.getInstance();
-    this.homeService = new HomeService();
-    this.bookingService = BookingService.getInstance();
   }
 
   public static BackupService getInstance() {
@@ -33,10 +29,10 @@ public class BackupService {
   }
 
   public void exportTransactionData(File file) throws IOException, SQLException {
-    TransactionData data = new TransactionData(
-        new ArrayList<>(homeService.loadEvents()),
-        new ArrayList<>(homeService.loadVenues()),
-        new ArrayList<>(bookingService.getBookings()));
+    TransactionData data = ServiceProvider.use(sp -> new TransactionData(
+        new ArrayList<>(sp.eventService().getEvents()),
+        new ArrayList<>(sp.venueService().getVenues()),
+        new ArrayList<>(sp.bookingService().getBookings())));
 
     try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))) {
       oos.writeObject(data);

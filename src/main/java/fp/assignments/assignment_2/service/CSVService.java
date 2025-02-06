@@ -7,59 +7,16 @@ import java.time.LocalTime;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
-import fp.assignments.assignment_2.model.entity.Event;
-import fp.assignments.assignment_2.model.entity.Venue;
-
-public class HomeService {
+public class CSVService {
   private final DatabaseConnection dbService;
 
-  public HomeService() {
+  public CSVService() {
     this.dbService = DatabaseConnection.getInstance();
   }
 
-  public List<Venue> loadVenues() throws SQLException {
-    List<Venue> venues = new ArrayList<>();
-    String sql = "SELECT * FROM venues";
-
-    try (ResultSet rs = dbService.executeQuery(sql)) {
-      while (rs.next()) {
-        venues.add(new Venue(
-            rs.getString("name"),
-            rs.getInt("capacity"),
-            rs.getString("suitability_keywords"),
-            rs.getString("category"),
-            rs.getDouble("hire_price")));
-      }
-    }
-    return venues;
-  }
-
-  public List<Event> loadEvents() throws SQLException {
-    List<Event> events = new ArrayList<>();
-    String sql = "SELECT * FROM events";
-
-    try (ResultSet rs = dbService.executeQuery(sql)) {
-      while (rs.next()) {
-        events.add(new Event(
-            rs.getInt("id"),
-            rs.getString("name"),
-            rs.getString("main_artist"),
-            rs.getInt("expected_attendance"),
-            LocalDateTime.parse(rs.getString("event_datetime")),
-            rs.getInt("duration"),
-            rs.getString("event_type"),
-            rs.getString("category"),
-            rs.getString("client_id")));
-      }
-    }
-    return events;
-  }
-
-  public void importVenues(File file) throws SQLException, IOException {
+  public void importVenueCSV(File file) throws SQLException, IOException {
     String sql = "INSERT OR REPLACE INTO venues (name, capacity, suitability_keywords, category, hire_price) VALUES (?, ?, ?, ?, ?)";
 
     try (Scanner scanner = new Scanner(file)) {
@@ -83,7 +40,7 @@ public class HomeService {
     }
   }
 
-  public void importEvents(File file) throws IOException, SQLException, DateTimeParseException {
+  public void importEventCSV(File file) throws IOException, SQLException, DateTimeParseException {
     String sql = "INSERT INTO events (name, main_artist, expected_attendance, event_datetime, duration, event_type, category, client_id) "
         +
         "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";

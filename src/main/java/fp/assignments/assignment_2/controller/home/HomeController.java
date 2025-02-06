@@ -5,15 +5,12 @@ import fp.assignments.assignment_2.controller.BaseController;
 import fp.assignments.assignment_2.controller.home.pane.AllUserController;
 import fp.assignments.assignment_2.controller.home.pane.AllVenueController;
 import fp.assignments.assignment_2.controller.home.pane.BacklogController;
-import fp.assignments.assignment_2.service.BookingService;
-import fp.assignments.assignment_2.service.HomeService;
-import fp.assignments.assignment_2.service.SessionManager;
-import fp.assignments.assignment_2.service.BackupService;
+import fp.assignments.assignment_2.service.ServiceProvider;
+import javafx.beans.property.ObjectProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import java.io.*;
-import java.sql.*;
 import java.time.format.DateTimeParseException;
 import javafx.beans.binding.Bindings;
 
@@ -24,16 +21,13 @@ public class HomeController extends BaseController {
     @FXML
     private Menu backupMenu;
 
-    private HomeService homeService;
-
     @FXML
     public void initialize() {
-        homeService = new HomeService();
 
         backupMenu.visibleProperty().bind(
                 Bindings.createBooleanBinding(
-                        () -> SessionManager.getInstance().isManager(),
-                        SessionManager.getInstance().currentUserProperty()));
+                        () -> ServiceProvider.use(sp -> sp.session().isManager()),
+                        new ObjectProperty[] { ServiceProvider.use(sp -> sp.session().currentUserProperty()) }));
     }
 
     @FXML
@@ -45,7 +39,7 @@ public class HomeController extends BaseController {
 
         if (file != null) {
             try {
-                homeService.importVenues(file);
+                ServiceProvider.run(sp -> sp.homeService().importVenueCSV(file));
                 AllVenueController.reloadVenues();
             } catch (Exception e) {
                 showError("Error importing venues", e.getMessage());
@@ -62,14 +56,14 @@ public class HomeController extends BaseController {
 
         if (file != null) {
             try {
-                homeService.importEvents(file);
+                ServiceProvider.run(sp -> sp.homeService().importEventCSV(file));
                 BacklogController.reloadEvents();
             } catch (IOException e) {
                 showError("Error reading file", e.getMessage());
             } catch (DateTimeParseException e) {
                 showError("Error parsing date",
                         "Please ensure dates are in format DD-MM-YY and times in HH:MM AM/PM: " + e);
-            } catch (SQLException e) {
+            } catch (Exception e) {
                 showError("Error saving to database", e.getMessage());
             }
         }
@@ -84,11 +78,13 @@ public class HomeController extends BaseController {
         File file = fileChooser.showSaveDialog(mainTabPane.getScene().getWindow());
 
         if (file != null) {
-            try {
-                BackupService.getInstance().exportTransactionData(file);
-            } catch (Exception e) {
-                showError("Error exporting transaction data", e.getMessage());
-            }
+            ServiceProvider.run(sp -> {
+                try {
+                    sp.backupService().exportTransactionData(file);
+                } catch (Exception e) {
+                    showError("Error exporting transaction data", e.getMessage());
+                }
+            });
         }
     }
 
@@ -101,9 +97,9 @@ public class HomeController extends BaseController {
 
         if (file != null) {
             try {
-                BackupService.getInstance().importTransactionData(file);
+                ServiceProvider.run(sp -> sp.backupService().importTransactionData(file));
                 AllVenueController.reloadVenues();
-                BookingService.getInstance().loadBookings();
+                ServiceProvider.run(sp -> sp.bookingService().loadBookings());
                 BacklogController.reloadEvents();
             } catch (Exception e) {
                 showError("Error importing transaction data", e.getMessage());
@@ -121,7 +117,7 @@ public class HomeController extends BaseController {
 
         if (file != null) {
             try {
-                BackupService.getInstance().exportMasterData(file);
+                ServiceProvider.run(sp -> sp.backupService().exportMasterData(file));
             } catch (Exception e) {
                 showError("Error exporting master data", e.getMessage());
             }
@@ -137,7 +133,7 @@ public class HomeController extends BaseController {
 
         if (file != null) {
             try {
-                BackupService.getInstance().importMasterData(file);
+                ServiceProvider.run(sp -> sp.backupService().importMasterData(file));
                 AllUserController.loadUsers();
             } catch (Exception e) {
                 showError("Error importing master data", e.getMessage());
@@ -147,7 +143,7 @@ public class HomeController extends BaseController {
 
     @FXML
     private void handleLogout() {
-        SessionManager.getInstance().logout();
+        ServiceProvider.run(sp -> sp.session().logout());
         try {
             LMVMApplication.navigateToLogin();
         } catch (IOException e) {

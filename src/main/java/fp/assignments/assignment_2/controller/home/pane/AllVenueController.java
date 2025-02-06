@@ -2,9 +2,7 @@ package fp.assignments.assignment_2.controller.home.pane;
 
 import fp.assignments.assignment_2.controller.BaseController;
 import fp.assignments.assignment_2.model.entity.Venue;
-import fp.assignments.assignment_2.service.BookingService;
-import fp.assignments.assignment_2.service.HomeService;
-import fp.assignments.assignment_2.service.VenueService;
+import fp.assignments.assignment_2.service.ServiceProvider;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.beans.property.SimpleStringProperty;
@@ -47,9 +45,6 @@ public class AllVenueController extends BaseController {
   @FXML
   private Button deleteButton;
 
-  private static HomeService homeService = new HomeService();
-  private static VenueService venueService = new VenueService();
-  private static BookingService bookingService = BookingService.getInstance();
   private static ObservableList<Venue> venuesList = FXCollections.observableArrayList();
   private static ObservableList<Venue> filteredVenuesList = FXCollections.observableArrayList();
 
@@ -142,7 +137,8 @@ public class AllVenueController extends BaseController {
       LocalDateTime startDateTime = LocalDateTime.of(selectedDate, startTime);
       LocalDateTime endDateTime = LocalDateTime.of(selectedDate, endTime);
 
-      return bookingService.isVenueAvailable(venue.nameId(), startDateTime, endDateTime);
+      return ServiceProvider.use(sp -> sp.bookingService().isVenueAvailable(venue.nameId(), startDateTime,
+          endDateTime));
     } catch (DateTimeParseException e) {
       // If time format is invalid, ignore availability filter
       return true;
@@ -200,8 +196,10 @@ public class AllVenueController extends BaseController {
     venuesList.clear();
     filteredVenuesList.clear();
     try {
-      venuesList.addAll(homeService.loadVenues());
-      filteredVenuesList.addAll(homeService.loadVenues());
+      ServiceProvider.run(sp -> {
+        venuesList.addAll(sp.venueService().getVenues());
+        filteredVenuesList.addAll(sp.venueService().getVenues());
+      });
     } catch (SQLException e) {
       Alert alert = new Alert(Alert.AlertType.ERROR);
       alert.setTitle("Error loading data");
@@ -242,8 +240,8 @@ public class AllVenueController extends BaseController {
 
       if (alert.showAndWait().orElse(null) == ButtonType.OK) {
         try {
-          venueService.deleteVenue(selectedVenue.nameId());
-          BookingService.getInstance().loadBookings();
+          ServiceProvider.run(sp -> sp.venueService().deleteVenue(selectedVenue.nameId()));
+          ServiceProvider.run(sp -> sp.bookingService().loadBookings());
           reloadVenues();
         } catch (SQLException e) {
           showError("Error", "Could not delete venue: " + e.getMessage());

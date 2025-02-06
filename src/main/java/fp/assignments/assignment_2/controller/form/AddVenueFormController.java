@@ -2,7 +2,7 @@ package fp.assignments.assignment_2.controller.form;
 
 import fp.assignments.assignment_2.controller.BaseController;
 import fp.assignments.assignment_2.controller.home.pane.AllVenueController;
-import fp.assignments.assignment_2.service.VenueService;
+import fp.assignments.assignment_2.service.ServiceProvider;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -24,8 +24,6 @@ public class AddVenueFormController extends BaseController {
   @FXML
   private Label errorLabel;
 
-  private final VenueService venueService = new VenueService();
-
   @FXML
   public void initialize() {
     categoryField.getItems().addAll("Indoor", "Outdoor", "Convertible");
@@ -36,12 +34,12 @@ public class AddVenueFormController extends BaseController {
   private void handleCreate() {
     if (validateFields()) {
       try {
-        venueService.createVenue(
+        ServiceProvider.run(sp -> sp.venueService().createVenue(
             nameField.getText(),
             Integer.parseInt(capacityField.getText()),
             keywordsField.getText(),
             categoryField.getValue(),
-            Double.parseDouble(hirePriceField.getText()));
+            Double.parseDouble(hirePriceField.getText())));
         AllVenueController.reloadVenues();
         closeWindow();
       } catch (SQLException e) {

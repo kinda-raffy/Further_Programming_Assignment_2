@@ -4,7 +4,7 @@ import fp.assignments.assignment_2.LMVMApplication;
 import fp.assignments.assignment_2.controller.BaseController;
 import fp.assignments.assignment_2.model.entity.User;
 import fp.assignments.assignment_2.service.DatabaseConnection;
-import fp.assignments.assignment_2.service.SessionManager;
+import fp.assignments.assignment_2.service.ServiceProvider;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -42,7 +42,7 @@ public class LoginController extends BaseController {
               rs.getString("last_name"),
               rs.getString("type"));
 
-          SessionManager.getInstance().setCurrentUser(user);
+          ServiceProvider.run(sp -> sp.session().setCurrentUser(user));
           try {
             LMVMApplication.navigateToHome();
           } catch (IOException e) {

@@ -4,7 +4,7 @@ import fp.assignments.assignment_2.controller.home.detail.EventDetailsController
 import fp.assignments.assignment_2.controller.home.detail.UserDetailController;
 import fp.assignments.assignment_2.model.entity.Event;
 import fp.assignments.assignment_2.model.entity.User;
-import fp.assignments.assignment_2.service.SessionManager;
+import fp.assignments.assignment_2.service.ServiceProvider;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -26,7 +26,7 @@ public class LMVMApplication extends Application {
 
         if (devMode) {
             User devUser = new User(1, "dev", "dev", "dev", "dev", "manager");
-            SessionManager.getInstance().setCurrentUser(devUser);
+            ServiceProvider.run(sp -> sp.session().setCurrentUser(devUser));
             navigateToHome();
         } else {
             navigateToLogin();
