@@ -5,20 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a972194c-40e2-4ece-9f1b-a834a8007c96" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/LMVMApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/LMVMApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/AllUserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/AllUserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/BookingsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/BookingsController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/CreateBookingFormController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/CreateBookingFormController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/EditUserFormController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/EditUserFormController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/EventDetailsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/EventDetailsController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/HomeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/HomeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/UserDetailController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/UserDetailController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/fp/assignments/assignment_2/view/all-user-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fp/assignments/assignment_2/view/all-user-view.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/fp/assignments/assignment_2/view/bookings-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fp/assignments/assignment_2/view/bookings-view.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/fp/assignments/assignment_2/view/edit-user-form-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fp/assignments/assignment_2/view/edit-user-form-view.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/fp/assignments/assignment_2/view/home-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fp/assignments/assignment_2/view/home-view.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/fp/assignments/assignment_2/view/user-detail-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fp/assignments/assignment_2/view/user-detail-view.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/AddVenueFormController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/VenueService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/fp/assignments/assignment_2/view/add-venue-form-view.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/AllVenueController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/AllVenueController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/fp/assignments/assignment_2/view/all-venues-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fp/assignments/assignment_2/view/all-venues-view.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

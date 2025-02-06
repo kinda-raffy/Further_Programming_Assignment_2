@@ -89,7 +89,7 @@ public class LMVMApplication extends Application {
     }
 
     public static void main(String[] args) {
-        setDevMode(false);
+        setDevMode(true);
         launch();
     }
 }

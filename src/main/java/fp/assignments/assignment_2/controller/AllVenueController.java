@@ -18,6 +18,12 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.List;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import java.io.IOException;
 
 public class AllVenueController extends BaseController {
   @FXML
@@ -150,7 +156,10 @@ public class AllVenueController extends BaseController {
     nameCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().nameId()));
     capacityCol.setCellValueFactory(data -> new SimpleIntegerProperty(data.getValue().capacity()).asObject());
     suitabilityCol.setCellValueFactory(
-        data -> new SimpleStringProperty(String.join(" & ", data.getValue().suitabilityKeywords())));
+        data -> new SimpleStringProperty(String.join(", ",
+            data.getValue().suitabilityKeywords().stream()
+                .map(word -> word.substring(0, 1).toUpperCase() + word.substring(1).toLowerCase())
+                .toList())));
     venueCategoryCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().category()));
     priceCol.setCellValueFactory(data -> new SimpleDoubleProperty(data.getValue().hirePricePerHour()).asObject());
 
@@ -192,5 +201,21 @@ public class AllVenueController extends BaseController {
 
   public static void reloadVenues() {
     loadAllVenues();
+  }
+
+  @FXML
+  private void handleCreateVenue() {
+    try {
+      FXMLLoader loader = new FXMLLoader(
+          getClass().getResource("/fp/assignments/assignment_2/view/add-venue-form-view.fxml"));
+      Parent root = loader.load();
+      Stage stage = new Stage();
+      stage.setTitle("Create Venue");
+      stage.setScene(new Scene(root));
+      stage.initModality(Modality.APPLICATION_MODAL);
+      stage.showAndWait();
+    } catch (IOException e) {
+      showError("Error", "Could not open create venue form: " + e.getMessage());
+    }
   }
 }
