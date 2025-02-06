@@ -95,16 +95,22 @@ public class AllVenueController extends BaseController {
   }
 
   private boolean matchesKeywords(Venue venue, String keywordsQuery) {
-    List<String> searchKeywords = Arrays.asList(keywordsQuery.split("\\+"))
-        .stream()
-        .map(String::trim)
-        .filter(k -> !k.isEmpty())
-        .toList();
+    String[] orGroups = keywordsQuery.split("\\|");
 
-    return searchKeywords.isEmpty() ||
-        searchKeywords.stream().allMatch(keyword -> venue.suitabilityKeywords().stream()
-            .anyMatch(suitability -> suitability.toLowerCase()
-                .contains(keyword.toLowerCase())));
+    return Arrays.stream(orGroups)
+        .map(String::trim)
+        .anyMatch(orGroup -> {
+          List<String> andKeywords = Arrays.asList(orGroup.split("&"))
+              .stream()
+              .map(String::trim)
+              .filter(k -> !k.isEmpty())
+              .toList();
+
+          return andKeywords.isEmpty() ||
+              andKeywords.stream().allMatch(keyword -> venue.suitabilityKeywords().stream()
+                  .anyMatch(suitability -> suitability.toLowerCase()
+                      .contains(keyword.toLowerCase())));
+        });
   }
 
   private boolean isAvailableForSelectedTime(Venue venue) {
