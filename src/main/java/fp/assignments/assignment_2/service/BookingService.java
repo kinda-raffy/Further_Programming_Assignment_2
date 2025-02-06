@@ -32,7 +32,7 @@ public class BookingService {
     return bookings;
   }
 
-  private void loadBookings() {
+  public void loadBookings() {
     try {
       String sql = "SELECT b.*, e.duration FROM bookings b " +
           "JOIN events e ON b.event_id = e.id";

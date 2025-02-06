@@ -23,7 +23,7 @@ import javafx.beans.property.SimpleStringProperty;
 public class AllUserController extends BaseController {
   @FXML
   private TableView<User> userTable;
-  private final ObservableList<User> userTableList = FXCollections.observableArrayList();
+  private static ObservableList<User> userTableList = FXCollections.observableArrayList();
 
   @FXML
   private Label userNameLabel;
@@ -31,6 +31,7 @@ public class AllUserController extends BaseController {
   @FXML
   public void initialize() {
     setupTableColumns();
+    userTable.setItems(userTableList);
     loadUsers();
 
     userNameLabel.textProperty().bind(
@@ -65,7 +66,6 @@ public class AllUserController extends BaseController {
     typeCol.prefWidthProperty().bind(userTable.widthProperty().multiply(0.15));
 
     userTable.getColumns().addAll(idCol, usernameCol, firstNameCol, lastNameCol, typeCol);
-    userTable.setItems(userTableList);
 
     userTable.setRowFactory(tv -> {
       TableRow<User> row = new TableRow<>();
@@ -78,7 +78,7 @@ public class AllUserController extends BaseController {
     });
   }
 
-  public void loadUsers() {
+  public static void loadUsers() {
     userTableList.clear();
     try {
       String sql = "SELECT * FROM users ORDER BY id";
@@ -115,7 +115,7 @@ public class AllUserController extends BaseController {
 
       // Get controller and set up callback
       AddUserFormController controller = loader.getController();
-      controller.setOnUserAdded(this::loadUsers);
+      controller.setOnUserAdded(AllUserController::loadUsers);
 
       stage.showAndWait();
     } catch (IOException e) {
@@ -131,7 +131,7 @@ public class AllUserController extends BaseController {
             loadUsers();
             LMVMApplication.goBack();
           },
-          this::loadUsers);
+          AllUserController::loadUsers);
     } catch (IOException e) {
       e.printStackTrace();
     }

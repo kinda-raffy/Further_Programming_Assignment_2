@@ -2,13 +2,17 @@ package fp.assignments.assignment_2.model;
 
 import java.util.List;
 import java.util.Arrays;
+import java.io.Serializable;
 
 public record Venue(
     String nameId,
     int capacity,
     String category,
     double hirePricePerHour,
-    List<String> suitabilityKeywords) {
+    List<String> suitabilityKeywords) implements Serializable {
+
+  private static final long serialVersionUID = 1L;
+
   public Venue(String nameId, int capacity, String suitabilityKeywords,
       String category, double hirePrice) {
     this(

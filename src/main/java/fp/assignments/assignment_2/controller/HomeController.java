@@ -1,8 +1,10 @@
 package fp.assignments.assignment_2.controller;
 
 import fp.assignments.assignment_2.LMVMApplication;
+import fp.assignments.assignment_2.service.BookingService;
 import fp.assignments.assignment_2.service.HomeService;
 import fp.assignments.assignment_2.service.SessionManager;
+import fp.assignments.assignment_2.service.BackupService;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.FileChooser;
@@ -61,11 +63,73 @@ public class HomeController extends BaseController {
     }
 
     @FXML
-    private void handleBackupExport() {
+    private void handleTransactionExport() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("LMVM Files", "*.lmvm"));
+        fileChooser.setInitialFileName("Transaction_Data");
+        File file = fileChooser.showSaveDialog(mainTabPane.getScene().getWindow());
+
+        if (file != null) {
+            try {
+                BackupService.getInstance().exportTransactionData(file);
+            } catch (Exception e) {
+                showError("Error exporting transaction data", e.getMessage());
+            }
+        }
     }
 
     @FXML
-    private void handleBackupImport() {
+    private void handleTransactionImport() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("LMVM Files", "*.lmvm"));
+        File file = fileChooser.showOpenDialog(mainTabPane.getScene().getWindow());
+
+        if (file != null) {
+            try {
+                BackupService.getInstance().importTransactionData(file);
+                AllVenueController.reloadVenues();
+                BookingService.getInstance().loadBookings();
+                BacklogController.reloadEvents();
+            } catch (Exception e) {
+                showError("Error importing transaction data", e.getMessage());
+            }
+        }
+    }
+
+    @FXML
+    private void handleMasterExport() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("LMVM Files", "*.lmvm"));
+        fileChooser.setInitialFileName("Master_Data");
+        File file = fileChooser.showSaveDialog(mainTabPane.getScene().getWindow());
+
+        if (file != null) {
+            try {
+                BackupService.getInstance().exportMasterData(file);
+            } catch (Exception e) {
+                showError("Error exporting master data", e.getMessage());
+            }
+        }
+    }
+
+    @FXML
+    private void handleMasterImport() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("LMVM Files", "*.lmvm"));
+        File file = fileChooser.showOpenDialog(mainTabPane.getScene().getWindow());
+
+        if (file != null) {
+            try {
+                BackupService.getInstance().importMasterData(file);
+                AllUserController.loadUsers();
+            } catch (Exception e) {
+                showError("Error importing master data", e.getMessage());
+            }
+        }
     }
 
     @FXML

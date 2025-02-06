@@ -11,7 +11,15 @@
             <MenuItem onAction="#handleImportVenues" text="Venues" />
             <MenuItem onAction="#handleImportEvents" text="Events" />
         </Menu>
-            <Menu text="Backup">
+        <Menu text="Backup">
+            <Menu text="Transaction Data">
+                <MenuItem onAction="#handleTransactionExport" text="Export" />
+                <MenuItem onAction="#handleTransactionImport" text="Import" />
+            </Menu>
+            <Menu text="Master Data">
+                <MenuItem onAction="#handleMasterExport" text="Export" />
+                <MenuItem onAction="#handleMasterImport" text="Import" />
+            </Menu>
         </Menu>
         <Menu text="Account">
             <MenuItem onAction="#handleLogout" text="Logout" />
