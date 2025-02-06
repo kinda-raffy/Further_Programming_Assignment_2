@@ -22,7 +22,11 @@ public class ManagerSignUpController extends BaseController {
   @FXML
   private TextField lastNameField;
   @FXML
+  private PasswordField pinField;
+  @FXML
   private Label errorLabel;
+
+  private static final String VALID_PIN = "909";
 
   @FXML
   private void handleCreate() {
@@ -69,8 +73,14 @@ public class ManagerSignUpController extends BaseController {
     if (userNameField.getText().isEmpty() ||
         passwordField.getText().isEmpty() ||
         firstNameField.getText().isEmpty() ||
-        lastNameField.getText().isEmpty()) {
+        lastNameField.getText().isEmpty() ||
+        pinField.getText().isEmpty()) {
       errorLabel.setText("All fields are required");
+      return false;
+    }
+
+    if (!pinField.getText().equals(VALID_PIN)) {
+      errorLabel.setText("Invalid authorisation pin");
       return false;
     }
     return true;

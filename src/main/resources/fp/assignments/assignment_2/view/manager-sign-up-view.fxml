@@ -26,6 +26,9 @@
         <Label text="Last Name:"/>
         <TextField fx:id="lastNameField"/>
 
+        <Label text="Authorisation Pin:"/>
+        <PasswordField fx:id="pinField"/>
+
         <Label fx:id="errorLabel" textFill="red"/>
 
         <HBox spacing="10">
