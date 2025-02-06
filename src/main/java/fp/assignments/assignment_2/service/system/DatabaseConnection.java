@@ -1,4 +1,4 @@
-package fp.assignments.assignment_2.service;
+package fp.assignments.assignment_2.service.system;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

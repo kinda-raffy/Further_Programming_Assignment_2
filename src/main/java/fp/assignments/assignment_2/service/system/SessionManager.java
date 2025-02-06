@@ -1,4 +1,4 @@
-package fp.assignments.assignment_2.service;
+package fp.assignments.assignment_2.service.system;
 
 import fp.assignments.assignment_2.model.entity.User;
 import javafx.beans.property.ObjectProperty;

@@ -2,9 +2,18 @@ package fp.assignments.assignment_2.service;
 
 import java.util.function.Consumer;
 
+import fp.assignments.assignment_2.service.entity.BookingService;
+import fp.assignments.assignment_2.service.entity.EventService;
+import fp.assignments.assignment_2.service.entity.UserService;
+import fp.assignments.assignment_2.service.entity.VenueService;
+import fp.assignments.assignment_2.service.system.BackupService;
+import fp.assignments.assignment_2.service.system.CSVImporter;
+import fp.assignments.assignment_2.service.system.DatabaseConnection;
+import fp.assignments.assignment_2.service.system.SessionManager;
+
 public class ServiceProvider {
 
-  private final CSVService homeService;
+  private final CSVImporter homeService;
   private final VenueService venueService;
   private final UserService userService;
   private final EventService eventService;
@@ -17,7 +26,7 @@ public class ServiceProvider {
   private ServiceProvider() {
     this.dbConnection = DatabaseConnection.getInstance();
     this.userService = new UserService();
-    this.homeService = new CSVService();
+    this.homeService = new CSVImporter();
     this.venueService = new VenueService();
     this.bookingService = BookingService.getInstance();
     this.eventService = new EventService();
@@ -62,7 +71,7 @@ public class ServiceProvider {
     return userService;
   }
 
-  public CSVService homeService() {
+  public CSVImporter homeService() {
     return homeService;
   }
 

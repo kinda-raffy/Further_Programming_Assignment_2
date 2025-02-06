@@ -1,4 +1,4 @@
-package fp.assignments.assignment_2.service;
+package fp.assignments.assignment_2.service.entity;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import fp.assignments.assignment_2.model.entity.Booking;
 import fp.assignments.assignment_2.model.entity.Event;
 import fp.assignments.assignment_2.model.entity.Venue;
+import fp.assignments.assignment_2.service.system.DatabaseConnection;
 
 public class BookingService {
   private static BookingService instance;

@@ -1,4 +1,4 @@
-package fp.assignments.assignment_2.service;
+package fp.assignments.assignment_2.service.system;
 
 import java.io.*;
 import java.sql.*;
@@ -9,10 +9,10 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
-public class CSVService {
+public class CSVImporter {
   private final DatabaseConnection dbService;
 
-  public CSVService() {
+  public CSVImporter() {
     this.dbService = DatabaseConnection.getInstance();
   }
 

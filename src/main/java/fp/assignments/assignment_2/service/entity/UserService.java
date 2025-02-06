@@ -1,6 +1,8 @@
-package fp.assignments.assignment_2.service;
+package fp.assignments.assignment_2.service.entity;
 
 import fp.assignments.assignment_2.model.entity.User;
+import fp.assignments.assignment_2.service.system.DatabaseConnection;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;

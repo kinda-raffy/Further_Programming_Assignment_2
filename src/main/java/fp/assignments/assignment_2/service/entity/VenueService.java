@@ -1,4 +1,4 @@
-package fp.assignments.assignment_2.service;
+package fp.assignments.assignment_2.service.entity;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fp.assignments.assignment_2.model.entity.Venue;
+import fp.assignments.assignment_2.service.system.DatabaseConnection;
 
 public class VenueService {
   private final DatabaseConnection db;
