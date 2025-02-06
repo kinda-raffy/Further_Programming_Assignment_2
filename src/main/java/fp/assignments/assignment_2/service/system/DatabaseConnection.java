@@ -4,18 +4,32 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import fp.assignments.assignment_2.service.ServiceProvider;
+
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
+import java.io.File;
+import java.io.IOException;
 
 public class DatabaseConnection {
-  private static final String DB_URL = "jdbc:sqlite:src/main/resources/fp/assignments/assignment_2/data/venue_matchmaker.db";
+  private static final String DB_PROJECT_PATH = "src/main/resources/fp/assignments/assignment_2/data/venue_matchmaker.db";
+  private static final String DB_URL = "jdbc:sqlite:" + DB_PROJECT_PATH;
   private static DatabaseConnection instance;
   private Connection connection;
+  private boolean isNewDatabase;
 
   private DatabaseConnection() {
     try {
+      File dbFile = new File(DB_PROJECT_PATH);
+      isNewDatabase = !dbFile.exists();
+
       connection = DriverManager.getConnection(DB_URL);
       initialiseTables();
+
+      if (isNewDatabase) {
+        seedDatabase();
+      }
     } catch (SQLException e) {
       throw new RuntimeException("Failed to initialise database", e);
     }
@@ -82,6 +96,21 @@ public class DatabaseConnection {
       statement.execute(createVenuesTable);
       statement.execute(createBookingsTable);
       statement.execute(createUsersTable);
+    }
+  }
+
+  private void seedDatabase() {
+    try {
+      ServiceProvider.run(sp -> {
+        File venuesFile = new File(getClass().getResource("/fp/assignments/assignment_2/venues.csv").getFile());
+        sp.csvImporter().importVenueCSV(venuesFile);
+        File eventsFile = new File(getClass().getResource("/fp/assignments/assignment_2/events.csv").getFile());
+        sp.csvImporter().importEventCSV(eventsFile);
+      });
+    } catch (SQLException | IOException e) {
+      throw new RuntimeException("Failed to seed initial data", e);
+    } catch (Exception e) {
+      throw new RuntimeException("Failed to seed initial data", e);
     }
   }
 

@@ -31,4 +31,6 @@ module fp.assignments.assignment_2 {
     exports fp.assignments.assignment_2.model.entity;
     exports fp.assignments.assignment_2.model.backup;
     exports fp.assignments.assignment_2.service;
+    exports fp.assignments.assignment_2.service.entity;
+    exports fp.assignments.assignment_2.service.system;
 }

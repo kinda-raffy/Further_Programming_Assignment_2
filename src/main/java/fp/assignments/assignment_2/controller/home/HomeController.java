@@ -39,7 +39,7 @@ public class HomeController extends BaseController {
 
         if (file != null) {
             try {
-                ServiceProvider.run(sp -> sp.homeService().importVenueCSV(file));
+                ServiceProvider.run(sp -> sp.csvImporter().importVenueCSV(file));
                 AllVenueController.reloadVenues();
             } catch (Exception e) {
                 showError("Error importing venues", e.getMessage());
@@ -56,7 +56,7 @@ public class HomeController extends BaseController {
 
         if (file != null) {
             try {
-                ServiceProvider.run(sp -> sp.homeService().importEventCSV(file));
+                ServiceProvider.run(sp -> sp.csvImporter().importEventCSV(file));
                 BacklogController.reloadEvents();
             } catch (IOException e) {
                 showError("Error reading file", e.getMessage());

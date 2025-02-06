@@ -9,7 +9,6 @@ import fp.assignments.assignment_2.model.entity.Venue;
 import fp.assignments.assignment_2.service.ServiceProvider;
 
 import java.io.*;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;

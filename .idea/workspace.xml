@@ -5,23 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a972194c-40e2-4ece-9f1b-a834a8007c96" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/entity/BookingService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/entity/EventService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/entity/UserService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/entity/VenueService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/system/BackupService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/system/CSVImporter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/system/DatabaseConnection.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/system/SessionManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/BackupService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/BookingService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/CSVService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/DatabaseConnection.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/EventService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/home/HomeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/home/HomeController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/ServiceProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/ServiceProvider.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/SessionManager.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/UserService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/VenueService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/system/BackupService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/system/BackupService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/system/DatabaseConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/system/DatabaseConnection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

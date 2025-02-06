@@ -13,7 +13,7 @@ import fp.assignments.assignment_2.service.system.SessionManager;
 
 public class ServiceProvider {
 
-  private final CSVImporter homeService;
+  private final CSVImporter csvImporter;
   private final VenueService venueService;
   private final UserService userService;
   private final EventService eventService;
@@ -26,7 +26,7 @@ public class ServiceProvider {
   private ServiceProvider() {
     this.dbConnection = DatabaseConnection.getInstance();
     this.userService = new UserService();
-    this.homeService = new CSVImporter();
+    this.csvImporter = new CSVImporter();
     this.venueService = new VenueService();
     this.bookingService = BookingService.getInstance();
     this.eventService = new EventService();
@@ -44,10 +44,11 @@ public class ServiceProvider {
     return function.apply(instance);
   }
 
+  @Deprecated
   public static <T> void via(Class<T> serviceClass, Consumer<T> consumer) {
     ServiceProvider instance = baseInstance();
     T service = serviceClass.cast(switch (serviceClass.getSimpleName()) {
-      case "HomeService" -> instance.homeService();
+      case "CSVImporter" -> instance.csvImporter();
       case "VenueService" -> instance.venueService();
       case "BookingService" -> instance.bookingService();
       case "UserService" -> instance.userService();
@@ -71,8 +72,8 @@ public class ServiceProvider {
     return userService;
   }
 
-  public CSVImporter homeService() {
-    return homeService;
+  public CSVImporter csvImporter() {
+    return csvImporter;
   }
 
   public VenueService venueService() {
