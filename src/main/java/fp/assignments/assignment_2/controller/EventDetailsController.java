@@ -84,7 +84,6 @@ public class EventDetailsController extends BaseController {
 
       CreateBookingFormController controller = loader.getController();
       controller.setEvent(currentEvent);
-      controller.setOnBookingComplete(unused -> refreshBookingDetails());
 
       Stage dialog = new Stage();
       dialog.initModality(Modality.APPLICATION_MODAL);

@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javafx.beans.binding.Bindings;
 
 public class UserDetailController extends BaseController {
   @FXML
@@ -27,6 +28,8 @@ public class UserDetailController extends BaseController {
   private Label typeLabel;
   @FXML
   private Button deleteButton;
+  @FXML
+  private Button editButton;
 
   private User user;
   private Runnable onUserDeleted;
@@ -36,6 +39,17 @@ public class UserDetailController extends BaseController {
     this.user = user;
     updateLabels();
     updateDeleteButton();
+    // Show edit button to managers or the user themselves.
+    editButton.visibleProperty().bind(
+        Bindings.createBooleanBinding(
+            () -> {
+              User currentUser = SessionManager.getInstance().getCurrentUser();
+              return SessionManager.getInstance().isManager() ||
+                  (currentUser != null && user != null &&
+                      currentUser.id().equals(user.id()));
+            },
+            SessionManager.getInstance().currentUserProperty()));
+    editButton.managedProperty().bind(editButton.visibleProperty());
   }
 
   public void setOnUserDeleted(Runnable callback) {
@@ -44,6 +58,16 @@ public class UserDetailController extends BaseController {
 
   public void setOnUserUpdated(Runnable callback) {
     this.onUserUpdated = callback;
+  }
+
+  @FXML
+  public void initialize() {
+    // Show delete button to only managers.
+    deleteButton.visibleProperty().bind(
+        Bindings.createBooleanBinding(
+            () -> SessionManager.getInstance().isManager(),
+            SessionManager.getInstance().currentUserProperty()));
+    deleteButton.managedProperty().bind(deleteButton.visibleProperty());
   }
 
   private void updateLabels() {
@@ -56,6 +80,7 @@ public class UserDetailController extends BaseController {
 
   private void updateDeleteButton() {
     User currentUser = SessionManager.getInstance().getCurrentUser();
+    // Enable delete button if the user isn't themselves.
     deleteButton.setDisable(currentUser != null && currentUser.id().equals(user.id()));
   }
 

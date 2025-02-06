@@ -5,9 +5,11 @@ import fp.assignments.assignment_2.model.Booking;
 import fp.assignments.assignment_2.model.Event;
 import fp.assignments.assignment_2.service.BookingService;
 import fp.assignments.assignment_2.service.EventService;
+import fp.assignments.assignment_2.service.SessionManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
+import javafx.scene.layout.VBox;
 import javafx.scene.chart.*;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -17,6 +19,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.io.IOException;
+import javafx.beans.binding.Bindings;
 
 public class BookingsController extends BaseController {
   @FXML
@@ -33,6 +36,10 @@ public class BookingsController extends BaseController {
   private TableColumn<Map.Entry<String, Double>, String> totalCommissionColumn;
   @FXML
   private Label totalCommissionLabel;
+  @FXML
+  private VBox summarySection;
+  @FXML
+  private TableColumn<Booking, String> commissionCol;
 
   private final BookingService bookingService = BookingService.getInstance();
   private final EventService eventService = new EventService();
@@ -43,6 +50,17 @@ public class BookingsController extends BaseController {
     setupBookingsTable();
     setupCommissionTable();
     bookingsTable.setItems(bookingService.getBookings());
+
+    summarySection.visibleProperty().bind(
+        Bindings.createBooleanBinding(
+            () -> SessionManager.getInstance().isManager(),
+            SessionManager.getInstance().currentUserProperty()));
+    summarySection.managedProperty().bind(summarySection.visibleProperty());
+
+    commissionCol.visibleProperty().bind(
+        Bindings.createBooleanBinding(
+            () -> SessionManager.getInstance().isManager(),
+            SessionManager.getInstance().currentUserProperty()));
 
     bookingService.getBookings().addListener((javafx.collections.ListChangeListener<Booking>) c -> {
       updateCharts();
@@ -56,7 +74,7 @@ public class BookingsController extends BaseController {
     TableColumn<Booking, String> titleCol = new TableColumn<>("Event Title");
     TableColumn<Booking, String> venueCol = new TableColumn<>("Venue Name");
     TableColumn<Booking, String> dateCol = new TableColumn<>("Date");
-    TableColumn<Booking, String> commissionCol = new TableColumn<>("Commission");
+    commissionCol = new TableColumn<>("Commission");
 
     clientCol.prefWidthProperty().bind(bookingsTable.widthProperty().multiply(0.2));
     titleCol.prefWidthProperty().bind(bookingsTable.widthProperty().multiply(0.3));
@@ -85,9 +103,7 @@ public class BookingsController extends BaseController {
     });
 
     venueCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().venueName()));
-
     dateCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().startDate().format(formatter)));
-
     commissionCol
         .setCellValueFactory(data -> new SimpleStringProperty(String.format("$%.2f", data.getValue().commission())));
 

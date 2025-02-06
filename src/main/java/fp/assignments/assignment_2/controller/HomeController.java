@@ -11,16 +11,25 @@ import javafx.stage.FileChooser;
 import java.io.*;
 import java.sql.*;
 import java.time.format.DateTimeParseException;
+import javafx.beans.binding.Bindings;
 
 public class HomeController extends BaseController {
     @FXML
     private TabPane mainTabPane;
+
+    @FXML
+    private Menu backupMenu;
 
     private HomeService homeService;
 
     @FXML
     public void initialize() {
         homeService = new HomeService();
+
+        backupMenu.visibleProperty().bind(
+                Bindings.createBooleanBinding(
+                        () -> SessionManager.getInstance().isManager(),
+                        SessionManager.getInstance().currentUserProperty()));
     }
 
     @FXML

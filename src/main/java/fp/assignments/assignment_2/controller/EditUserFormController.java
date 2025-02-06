@@ -4,8 +4,11 @@ import fp.assignments.assignment_2.model.User;
 import fp.assignments.assignment_2.service.DatabaseConnection;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import java.sql.SQLException;
+import javafx.beans.binding.Bindings;
+import fp.assignments.assignment_2.service.SessionManager;
 
 public class EditUserFormController {
   @FXML
@@ -20,6 +23,8 @@ public class EditUserFormController {
   private ComboBox<String> typeComboBox;
   @FXML
   private Label errorLabel;
+  @FXML
+  private VBox typeContainer;
 
   private User user;
   private Runnable onUserUpdated;
@@ -36,6 +41,12 @@ public class EditUserFormController {
   @FXML
   public void initialize() {
     typeComboBox.getItems().addAll("manager", "staff");
+
+    typeContainer.visibleProperty().bind(
+        Bindings.createBooleanBinding(
+            () -> SessionManager.getInstance().isManager(),
+            SessionManager.getInstance().currentUserProperty()));
+    typeContainer.managedProperty().bind(typeContainer.visibleProperty());
   }
 
   private void populateFields() {

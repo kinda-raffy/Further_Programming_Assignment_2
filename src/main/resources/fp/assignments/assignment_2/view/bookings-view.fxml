@@ -13,53 +13,54 @@
             <Insets top="20" right="20" bottom="20" left="20"/>
         </padding>
 
-        <Label text="Summary" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+        <VBox fx:id="summarySection" spacing="10">
+            <Label text="Summary" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
 
-        <GridPane hgap="20" vgap="10">
-            <columnConstraints>
-                <ColumnConstraints percentWidth="50"/>
-                <ColumnConstraints percentWidth="50"/>
-            </columnConstraints>
+            <GridPane hgap="20" vgap="10">
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="50"/>
+                    <ColumnConstraints percentWidth="50"/>
+                </columnConstraints>
 
-            <!-- Left Column: Venue Utilisation and Commission Table -->
-            <VBox spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="0">
-                <!-- Venue Utilisation -->
-                <VBox>
-                    <Label text="Venue Utilisation" style="-fx-font-weight: bold"/>
-                    <PieChart fx:id="venueUtilisationChart" legendVisible="true"/>
+                <VBox spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                    <!-- Venue Utilisation -->
+                    <VBox>
+                        <Label text="Venue Utilisation" style="-fx-font-weight: bold"/>
+                        <PieChart fx:id="venueUtilisationChart" legendVisible="true" />
+                    </VBox>
+
+                    <!-- Total Commission/Client -->
+                    <VBox VBox.vgrow="ALWAYS">
+                        <Label text="Total Commission / Client" style="-fx-font-weight: bold"/>
+                        <TableView fx:id="commissionTable" VBox.vgrow="ALWAYS">
+                            <columns>
+                                <TableColumn fx:id="clientColumn" text="Client"/>
+                                <TableColumn fx:id="totalCommissionColumn" text="Total Commission"/>
+                            </columns>
+                            <placeholder>
+                                <Label text="Load in clients or add more bookings to view commission summaries"/>
+                            </placeholder>
+                        </TableView>
+                        <Label fx:id="totalCommissionLabel"
+                               style="-fx-font-weight: bold; -fx-font-size: 16px; -fx-padding: 10 0 0 0;"
+                               text="Total Commission: $xxx,xxx"/>
+                    </VBox>
                 </VBox>
 
-                <!-- Total Commission/Client -->
-                <VBox VBox.vgrow="ALWAYS">
-                    <Label text="Total Commission / Client" style="-fx-font-weight: bold"/>
-                    <TableView fx:id="commissionTable" VBox.vgrow="ALWAYS">
-                        <columns>
-                            <TableColumn fx:id="clientColumn" text="Client"/>
-                            <TableColumn fx:id="totalCommissionColumn" text="Total Commission"/>
-                        </columns>
-                        <placeholder>
-                            <Label text="Load in clients or add more bookings to view commission summaries"/>
-                        </placeholder>
-                    </TableView>
-                    <Label fx:id="totalCommissionLabel"
-                           style="-fx-font-weight: bold; -fx-font-size: 16px; -fx-padding: 10 0 0 0;"
-                           text="Total Commission: $xxx,xxx"/>
+                <!-- Right Column: Income-Commission Chart -->
+                <VBox GridPane.columnIndex="1" GridPane.rowIndex="0">
+                    <Label text="Income-Commission / Order" style="-fx-font-weight: bold"/>
+                    <BarChart fx:id="incomeChart" VBox.vgrow="ALWAYS" animated="false">
+                        <xAxis>
+                            <CategoryAxis label="Events" side="BOTTOM"/>
+                        </xAxis>
+                        <yAxis>
+                            <NumberAxis label="Amount ($)" side="LEFT"/>
+                        </yAxis>
+                    </BarChart>
                 </VBox>
-            </VBox>
-
-            <!-- Right Column: Income-Commission Chart -->
-            <VBox GridPane.columnIndex="1" GridPane.rowIndex="0">
-                <Label text="Income-Commission / Order" style="-fx-font-weight: bold"/>
-                <BarChart fx:id="incomeChart" VBox.vgrow="ALWAYS" animated="false">
-                    <xAxis>
-                        <CategoryAxis label="Events" side="BOTTOM"/>
-                    </xAxis>
-                    <yAxis>
-                        <NumberAxis label="Amount ($)" side="LEFT"/>
-                    </yAxis>
-                </BarChart>
-            </VBox>
-        </GridPane>
+            </GridPane>
+        </VBox>
 
         <Label text="Order Details" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
 

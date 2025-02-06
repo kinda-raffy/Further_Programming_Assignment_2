@@ -25,7 +25,7 @@ public class LMVMApplication extends Application {
         stage.setScene(scene);
 
         if (devMode) {
-            User devUser = new User(5, "r", "r", "r", "r", "manager");
+            User devUser = new User(1, "dev", "dev", "dev", "dev", "manager");
             SessionManager.getInstance().setCurrentUser(devUser);
             navigateToHome();
         } else {
@@ -89,7 +89,7 @@ public class LMVMApplication extends Application {
     }
 
     public static void main(String[] args) {
-        setDevMode(true);
+        setDevMode(false);
         launch();
     }
 }

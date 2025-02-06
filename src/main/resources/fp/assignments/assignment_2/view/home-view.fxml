@@ -11,7 +11,7 @@
             <MenuItem onAction="#handleImportVenues" text="Venues" />
             <MenuItem onAction="#handleImportEvents" text="Events" />
         </Menu>
-        <Menu text="Backup">
+        <Menu fx:id="backupMenu" text="Backup">
             <Menu text="Transaction Data">
                 <MenuItem onAction="#handleTransactionExport" text="Export" />
                 <MenuItem onAction="#handleTransactionImport" text="Import" />

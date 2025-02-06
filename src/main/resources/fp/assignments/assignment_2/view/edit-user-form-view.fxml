@@ -25,8 +25,10 @@
     <Label text="Last Name:"/>
     <TextField fx:id="lastNameField"/>
 
-    <Label text="Type:"/>
-    <ComboBox fx:id="typeComboBox"/>
+    <VBox fx:id="typeContainer" spacing="10">
+        <Label text="Type:"/>
+        <ComboBox fx:id="typeComboBox"/>
+    </VBox>
 
     <HBox spacing="10" alignment="CENTER">
         <Label fx:id="errorLabel" textFill="red" alignment="CENTER"/>

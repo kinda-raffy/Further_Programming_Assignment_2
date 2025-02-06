@@ -10,7 +10,6 @@ import javafx.stage.Stage;
 
 import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
-import java.util.function.Consumer;
 
 public class CreateBookingFormController extends BaseController {
   @FXML
@@ -33,7 +32,6 @@ public class CreateBookingFormController extends BaseController {
   private Event event;
   private final BookingService bookingService = BookingService.getInstance();
   private final HomeService homeService = new HomeService();
-  private Consumer<Void> onBookingComplete;
 
   @FXML
   public void initialize() {
@@ -65,10 +63,6 @@ public class CreateBookingFormController extends BaseController {
     eventNameLabel.setText(event.title());
     eventDateTimeLabel.setText("Event Date/Time: " + event.eventDateTime().format(formatter));
     eventDurationLabel.setText("Duration: " + event.durationHours() + " hours");
-  }
-
-  public void setOnBookingComplete(Consumer<Void> callback) {
-    this.onBookingComplete = callback;
   }
 
   @FXML

@@ -29,6 +29,9 @@ public class AllUserController extends BaseController {
   private Label userNameLabel;
 
   @FXML
+  private Button addStaffButton;
+
+  @FXML
   public void initialize() {
     setupTableColumns();
     userTable.setItems(userTableList);
@@ -43,6 +46,13 @@ public class AllUserController extends BaseController {
               return "Logged in as: " + userName + " (" + accountType + ")";
             },
             SessionManager.getInstance().currentUserProperty()));
+
+    // Add visibility binding for the add staff button
+    addStaffButton.visibleProperty().bind(
+        Bindings.createBooleanBinding(
+            () -> SessionManager.getInstance().isManager(),
+            SessionManager.getInstance().currentUserProperty()));
+    addStaffButton.managedProperty().bind(addStaffButton.visibleProperty());
   }
 
   private void setupTableColumns() {
