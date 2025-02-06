@@ -29,16 +29,16 @@
 
     <TabPane fx:id="mainTabPane" VBox.vgrow="ALWAYS">
         <Tab id="backlogTab" closable="false" text="Backlog">
-            <fx:include source="backlog-view.fxml" />
+            <fx:include source="pane/backlog-view.fxml" />
         </Tab>
         <Tab id="bookingsTab" closable="false" text="Bookings">
-            <fx:include source="bookings-view.fxml" />
+            <fx:include source="pane/bookings-view.fxml" />
         </Tab>
         <Tab closable="false" text="All Venues">
-            <fx:include source="all-venues-view.fxml" />
+            <fx:include source="pane/all-venues-view.fxml" />
         </Tab>
         <Tab closable="false" text="Staff Directory">
-            <fx:include source="all-user-view.fxml" />
+            <fx:include source="pane/all-user-view.fxml" />
         </Tab>
     </TabPane>
 </VBox>

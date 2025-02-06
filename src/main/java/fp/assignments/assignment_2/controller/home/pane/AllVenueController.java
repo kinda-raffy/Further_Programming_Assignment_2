@@ -218,7 +218,7 @@ public class AllVenueController extends BaseController {
   private void handleCreateVenue() {
     try {
       FXMLLoader loader = new FXMLLoader(
-          getClass().getResource("/fp/assignments/assignment_2/view/add-venue-form-view.fxml"));
+          getClass().getResource("/fp/assignments/assignment_2/view/form/add-venue-form-view.fxml"));
       Parent root = loader.load();
       Stage stage = new Stage();
       stage.setTitle("Create Venue");

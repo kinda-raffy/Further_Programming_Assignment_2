@@ -18,6 +18,7 @@
       <change afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/home/pane/BookingsController.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/landing/LoginController.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/landing/ManagerSignUpController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/LMVMApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/LMVMApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/AddUserFormController.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/AddVenueFormController.java" beforeDir="false" />
@@ -32,6 +33,7 @@
       <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/LoginController.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/ManagerSignUpController.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/UserDetailController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/fp/assignments/assignment_2/view/add-user-form-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fp/assignments/assignment_2/view/add-user-form-view.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/fp/assignments/assignment_2/view/add-venue-form-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fp/assignments/assignment_2/view/add-venue-form-view.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/fp/assignments/assignment_2/view/all-user-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fp/assignments/assignment_2/view/all-user-view.fxml" afterDir="false" />

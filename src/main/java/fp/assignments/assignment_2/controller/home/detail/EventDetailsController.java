@@ -81,7 +81,7 @@ public class EventDetailsController extends BaseController {
   private void handleReassignBooking() {
     try {
       FXMLLoader loader = new FXMLLoader(
-          getClass().getResource("/fp/assignments/assignment_2/view/create-booking-form-view.fxml"));
+          getClass().getResource("/fp/assignments/assignment_2/view/form/create-booking-form-view.fxml"));
       VBox bookingForm = loader.load();
 
       CreateBookingFormController controller = loader.getController();

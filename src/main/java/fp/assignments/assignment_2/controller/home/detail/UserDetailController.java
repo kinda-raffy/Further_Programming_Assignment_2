@@ -90,7 +90,7 @@ public class UserDetailController extends BaseController {
   private void handleEdit() {
     try {
       FXMLLoader loader = new FXMLLoader(
-          getClass().getResource("/fp/assignments/assignment_2/view/edit-user-form-view.fxml"));
+          getClass().getResource("/fp/assignments/assignment_2/view/form/edit-user-form-view.fxml"));
       Stage stage = new Stage();
       stage.initModality(Modality.APPLICATION_MODAL);
       stage.setTitle("Edit User");

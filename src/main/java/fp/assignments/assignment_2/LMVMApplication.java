@@ -36,19 +36,20 @@ public class LMVMApplication extends Application {
     }
 
     public static void navigateToLogin() throws IOException {
-        FXMLLoader loader = new FXMLLoader(LMVMApplication.class.getResource("view/login-view.fxml"));
+        FXMLLoader loader = new FXMLLoader(LMVMApplication.class.getResource("view/landing/login-view.fxml"));
         mainContainer.getChildren().clear();
         mainContainer.getChildren().add(loader.load());
     }
 
     public static void navigateToHome() throws IOException {
-        FXMLLoader loader = new FXMLLoader(LMVMApplication.class.getResource("view/home-view.fxml"));
+        FXMLLoader loader = new FXMLLoader(LMVMApplication.class.getResource("view/home/home-view.fxml"));
         mainContainer.getChildren().clear();
         mainContainer.getChildren().add(loader.load());
     }
 
     public static void navigateToEventDetails(Event eventData) throws IOException {
-        FXMLLoader loader = new FXMLLoader(LMVMApplication.class.getResource("view/event-detail-view.fxml"));
+        FXMLLoader loader = new FXMLLoader(
+                LMVMApplication.class.getResource("view/home/detail/event-detail-view.fxml"));
         mainContainer.getChildren().add(loader.load());
 
         EventDetailsController controller = loader.getController();
@@ -57,7 +58,7 @@ public class LMVMApplication extends Application {
 
     public static void navigateToUserDetails(User userData, Runnable onUserDeleted, Runnable onUserUpdated)
             throws IOException {
-        FXMLLoader loader = new FXMLLoader(LMVMApplication.class.getResource("view/user-detail-view.fxml"));
+        FXMLLoader loader = new FXMLLoader(LMVMApplication.class.getResource("view/home/detail/user-detail-view.fxml"));
         mainContainer.getChildren().add(loader.load());
 
         UserDetailController controller = loader.getController();
@@ -67,7 +68,7 @@ public class LMVMApplication extends Application {
     }
 
     public static void navigateToManagerSignUp() throws IOException {
-        FXMLLoader loader = new FXMLLoader(LMVMApplication.class.getResource("view/manager-sign-up-view.fxml"));
+        FXMLLoader loader = new FXMLLoader(LMVMApplication.class.getResource("view/landing/manager-sign-up-view.fxml"));
         mainContainer.getChildren().clear();
         mainContainer.getChildren().add(loader.load());
     }

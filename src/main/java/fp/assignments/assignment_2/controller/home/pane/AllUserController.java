@@ -119,7 +119,7 @@ public class AllUserController extends BaseController {
   public void showAddUserForm() {
     try {
       FXMLLoader loader = new FXMLLoader(
-          getClass().getResource("/fp/assignments/assignment_2/view/add-user-form-view.fxml"));
+          getClass().getResource("/fp/assignments/assignment_2/view/form/add-user-form-view.fxml"));
       Stage stage = new Stage();
       stage.initModality(Modality.APPLICATION_MODAL);
       stage.setTitle("Add Staff Member");
