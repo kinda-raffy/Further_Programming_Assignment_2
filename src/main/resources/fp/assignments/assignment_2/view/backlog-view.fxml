@@ -6,7 +6,7 @@
 <?import javafx.scene.text.Text?>
 
 <VBox xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="fp.assignments.assignment_2.controller.BacklogController"
+      fx:controller="fp.assignments.assignment_2.controller.home.pane.BacklogController"
       spacing="10">
     <padding>
         <Insets top="20" right="20" bottom="20" left="20"/>

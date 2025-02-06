@@ -1,5 +1,6 @@
-package fp.assignments.assignment_2.controller;
+package fp.assignments.assignment_2.controller.form;
 
+import fp.assignments.assignment_2.controller.BaseController;
 import fp.assignments.assignment_2.model.Event;
 import fp.assignments.assignment_2.model.Venue;
 import fp.assignments.assignment_2.service.BookingService;

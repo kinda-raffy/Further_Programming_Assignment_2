@@ -1,4 +1,4 @@
-package fp.assignments.assignment_2.controller;
+package fp.assignments.assignment_2.controller.home.pane;
 
 import fp.assignments.assignment_2.model.Booking;
 import fp.assignments.assignment_2.model.Event;
@@ -6,6 +6,7 @@ import fp.assignments.assignment_2.model.Venue;
 import fp.assignments.assignment_2.service.HomeService;
 import fp.assignments.assignment_2.service.BookingService;
 import fp.assignments.assignment_2.LMVMApplication;
+import fp.assignments.assignment_2.controller.BaseController;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.beans.property.SimpleStringProperty;

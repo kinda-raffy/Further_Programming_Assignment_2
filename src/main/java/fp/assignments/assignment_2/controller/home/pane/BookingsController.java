@@ -1,6 +1,7 @@
-package fp.assignments.assignment_2.controller;
+package fp.assignments.assignment_2.controller.home.pane;
 
 import fp.assignments.assignment_2.LMVMApplication;
+import fp.assignments.assignment_2.controller.BaseController;
 import fp.assignments.assignment_2.model.Booking;
 import fp.assignments.assignment_2.model.Event;
 import fp.assignments.assignment_2.service.BookingService;

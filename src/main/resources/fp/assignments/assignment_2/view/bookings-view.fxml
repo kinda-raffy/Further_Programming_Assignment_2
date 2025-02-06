@@ -6,7 +6,7 @@
 <?import javafx.scene.chart.*?>
 
 <ScrollPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
-           fx:controller="fp.assignments.assignment_2.controller.BookingsController"
+           fx:controller="fp.assignments.assignment_2.controller.home.pane.BookingsController"
            fitToWidth="true" fitToHeight="true">
     <VBox spacing="10">
         <padding>

@@ -1,6 +1,8 @@
-package fp.assignments.assignment_2.controller;
+package fp.assignments.assignment_2.controller.home.pane;
 
 import fp.assignments.assignment_2.LMVMApplication;
+import fp.assignments.assignment_2.controller.BaseController;
+import fp.assignments.assignment_2.controller.form.AddUserFormController;
 import fp.assignments.assignment_2.model.User;
 import fp.assignments.assignment_2.service.DatabaseConnection;
 import javafx.collections.FXCollections;
