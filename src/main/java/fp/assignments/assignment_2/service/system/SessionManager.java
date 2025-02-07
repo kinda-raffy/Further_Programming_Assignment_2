@@ -3,8 +3,9 @@ package fp.assignments.assignment_2.service.system;
 import fp.assignments.assignment_2.model.entity.User;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import fp.assignments.assignment_2.service.system.interfaces.ISessionManager;
 
-public class SessionManager {
+public class SessionManager implements ISessionManager {
   private static SessionManager instance;
   private final ObjectProperty<User> currentUser = new SimpleObjectProperty<>();
 

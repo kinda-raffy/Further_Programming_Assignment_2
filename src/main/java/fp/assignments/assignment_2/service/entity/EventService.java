@@ -8,8 +8,9 @@ import java.util.List;
 
 import fp.assignments.assignment_2.model.entity.Event;
 import fp.assignments.assignment_2.service.system.DatabaseConnection;
+import fp.assignments.assignment_2.service.entity.interfaces.IEventService;
 
-public class EventService {
+public class EventService implements IEventService {
   private final DatabaseConnection db;
 
   public EventService() {

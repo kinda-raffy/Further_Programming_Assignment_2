@@ -7,8 +7,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import fp.assignments.assignment_2.service.entity.interfaces.IUserService;
 
-public class UserService {
+public class UserService implements IUserService {
   private final DatabaseConnection db;
 
   public UserService() {

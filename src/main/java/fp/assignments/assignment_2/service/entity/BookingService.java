@@ -10,9 +10,10 @@ import java.time.LocalDateTime;
 import fp.assignments.assignment_2.model.entity.Booking;
 import fp.assignments.assignment_2.model.entity.Event;
 import fp.assignments.assignment_2.model.entity.Venue;
+import fp.assignments.assignment_2.service.entity.interfaces.IBookingService;
 import fp.assignments.assignment_2.service.system.DatabaseConnection;
 
-public class BookingService {
+public class BookingService implements IBookingService {
   private static BookingService instance;
   private final DatabaseConnection dbConnection;
   private final ObservableList<Booking> bookings;

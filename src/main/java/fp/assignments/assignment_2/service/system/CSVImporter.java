@@ -8,8 +8,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
+import fp.assignments.assignment_2.service.system.interfaces.ICSVImporter;
 
-public class CSVImporter {
+public class CSVImporter implements ICSVImporter {
   private final DatabaseConnection dbService;
 
   public CSVImporter() {

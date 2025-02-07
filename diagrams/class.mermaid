@@ -1,0 +1,546 @@
+---
+  config:
+    class:
+      hideEmptyMembersBox: true
+---
+classDiagram
+    namespace models {
+        class User {
+            +Integer id
+            +String userName
+            +String password
+            +String firstName
+            +String lastName
+            +String type
+            +getFullName()
+        }
+        class Event {
+            +Integer id
+            +String title
+            +String mainArtist
+            +int expectedAttendance
+            +LocalDateTime eventDateTime
+            +int durationHours
+            +String eventType
+            +String category
+            +String clientName
+        }
+        class Venue {
+            +String nameId
+            +int capacity
+            +String category
+            +double hirePricePerHour
+            +List~String~ suitabilityKeywords
+            +isSuitable(String)
+        }
+        class Booking {
+            +Integer id
+            +Integer eventId
+            +String venueName
+            +LocalDateTime startDate
+            +LocalDateTime endDate
+            +double totalPrice
+            +double commission
+        }
+        class MasterData {
+            +List~User~ users
+        }
+        class TransactionData {
+            +List~Event~ events
+            +List~Venue~ venues
+            +List~Booking~ bookings
+        }
+    }
+
+    namespace views {
+        class AddUserFormView
+        class AddVenueFormView
+        class CreateBookingFormView
+        class EditUserFormView
+        class EventDetailView
+        class UserDetailView
+        class HomeView
+        class AllUserView
+        class AllVenuesView
+        class BacklogView
+        class BookingsView
+        class LoginView
+        class ManagerSignUpView
+    }
+
+    %% Controller classes with methods and fields
+    class BaseController {
+        #showError(String, String)
+        #showSuccess(String, String)
+        #showConfirmation(String, String, Runnable)
+        #showWarning(String, String)
+        #showInfo(String, String)
+        -showAlert(AlertType, String, String)
+    }
+
+    class AddUserFormController {
+        -TextField userNameField
+        -PasswordField passwordField
+        -TextField firstNameField
+        -TextField lastNameField
+        -ComboBox~String~ typeComboBox
+        -Label errorLabel
+        -Runnable onUserAdded
+        +setOnUserAdded(Runnable)
+        +initialize()
+        -handleSubmit()
+        -validateFields()
+        -handleCancel()
+        -closeWindow()
+    }
+
+    class AddVenueFormController {
+        -TextField nameField
+        -TextField capacityField
+        -ComboBox~String~ categoryField
+        -TextField hirePriceField
+        -TextField keywordsField
+        -Label errorLabel
+        +initialize()
+        -handleCreate()
+        -validateFields()
+        -handleCancel()
+        -closeWindow()
+    }
+
+    class CreateBookingFormController {
+        -Label eventNameLabel
+        -Label eventDateTimeLabel
+        -Label eventDurationLabel
+        -ComboBox~Venue~ venueComboBox
+        -Label venuePriceLabel
+        -Label errorLabel
+        -Label totalPriceLabel
+        -Label commissionLabel
+        -Event event
+        +initialize()
+        +setEvent(Event)
+        -handleCreateBooking()
+        -validateForm()
+        -handleCancel()
+        -closeDialog()
+        -updatePriceDetails(Venue)
+    }
+
+    class EditUserFormController {
+        -TextField userNameField
+        -PasswordField passwordField
+        -TextField firstNameField
+        -TextField lastNameField
+        -ComboBox~String~ typeComboBox
+        -Label errorLabel
+        -VBox typeContainer
+        -User user
+        -Runnable onUserUpdated
+        +setUser(User)
+        +setOnUserUpdated(Runnable)
+        +initialize()
+        -populateFields()
+        -handleSubmit()
+        -validateFields()
+        -handleCancel()
+        -closeWindow()
+    }
+
+    class HomeController {
+        -TabPane mainTabPane
+        -Menu backupMenu
+        +initialize()
+        -handleImportVenues()
+        -handleImportEvents()
+        -handleTransactionExport()
+        -handleTransactionImport()
+        -handleMasterExport()
+        -handleMasterImport()
+        -handleLogout()
+    }
+
+    class EventDetailsController {
+        -Label clientLabel
+        -Label titleLabel
+        -Label artistLabel
+        -Label dateLabel
+        -Label attendanceLabel
+        -Label typeLabel
+        -Label categoryLabel
+        -Label noBookingLabel
+        -VBox bookingDetailsBox
+        -Label bookingVenueLabel
+        -Label bookingDateTimeLabel
+        -Label bookingTotalPriceLabel
+        -Label bookingCommissionLabel
+        -GridPane bookingDetailsGrid
+        -Button deleteBookingButton
+        -Event currentEvent
+        +initialize()
+        +setEvent(Event)
+        -handleCreateBooking()
+        -refreshBookingDetails()
+        -handleDeleteBooking()
+        +goBack()
+    }
+
+    class UserDetailController {
+        -Label titleLabel
+        -Label usernameLabel
+        -Label firstNameLabel
+        -Label lastNameLabel
+        -Label typeLabel
+        -Button deleteButton
+        -Button editButton
+        -User user
+        -Runnable onUserDeleted
+        -Runnable onUserUpdated
+        +setUser(User)
+        +setOnUserDeleted(Runnable)
+        +setOnUserUpdated(Runnable)
+        -updateLabels()
+        -updateDeleteButton()
+        -handleEdit()
+        -handleDelete()
+        -goBack()
+    }
+
+    class AllUserController {
+        -TableView~User~ userTable
+        -static ObservableList~User~ userTableList
+        -Label userNameLabel
+        -Button addStaffButton
+        +initialize()
+        -setupTableColumns()
+        +static loadUsers()
+        +showAddUserForm()
+        -showUserDetails(User)
+    }
+
+    class AllVenueController {
+        -TableView~Venue~ venuesTable
+        -TextField nameSearchField
+        -TextField categorySearchField
+        -TextField capacitySearchField
+        -TextField keywordsSearchField
+        -DatePicker availabilityDatePicker
+        -TextField startTimeField
+        -TextField endTimeField
+        -Button deleteButton
+        -static ObservableList~Venue~ venuesList
+        -static ObservableList~Venue~ filteredVenuesList
+        +initialize()
+        -setupSearchListeners()
+        -setupTableSelectionListener()
+        +static loadAllVenues()
+        +static reloadVenues()
+        -handleCreateVenue()
+        -handleDeleteVenue()
+    }
+
+    class BacklogController {
+        -TableView~Event~ eventsTable
+        -TableView~VenueRecommendation~ recommendedVenuesTable
+        -CheckBox availableCheck
+        -CheckBox eventTypeCheck
+        -CheckBox venueCategoryCheck
+        -CheckBox capacityCheck
+        -static ObservableList~Event~ eventsList
+        -Event selectedEvent
+        +initialize()
+        -setupEventsTable()
+        -setupRecommendedVenuesTable()
+        +static loadEvents()
+        +static reloadEvents()
+        -updateRecommendations()
+        -calculateCompatibility(Venue)
+    }
+
+    class BookingsController {
+        -TableView~Booking~ bookingsTable
+        -PieChart venueUtilisationChart
+        -BarChart~String, Number~ incomeChart
+        -TableView~Map.Entry~String, Double~~ commissionTable
+        -TableColumn~Map.Entry~String, Double~, String~ clientColumn
+        -TableColumn~Map.Entry~String, Double~, String~ totalCommissionColumn
+        -Label totalCommissionLabel
+        -VBox summarySection
+        -TableColumn~Booking, String~ commissionCol
+        -ObservableList~Booking~ bookingsList
+        +initialize()
+        -setupBookingsTable()
+        -setupCommissionTable()
+        -updateVenueUtilisationChart()
+        -updateIncomeChart()
+        -updateCommissionTable()
+        -loadBookings()
+        +refreshBookings()
+    }
+
+    class LoginController {
+        -TextField usernameField
+        -PasswordField passwordField
+        -Label errorLabel
+        -handleLogin()
+        -handleManagerSignup()
+    }
+
+    class ManagerSignUpController {
+        -TextField userNameField
+        -PasswordField passwordField
+        -TextField firstNameField
+        -TextField lastNameField
+        -PasswordField pinField
+        -Label errorLabel
+        -static String VALID_PIN
+        -handleCreate()
+        -validateFields()
+        -handleCancel()
+    }
+
+    namespace controllers.home {
+        class HomeController
+        class UserDetailController
+        class AllVenueController
+        class AllUserController
+        class BacklogController
+        class BookingsController
+        class EventDetailsController
+    }
+    namespace controllers.landing {
+        class LoginController
+        class ManagerSignUpController
+    }
+    namespace controllers.form {
+        class AddUserFormController
+        class AddVenueFormController
+        class CreateBookingFormController
+        class EditUserFormController
+    }
+
+    namespace services.system {
+        class IBackupService {
+            <<interface>>
+            +exportTransactionData(File)
+            +importTransactionData(File)
+            +exportMasterData(File)
+            +importMasterData(File)
+        }
+        class BackupService {
+            -DatabaseConnection dbConnection
+            -static BackupService instance
+            +exportTransactionData(File)
+            +importTransactionData(File)
+            +exportMasterData(File)
+            +importMasterData(File)
+        }
+
+        class ICSVImporter {
+            <<interface>>
+            +importVenueCSV(File)
+            +importEventCSV(File)
+        }
+        class CSVImporter {
+            -DatabaseConnection dbService
+            +importVenueCSV(File)
+            +importEventCSV(File)
+            -parseTime(String)
+        }
+
+        class IDatabaseConnection {
+            <<interface>>
+            +getConnection()
+            +executeQuery(String)
+            +prepareStatement(String)
+            +executeUpdate(String, PreparedStatementSetter)
+        }
+        class DatabaseConnection {
+            -static String DB_PROJECT_PATH
+            -static String DB_URL
+            -static DatabaseConnection instance
+            -Connection connection
+            -boolean isNewDatabase
+            +getInstance()
+            +getConnection()
+            +executeQuery(String)
+            +prepareStatement(String)
+            +executeUpdate(String, PreparedStatementSetter)
+            -initialiseTables()
+            -seedDatabase()
+        }
+
+        class ISessionManager {
+            <<interface>>
+            +setCurrentUser(User)
+            +getCurrentUser()
+            +currentUserProperty()
+            +isManager()
+            +logout()
+        }
+        class SessionManager {
+            -static SessionManager instance
+            -ObjectProperty~User~ currentUser
+            +setCurrentUser(User)
+            +getCurrentUser()
+            +currentUserProperty()
+            +isManager()
+            +logout()
+        }
+    }
+
+    namespace services.entity {
+        class IBookingService {
+            <<interface>>
+            +getBookings()
+            +loadBookings()
+            +getBookingForEvent(Integer)
+            +isVenueAvailable(String, LocalDateTime, LocalDateTime)
+            +createBooking(Event, Venue, LocalDateTime)
+            +deleteBooking(Integer)
+            +hasMultipleBookings(String)
+            +calculateCommission(double, String)
+        }
+        class BookingService {
+            -static BookingService instance
+            -DatabaseConnection dbConnection
+            -ObservableList~Booking~ bookings
+            +getBookings()
+            +loadBookings()
+            +createBooking(Event, Venue, LocalDateTime)
+            +deleteBooking(Integer)
+            +calculateCommission(double, String)
+        }
+
+        class UserService {
+            -DatabaseConnection db
+            +authenticateUser(String, String)
+            +createUser(String, String, String, String, String)
+            +updateUser(Integer, String, String, String, String, String)
+            +deleteUser(Integer)
+            +getAllUsers()
+            +getUserById(Integer)
+        }
+
+        class EventService {
+            -DatabaseConnection db
+            +getEventById(Integer)
+            +getEvents()
+        }
+
+        class VenueService {
+            -DatabaseConnection db
+            +getVenues()
+            +getVenueByName(String)
+        }
+    }
+
+    class LMVMApplication {
+        -StackPane mainContainer
+        -boolean devMode
+        +start(Stage)
+        +navigateToLogin()
+        +navigateToHome()
+        +navigateToEventDetails(Event)
+        +navigateToUserDetails(User)
+        +navigateToManagerSignUp()
+        +goBack()
+        +setDevMode(boolean)
+    }
+
+    %% View to Controller relationships
+    AddUserFormView --> AddUserFormController
+    AddVenueFormView --> AddVenueFormController
+    CreateBookingFormView --> CreateBookingFormController
+    EditUserFormView --> EditUserFormController
+    EventDetailView --> EventDetailsController
+    UserDetailView --> UserDetailController
+    HomeView --> HomeController
+    AllUserView --> AllUserController
+    AllVenuesView --> AllVenueController
+    BacklogView --> BacklogController
+    BookingsView --> BookingsController
+    LoginView --> LoginController
+    ManagerSignUpView --> ManagerSignUpController
+
+    %% Existing relationships
+    BaseController <|-- HomeController
+    BaseController <|-- LoginController
+    BaseController <|-- ManagerSignUpController
+    BaseController <|-- EventDetailsController
+    BaseController <|-- UserDetailController
+    BaseController <|-- AllVenueController
+    BaseController <|-- AllUserController
+    BaseController <|-- BacklogController
+    BaseController <|-- BookingsController
+    BaseController <|-- AddUserFormController
+    BaseController <|-- AddVenueFormController
+    BaseController <|-- CreateBookingFormController
+    BaseController <|-- EditUserFormController
+
+    %% Implementation relationships
+    IBackupService <|.. BackupService
+    ICSVImporter <|.. CSVImporter
+    IDatabaseConnection <|.. DatabaseConnection
+    ISessionManager <|.. SessionManager
+    IBookingService <|.. BookingService
+
+    %% ServiceProvider relationships with controllers
+    ServiceProvider --> HomeController
+    ServiceProvider --> LoginController
+    ServiceProvider --> ManagerSignUpController
+    ServiceProvider --> EventDetailsController
+    ServiceProvider --> UserDetailController
+    ServiceProvider --> AllVenueController
+    ServiceProvider --> AllUserController
+    ServiceProvider --> BacklogController
+    ServiceProvider --> BookingsController
+    ServiceProvider --> AddUserFormController
+    ServiceProvider --> AddVenueFormController
+    ServiceProvider --> CreateBookingFormController
+    ServiceProvider --> EditUserFormController
+
+    class ServiceProvider {
+        -CSVImporter csvImporter
+        -VenueService venueService
+        -UserService userService
+        -EventService eventService
+        -BackupService backupService
+        -BookingService bookingService
+        -SessionManager session
+        -DatabaseConnection dbConnection
+        -static ServiceProvider instance
+        +run(ThrowingConsumer)
+        +use(ThrowingFunction)
+        +baseInstance()
+    }
+
+    LMVMApplication --> ServiceProvider
+
+    %% Model relationships with Services
+    User --> UserService
+    Event --> EventService
+    Venue --> VenueService
+    Booking --> BookingService
+    MasterData --> BackupService
+    TransactionData --> BackupService
+
+    %% Model relationships with Controllers
+    User --> UserDetailController
+    User --> AllUserController
+    User --> LoginController
+    User --> ManagerSignUpController
+    User --> EditUserFormController
+    User --> AddUserFormController
+
+    Event --> EventDetailsController
+    Event --> BacklogController
+    Event --> CreateBookingFormController
+
+    Venue --> AllVenueController
+    Venue --> AddVenueFormController
+    Venue --> BacklogController
+    Venue --> CreateBookingFormController
+
+    Booking --> BookingsController
+    Booking --> EventDetailsController

@@ -6,9 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fp.assignments.assignment_2.model.entity.Venue;
+import fp.assignments.assignment_2.service.entity.interfaces.IVenueService;
 import fp.assignments.assignment_2.service.system.DatabaseConnection;
 
-public class VenueService {
+public class VenueService implements IVenueService {
   private final DatabaseConnection db;
 
   public VenueService() {

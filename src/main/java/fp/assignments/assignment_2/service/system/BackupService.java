@@ -7,13 +7,13 @@ import fp.assignments.assignment_2.model.entity.Event;
 import fp.assignments.assignment_2.model.entity.User;
 import fp.assignments.assignment_2.model.entity.Venue;
 import fp.assignments.assignment_2.service.ServiceProvider;
-
+import fp.assignments.assignment_2.service.system.interfaces.IBackupService;
 import java.io.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BackupService {
+public class BackupService implements IBackupService {
   private static BackupService instance;
   private final DatabaseConnection dbConnection;
 

@@ -6,13 +6,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import fp.assignments.assignment_2.service.ServiceProvider;
-
+import fp.assignments.assignment_2.service.system.interfaces.IDatabaseConnection;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import java.io.File;
 import java.io.IOException;
 
-public class DatabaseConnection {
+public class DatabaseConnection implements IDatabaseConnection {
   private static final String DB_PROJECT_PATH = "src/main/resources/fp/assignments/assignment_2/data/venue_matchmaker.db";
   private static final String DB_URL = "jdbc:sqlite:" + DB_PROJECT_PATH;
   private static DatabaseConnection instance;
