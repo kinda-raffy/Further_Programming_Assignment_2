@@ -5,12 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a972194c-40e2-4ece-9f1b-a834a8007c96" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/milestone-2-video-link.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fp-assignment-2.zip" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/LMVMApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/LMVMApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/home/pane/AllUserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/home/pane/AllUserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/home/pane/AllVenueController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/home/pane/AllVenueController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/fp/assignments/assignment_2/view/home/pane/all-venues-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fp/assignments/assignment_2/view/home/pane/all-venues-view.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/system/DatabaseConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/system/DatabaseConnection.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

@@ -24,6 +24,12 @@ public class DatabaseConnection implements IDatabaseConnection {
       File dbFile = new File(DB_PROJECT_PATH);
       isNewDatabase = !dbFile.exists();
 
+      // Create directory if it doesn't exist.
+      File dbDirectory = dbFile.getParentFile();
+      if (!dbDirectory.exists()) {
+        dbDirectory.mkdirs();
+      }
+
       connection = DriverManager.getConnection(DB_URL);
       initialiseTables();
 
