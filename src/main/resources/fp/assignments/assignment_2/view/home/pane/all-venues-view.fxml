@@ -14,21 +14,26 @@
 
     <GridPane hgap="10" vgap="5">
         <Label text="Name:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-        <TextField fx:id="nameSearchField" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+        <TextField fx:id="nameSearchField" GridPane.columnIndex="1" GridPane.rowIndex="0"
+                  promptText="e.g. mcg"/>
 
         <Label text="Category:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-        <TextField fx:id="categorySearchField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+        <TextField fx:id="categorySearchField" GridPane.columnIndex="1" GridPane.rowIndex="1"
+                  promptText="e.g. indoor"/>
 
         <Label text="Capacity:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-        <TextField fx:id="capacitySearchField" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+        <VBox spacing="2" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <TextField fx:id="capacitySearchField" promptText="e.g. 100"/>
+            <Label fx:id="capacityErrorLabel" textFill="red" visible="false" managed="false"/>
+        </VBox>
 
         <Label text="Keywords:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
         <TextField fx:id="keywordsSearchField" GridPane.columnIndex="1" GridPane.rowIndex="3"
-                  promptText="e.g. concert + live music"/>
+                  promptText="e.g. disco | festival &amp; large"/>
 
         <Label text="Check Availability:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
         <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="4">
-            <DatePicker fx:id="availabilityDatePicker"/>
+            <DatePicker fx:id="availabilityDatePicker" promptText="dd-mm-yyyy"/>
             <TextField fx:id="startTimeField" promptText="HH:mm" prefWidth="100"/>
             <TextField fx:id="endTimeField" promptText="HH:mm" prefWidth="100"/>
         </HBox>

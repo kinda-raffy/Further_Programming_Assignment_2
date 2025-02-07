@@ -44,6 +44,8 @@ public class AllVenueController extends BaseController {
   private TextField endTimeField;
   @FXML
   private Button deleteButton;
+  @FXML
+  private Label capacityErrorLabel;
 
   private static ObservableList<Venue> venuesList = FXCollections.observableArrayList();
   private static ObservableList<Venue> filteredVenuesList = FXCollections.observableArrayList();
@@ -68,10 +70,21 @@ public class AllVenueController extends BaseController {
   }
 
   private void filterVenues() {
-    String nameQuery = nameSearchField.getText().toLowerCase();
-    String categoryQuery = categorySearchField.getText().toLowerCase();
-    String capacityQuery = capacitySearchField.getText();
+    String nameQuery = nameSearchField.getText().trim().toLowerCase();
+    String categoryQuery = categorySearchField.getText().trim().toLowerCase();
+    String capacityQuery = capacitySearchField.getText().trim();
     String keywordsQuery = keywordsSearchField.getText();
+
+    // Capacity field error text.
+    if (!capacityQuery.isEmpty() && !isNumeric(capacityQuery)) {
+      capacityErrorLabel.setText("Capacity must be a number");
+      capacityErrorLabel.setVisible(true);
+      capacityErrorLabel.setManaged(true);
+      return;
+    } else {
+      capacityErrorLabel.setVisible(false);
+      capacityErrorLabel.setManaged(false);
+    }
 
     filteredVenuesList.clear();
 
@@ -95,10 +108,19 @@ public class AllVenueController extends BaseController {
     boolean categoryMatch = categoryQuery.isEmpty() ||
         venue.category().toLowerCase().contains(categoryQuery);
     boolean capacityMatch = capacityQuery.isEmpty() ||
-        String.valueOf(venue.capacity()).startsWith(capacityQuery);
+        (isNumeric(capacityQuery) && venue.capacity() >= Integer.parseInt(capacityQuery));
     boolean keywordsMatch = keywordsQuery.isEmpty() || matchesKeywords(venue, keywordsQuery);
 
     return nameMatch && categoryMatch && capacityMatch && keywordsMatch;
+  }
+
+  private boolean isNumeric(String str) {
+    try {
+      Integer.parseInt(str);
+      return true;
+    } catch (NumberFormatException e) {
+      return false;
+    }
   }
 
   private boolean matchesKeywords(Venue venue, String keywordsQuery) {

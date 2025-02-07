@@ -23,6 +23,7 @@ public class LMVMApplication extends Application {
         Scene scene = new Scene(mainContainer, 1710, 900);
         stage.setTitle("Live Music Venue Matchmaker");
         stage.setScene(scene);
+        stage.setMaximized(true);
 
         if (devMode) {
             User devUser = new User(1, "dev", "dev", "dev", "dev", "manager");
@@ -90,7 +91,7 @@ public class LMVMApplication extends Application {
     }
 
     public static void main(String[] args) {
-        setDevMode(true);
+        setDevMode(false);
         launch();
     }
 }

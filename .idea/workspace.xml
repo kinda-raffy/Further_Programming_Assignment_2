@@ -5,28 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a972194c-40e2-4ece-9f1b-a834a8007c96" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/diagrams/class.mermaid" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/spec/LMVM Features List.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/spec/spec.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/entity/interfaces/IBookingService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/entity/interfaces/IEventService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/entity/interfaces/IUserService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/entity/interfaces/IVenueService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/system/interfaces/IBackupService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/system/interfaces/ICSVImporter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/system/interfaces/IDatabaseConnection.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/system/interfaces/ISessionManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LMVM Features List.xlsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spec.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/entity/BookingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/entity/BookingService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/entity/EventService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/entity/EventService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/entity/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/entity/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/entity/VenueService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/entity/VenueService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/system/BackupService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/system/BackupService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/system/CSVImporter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/system/CSVImporter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/system/DatabaseConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/system/DatabaseConnection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/system/SessionManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/service/system/SessionManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/~$LMVM Features List.xlsx" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/milestone-2-video-link.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/LMVMApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/LMVMApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/home/pane/AllUserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/home/pane/AllUserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/home/pane/AllVenueController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fp/assignments/assignment_2/controller/home/pane/AllVenueController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/fp/assignments/assignment_2/view/home/pane/all-venues-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fp/assignments/assignment_2/view/home/pane/all-venues-view.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

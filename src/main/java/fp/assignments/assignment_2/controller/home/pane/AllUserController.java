@@ -113,7 +113,7 @@ public class AllUserController extends BaseController {
       Stage stage = new Stage();
       stage.initModality(Modality.APPLICATION_MODAL);
       stage.setTitle("Add Staff Member");
-      stage.setScene(new Scene(loader.load()));
+      stage.setScene(new Scene(loader.load(), 500, 600));
 
       // Get controller and set up callback
       AddUserFormController controller = loader.getController();
