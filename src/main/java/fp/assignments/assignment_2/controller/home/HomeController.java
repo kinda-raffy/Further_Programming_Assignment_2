@@ -14,6 +14,10 @@ import java.io.*;
 import java.time.format.DateTimeParseException;
 import javafx.beans.binding.Bindings;
 
+/**
+ * Controller for the main home screen.
+ * Handles data import/export, and navigation (top menu bar).
+ */
 public class HomeController extends BaseController {
     @FXML
     private TabPane mainTabPane;
@@ -21,6 +25,10 @@ public class HomeController extends BaseController {
     @FXML
     private Menu backupMenu;
 
+    /**
+     * Initialises the controller.
+     * Sets up bindings, such as making the backup menu visible only to managers.
+     */
     @FXML
     public void initialize() {
 
@@ -30,6 +38,9 @@ public class HomeController extends BaseController {
                         new ObjectProperty[] { ServiceProvider.use(sp -> sp.session().currentUserProperty()) }));
     }
 
+    /**
+     * Handles the import of venues from a CSV file.
+     */
     @FXML
     private void handleImportVenues() {
         FileChooser fileChooser = new FileChooser();
@@ -47,6 +58,9 @@ public class HomeController extends BaseController {
         }
     }
 
+    /**
+     * Handles the import of events from a CSV file.
+     */
     @FXML
     private void handleImportEvents() {
         FileChooser fileChooser = new FileChooser();
@@ -72,6 +86,9 @@ public class HomeController extends BaseController {
         }
     }
 
+    /**
+     * Handles the export of transaction data to an LMVM file.
+     */
     @FXML
     private void handleTransactionExport() {
         FileChooser fileChooser = new FileChooser();
@@ -91,6 +108,9 @@ public class HomeController extends BaseController {
         }
     }
 
+    /**
+     * Handles the import of transaction data from an LMVM file.
+     */
     @FXML
     private void handleTransactionImport() {
         FileChooser fileChooser = new FileChooser();
@@ -110,6 +130,9 @@ public class HomeController extends BaseController {
         }
     }
 
+    /**
+     * Handles the export of master data (all data) to an LMVM file.
+     */
     @FXML
     private void handleMasterExport() {
         FileChooser fileChooser = new FileChooser();
@@ -127,6 +150,9 @@ public class HomeController extends BaseController {
         }
     }
 
+    /**
+     * Handles the import of master data (all data) from an LMVM file.
+     */
     @FXML
     private void handleMasterImport() {
         FileChooser fileChooser = new FileChooser();
@@ -144,6 +170,9 @@ public class HomeController extends BaseController {
         }
     }
 
+    /**
+     * Handles the logout action.
+     */
     @FXML
     private void handleLogout() {
         ServiceProvider.run(sp -> sp.session().logout());

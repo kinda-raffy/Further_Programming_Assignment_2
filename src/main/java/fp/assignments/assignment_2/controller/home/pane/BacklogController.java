@@ -18,6 +18,9 @@ import javafx.collections.ListChangeListener;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Controller for managing the backlog of events and venue recommendations.
+ */
 public class BacklogController extends BaseController {
   @FXML
   private TableView<Event> eventsTable;
@@ -35,6 +38,9 @@ public class BacklogController extends BaseController {
   private static ObservableList<Event> eventsList = FXCollections.observableArrayList();
   private Event selectedEvent;
 
+  /**
+   * Initialises the controller, sets up tables, and loads events.
+   */
   @FXML
   public void initialize() {
     eventsTable.setItems(eventsList);
@@ -56,6 +62,9 @@ public class BacklogController extends BaseController {
     capacityCheck.selectedProperty().addListener((obs, old, newVal) -> updateRecommendations());
   }
 
+  /**
+   * Sets up the columns and row factory for the events table.
+   */
   private void setupEventsTable() {
     // Create columns
     TableColumn<Event, String> clientCol = new TableColumn<>("Client");
@@ -93,6 +102,9 @@ public class BacklogController extends BaseController {
     });
   }
 
+  /**
+   * Sets up the columns and row factory for the recommended venues table.
+   */
   private void setupRecommendedVenuesTable() {
     TableColumn<VenueRecommendation, String> nameCol = new TableColumn<>("Venue Name");
     TableColumn<VenueRecommendation, String> scoreCol = new TableColumn<>("Compatibility Score");
@@ -117,6 +129,9 @@ public class BacklogController extends BaseController {
     });
   }
 
+  /**
+   * Handles the selection of a venue from the recommendations table.
+   */
   private void handleVenueSelection(VenueRecommendation recommendation) {
     Alert confirmDialog = new Alert(Alert.AlertType.CONFIRMATION);
     confirmDialog.setTitle("Create Booking");
@@ -137,6 +152,9 @@ public class BacklogController extends BaseController {
     });
   }
 
+  /**
+   * Loads events that do not have bookings.
+   */
   public static void loadEvents() {
     eventsList.clear();
     try {
@@ -160,6 +178,9 @@ public class BacklogController extends BaseController {
     }
   }
 
+  /**
+   * Shows the details of the selected event.
+   */
   private void showEventDetails(Event event) {
     try {
       LMVMApplication.navigateToEventDetails(event);
@@ -168,10 +189,16 @@ public class BacklogController extends BaseController {
     }
   }
 
+  /**
+   * Reloads the events, refreshing the table.
+   */
   public static void reloadEvents() {
     loadEvents();
   }
 
+  /**
+   * Updates the venue recommendations based on the selected event and criteria.
+   */
   private void updateRecommendations() {
     if (selectedEvent == null)
       return;
@@ -190,6 +217,9 @@ public class BacklogController extends BaseController {
     }
   }
 
+  /**
+   * Calculates the compatibility score between a venue and the selected event.
+   */
   private int calculateCompatibility(Venue venue) {
     int enabledCriteria = 0;
     int metCriteria = 0;
@@ -232,6 +262,12 @@ public class BacklogController extends BaseController {
     return enabledCriteria > 0 ? (metCriteria * 100) / enabledCriteria : 0;
   }
 
+  /**
+   * Inner record for representing a venue recommendation.
+   * 
+   * @param venue              The venue being recommended.
+   * @param compatibilityScore The compatibility score of the venue.
+   */
   private record VenueRecommendation(Venue venue, int compatibilityScore) {
   }
 }

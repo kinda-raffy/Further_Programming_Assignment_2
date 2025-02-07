@@ -13,10 +13,24 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * The LMVMApplication class is responsible for initialising
+ * the primary stage and managing navigation between various views.
+ */
 public class LMVMApplication extends Application {
     private static StackPane mainContainer;
     private static boolean devMode = false;
 
+    /**
+     * Starts the JavaFX application by initialising the primary stage and main
+     * container.
+     * If developer mode is enabled, a dummy developer user is set and the
+     * application navigates directly to the home view.
+     * Otherwise, the application navigates to the login view.
+     *
+     * @param stage the primary stage for this application.
+     * @throws IOException if any FXML resource fails to load.
+     */
     @Override
     public void start(Stage stage) throws IOException {
         mainContainer = new StackPane();
@@ -36,18 +50,37 @@ public class LMVMApplication extends Application {
         stage.show();
     }
 
+    /**
+     * Navigates to the login view of the application.
+     *
+     * @throws IOException if the FXML file for the login view is not found or
+     *                     cannot be loaded.
+     */
     public static void navigateToLogin() throws IOException {
         FXMLLoader loader = new FXMLLoader(LMVMApplication.class.getResource("view/landing/login-view.fxml"));
         mainContainer.getChildren().clear();
         mainContainer.getChildren().add(loader.load());
     }
 
+    /**
+     * Navigates to the home view of the application.
+     *
+     * @throws IOException if the FXML file for the home view is not found or cannot
+     *                     be loaded.
+     */
     public static void navigateToHome() throws IOException {
         FXMLLoader loader = new FXMLLoader(LMVMApplication.class.getResource("view/home/home-view.fxml"));
         mainContainer.getChildren().clear();
         mainContainer.getChildren().add(loader.load());
     }
 
+    /**
+     * Navigates to the event details view.
+     *
+     * @param eventData the Event object containing details to be displayed.
+     * @throws IOException if the FXML file for the event detail view is not found
+     *                     or cannot be loaded.
+     */
     public static void navigateToEventDetails(Event eventData) throws IOException {
         FXMLLoader loader = new FXMLLoader(
                 LMVMApplication.class.getResource("view/home/detail/event-detail-view.fxml"));
@@ -57,6 +90,15 @@ public class LMVMApplication extends Application {
         controller.setEvent(eventData);
     }
 
+    /**
+     * Navigates to the user details view.
+     *
+     * @param userData      the User object containing details to be displayed.
+     * @param onUserDeleted a Runnable callback executed when the user is deleted.
+     * @param onUserUpdated a Runnable callback executed when the user is updated.
+     * @throws IOException if the FXML file for the user detail view is not found or
+     *                     cannot be loaded.
+     */
     public static void navigateToUserDetails(User userData, Runnable onUserDeleted, Runnable onUserUpdated)
             throws IOException {
         FXMLLoader loader = new FXMLLoader(LMVMApplication.class.getResource("view/home/detail/user-detail-view.fxml"));
@@ -68,12 +110,24 @@ public class LMVMApplication extends Application {
         controller.setOnUserUpdated(onUserUpdated);
     }
 
+    /**
+     * Navigates to the manager sign up view.
+     *
+     * @throws IOException if the FXML file for the manager sign up view is not
+     *                     found or cannot be loaded.
+     */
     public static void navigateToManagerSignUp() throws IOException {
         FXMLLoader loader = new FXMLLoader(LMVMApplication.class.getResource("view/landing/manager-sign-up-view.fxml"));
         mainContainer.getChildren().clear();
         mainContainer.getChildren().add(loader.load());
     }
 
+    /**
+     * Navigates back to the previous view.
+     * This method removes the topmost view from the main container if there is more
+     * than one view.
+     * If only one view is present, it navigates to the home view.
+     */
     public static void goBack() {
         if (mainContainer.getChildren().size() > 1) {
             mainContainer.getChildren().remove(mainContainer.getChildren().size() - 1);
@@ -86,10 +140,23 @@ public class LMVMApplication extends Application {
         }
     }
 
+    /**
+     * Sets the developer mode flag.
+     * When developer mode is enabled, the application bypasses the login screen by
+     * utilising a dummy developer user.
+     *
+     * @param enabled a boolean value indicating whether developer mode should be
+     *                enabled.
+     */
     public static void setDevMode(boolean enabled) {
         devMode = enabled;
     }
 
+    /**
+     * Entry point.
+     *
+     * @param args command line arguments.
+     */
     public static void main(String[] args) {
         setDevMode(false);
         launch();

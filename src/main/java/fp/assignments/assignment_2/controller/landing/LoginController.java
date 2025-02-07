@@ -11,6 +11,10 @@ import javafx.scene.control.TextField;
 import java.io.IOException;
 import java.sql.SQLException;
 
+/**
+ * Controller for the login screen.
+ * Handles user authentication and navigation to other screens.
+ */
 public class LoginController extends BaseController {
   @FXML
   private TextField usernameField;

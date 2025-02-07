@@ -25,6 +25,9 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import java.io.IOException;
 
+/**
+ * Controller for managing the display and filtering of all venues.
+ */
 public class AllVenueController extends BaseController {
   @FXML
   private TableView<Venue> venuesTable;
@@ -50,6 +53,9 @@ public class AllVenueController extends BaseController {
   private static ObservableList<Venue> venuesList = FXCollections.observableArrayList();
   private static ObservableList<Venue> filteredVenuesList = FXCollections.observableArrayList();
 
+  /**
+   * Initialises the controller, sets up the table, and loads data.
+   */
   @FXML
   public void initialize() {
     venuesTable.setItems(filteredVenuesList);
@@ -59,6 +65,9 @@ public class AllVenueController extends BaseController {
     loadAllVenues();
   }
 
+  /**
+   * Sets up listeners for the search fields to trigger filtering.
+   */
   private void setupSearchListeners() {
     nameSearchField.textProperty().addListener((observable, oldValue, newValue) -> filterVenues());
     categorySearchField.textProperty().addListener((observable, oldValue, newValue) -> filterVenues());
@@ -69,6 +78,9 @@ public class AllVenueController extends BaseController {
     endTimeField.textProperty().addListener((observable, oldValue, newValue) -> filterVenues());
   }
 
+  /**
+   * Filters the venues based on the search criteria.
+   */
   private void filterVenues() {
     String nameQuery = nameSearchField.getText().trim().toLowerCase();
     String categoryQuery = categorySearchField.getText().trim().toLowerCase();
@@ -101,6 +113,9 @@ public class AllVenueController extends BaseController {
     }
   }
 
+  /**
+   * Checks if a venue matches all specified search criteria.
+   */
   private boolean matchesAllCriteria(Venue venue, String nameQuery, String categoryQuery,
       String capacityQuery, String keywordsQuery) {
     boolean nameMatch = nameQuery.isEmpty() ||
@@ -114,6 +129,9 @@ public class AllVenueController extends BaseController {
     return nameMatch && categoryMatch && capacityMatch && keywordsMatch;
   }
 
+  /**
+   * Checks if a string is numeric.
+   */
   private boolean isNumeric(String str) {
     try {
       Integer.parseInt(str);
@@ -123,6 +141,9 @@ public class AllVenueController extends BaseController {
     }
   }
 
+  /**
+   * Checks if a venue's suitability keywords match the query.
+   */
   private boolean matchesKeywords(Venue venue, String keywordsQuery) {
     String[] orGroups = keywordsQuery.split("\\|");
 
@@ -142,6 +163,9 @@ public class AllVenueController extends BaseController {
         });
   }
 
+  /**
+   * Checks if a venue is available for the selected date and time.
+   */
   private boolean isAvailableForSelectedTime(Venue venue) {
     LocalDate selectedDate = availabilityDatePicker.getValue();
     String startTimeStr = startTimeField.getText();
@@ -170,6 +194,9 @@ public class AllVenueController extends BaseController {
     }
   }
 
+  /**
+   * Sets up the columns for the venues table.
+   */
   private void setupVenuesTable() {
     TableColumn<Venue, String> nameCol = new TableColumn<>("Name");
     TableColumn<Venue, Integer> capacityCol = new TableColumn<>("Capacity");
@@ -209,11 +236,17 @@ public class AllVenueController extends BaseController {
     priceCol.prefWidthProperty().bind(venuesTable.widthProperty().multiply(0.15));
   }
 
+  /**
+   * Sets up the listener for table selection changes.
+   */
   private void setupTableSelectionListener() {
     venuesTable.getSelectionModel().selectedItemProperty().addListener(
         (obs, oldSelection, newSelection) -> deleteButton.setDisable(newSelection == null));
   }
 
+  /**
+   * Loads all venues from the database.
+   */
   public static void loadAllVenues() {
     venuesList.clear();
     filteredVenuesList.clear();
@@ -230,10 +263,16 @@ public class AllVenueController extends BaseController {
     }
   }
 
+  /**
+   * Reloads the venues, refreshing the table.
+   */
   public static void reloadVenues() {
     loadAllVenues();
   }
 
+  /**
+   * Handles the creation of a new venue.
+   */
   @FXML
   private void handleCreateVenue() {
     try {
@@ -250,6 +289,9 @@ public class AllVenueController extends BaseController {
     }
   }
 
+  /**
+   * Handles the deletion of a selected venue.
+   */
   @FXML
   private void handleDeleteVenue() {
     Venue selectedVenue = venuesTable.getSelectionModel().getSelectedItem();

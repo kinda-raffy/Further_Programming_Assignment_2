@@ -22,6 +22,9 @@ import java.util.stream.Collectors;
 import java.io.IOException;
 import javafx.beans.binding.Bindings;
 
+/**
+ * Controller for managing the display of bookings and related summaries.
+ */
 public class BookingsController extends BaseController {
   @FXML
   private TableView<Booking> bookingsTable;
@@ -44,6 +47,9 @@ public class BookingsController extends BaseController {
 
   private final ObservableList<Booking> bookingsList = FXCollections.observableArrayList();
 
+  /**
+   * Initialises the controller, sets up tables and charts, and loads data.
+   */
   @FXML
   public void initialize() {
     setupBookingsTable();
@@ -69,6 +75,9 @@ public class BookingsController extends BaseController {
     updateCharts();
   }
 
+  /**
+   * Sets up the columns and row factory for the bookings table.
+   */
   private void setupBookingsTable() {
     TableColumn<Booking, String> clientCol = new TableColumn<>("Client");
     TableColumn<Booking, String> titleCol = new TableColumn<>("Event Title");
@@ -132,6 +141,9 @@ public class BookingsController extends BaseController {
     });
   }
 
+  /**
+   * Sets up the columns for the commission table.
+   */
   private void setupCommissionTable() {
     clientColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getKey()));
     totalCommissionColumn
@@ -141,12 +153,18 @@ public class BookingsController extends BaseController {
     totalCommissionColumn.prefWidthProperty().bind(commissionTable.widthProperty().multiply(0.25));
   }
 
+  /**
+   * Updates all charts and tables.
+   */
   private void updateCharts() {
     updateVenueUtilisationChart();
     updateIncomeChart();
     updateCommissionTable();
   }
 
+  /**
+   * Updates the venue utilisation pie chart.
+   */
   private void updateVenueUtilisationChart() {
     Map<String, Long> venueCount = ServiceProvider.use(sp -> sp.bookingService().getBookings().stream()
         .collect(Collectors.groupingBy(Booking::venueName, Collectors.counting())));
@@ -157,6 +175,9 @@ public class BookingsController extends BaseController {
     venueUtilisationChart.setData(pieChartData);
   }
 
+  /**
+   * Updates the income and commission bar chart.
+   */
   private void updateIncomeChart() {
     XYChart.Series<String, Number> incomeSeries = new XYChart.Series<>();
     XYChart.Series<String, Number> commissionSeries = new XYChart.Series<>();
@@ -183,6 +204,9 @@ public class BookingsController extends BaseController {
     incomeChart.getData().addAll(incomeSeries, commissionSeries);
   }
 
+  /**
+   * Updates the commission table and total commission label.
+   */
   private void updateCommissionTable() {
     Map<String, Double> clientCommissions = ServiceProvider.use(sp -> sp.bookingService().getBookings().stream()
         .collect(Collectors.groupingBy(
@@ -202,10 +226,16 @@ public class BookingsController extends BaseController {
     totalCommissionLabel.setText(String.format("Total Commission: $%.2f", totalCommission));
   }
 
+  /**
+   * Loads the bookings into the list.
+   */
   private void loadBookings() {
     bookingsList.clear();
   }
 
+  /**
+   * Refreshes the bookings, reloading the data.
+   */
   public void refreshBookings() {
     loadBookings();
   }

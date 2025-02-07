@@ -22,6 +22,9 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import java.util.List;
 
+/**
+ * Controller for managing the display of all users in a table.
+ */
 public class AllUserController extends BaseController {
   @FXML
   private TableView<User> userTable;
@@ -33,6 +36,9 @@ public class AllUserController extends BaseController {
   @FXML
   private Button addStaffButton;
 
+  /**
+   * Initialises the table columns, loads users, and sets up bindings.
+   */
   @FXML
   public void initialize() {
     setupTableColumns();
@@ -57,6 +63,9 @@ public class AllUserController extends BaseController {
     addStaffButton.managedProperty().bind(addStaffButton.visibleProperty());
   }
 
+  /**
+   * Sets up the columns for the user table.
+   */
   private void setupTableColumns() {
     // Create columns
     TableColumn<User, Integer> idCol = new TableColumn<>("ID");
@@ -90,6 +99,9 @@ public class AllUserController extends BaseController {
     });
   }
 
+  /**
+   * Loads all users from the database and populates the table.
+   */
   public static void loadUsers() {
     userTableList.clear();
     try {
@@ -106,6 +118,9 @@ public class AllUserController extends BaseController {
     }
   }
 
+  /**
+   * Shows the add user form in a modal window.
+   */
   public void showAddUserForm() {
     try {
       FXMLLoader loader = new FXMLLoader(
@@ -125,6 +140,9 @@ public class AllUserController extends BaseController {
     }
   }
 
+  /**
+   * Shows the details of a selected user.
+   */
   private void showUserDetails(User user) {
     try {
       LMVMApplication.navigateToUserDetails(

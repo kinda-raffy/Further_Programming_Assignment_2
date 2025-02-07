@@ -11,6 +11,10 @@ import javafx.scene.control.TextField;
 import java.io.IOException;
 import java.sql.SQLException;
 
+/**
+ * Controller for the manager sign-up screen.
+ * Handles manager registration, validation, and navigation.
+ */
 public class ManagerSignUpController extends BaseController {
   @FXML
   private TextField userNameField;
@@ -27,6 +31,13 @@ public class ManagerSignUpController extends BaseController {
 
   private static final String VALID_PIN = "909";
 
+  /**
+   * Handles the create button click event.
+   * Validates input fields, creates a new manager user, and navigates to the home
+   * screen.
+   * Displays error messages if validation fails or user creation encounters
+   * issues.
+   */
   @FXML
   private void handleCreate() {
     if (validateFields()) {
@@ -53,6 +64,13 @@ public class ManagerSignUpController extends BaseController {
     }
   }
 
+  /**
+   * Validates the input fields.
+   * Checks for empty fields and a valid authorisation pin.
+   * Displays error messages if validation fails.
+   * 
+   * @return True if all fields are valid, false otherwise.
+   */
   private boolean validateFields() {
     if (userNameField.getText().isEmpty() ||
         passwordField.getText().isEmpty() ||
@@ -70,6 +88,11 @@ public class ManagerSignUpController extends BaseController {
     return true;
   }
 
+  /**
+   * Handles the cancel button click event.
+   * Navigates back to the login screen.
+   * Displays an error message if navigation fails.
+   */
   @FXML
   private void handleCancel() {
     try {

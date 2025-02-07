@@ -16,6 +16,9 @@ import java.io.IOException;
 import java.sql.SQLException;
 import javafx.beans.binding.Bindings;
 
+/**
+ * Controller for displaying and managing user details.
+ */
 public class UserDetailController extends BaseController {
   @FXML
   private Label titleLabel;
@@ -36,6 +39,11 @@ public class UserDetailController extends BaseController {
   private Runnable onUserDeleted;
   private Runnable onUserUpdated;
 
+  /**
+   * Sets the user whose details are to be displayed and updates the UI.
+   *
+   * @param user The user to display.
+   */
   public void setUser(User user) {
     this.user = user;
     updateLabels();
@@ -53,14 +61,27 @@ public class UserDetailController extends BaseController {
     editButton.managedProperty().bind(editButton.visibleProperty());
   }
 
+  /**
+   * Sets a callback to be executed after a user is deleted.
+   *
+   * @param callback The runnable to execute.
+   */
   public void setOnUserDeleted(Runnable callback) {
     this.onUserDeleted = callback;
   }
 
+  /**
+   * Sets a callback to be executed after a user is updated.
+   *
+   * @param callback The runnable to execute.
+   */
   public void setOnUserUpdated(Runnable callback) {
     this.onUserUpdated = callback;
   }
 
+  /**
+   * Initialises the controller and sets up button visibility bindings.
+   */
   @FXML
   public void initialize() {
     // Show delete button to only managers.
@@ -71,6 +92,9 @@ public class UserDetailController extends BaseController {
     deleteButton.managedProperty().bind(deleteButton.visibleProperty());
   }
 
+  /**
+   * Updates the labels with the current user's information.
+   */
   private void updateLabels() {
     titleLabel.setText(user.getFullName());
     usernameLabel.setText(user.userName());
@@ -79,12 +103,18 @@ public class UserDetailController extends BaseController {
     typeLabel.setText(user.type());
   }
 
+  /**
+   * Updates the state of the delete button based on the current user.
+   */
   private void updateDeleteButton() {
     User currentUser = ServiceProvider.use(sp -> sp.session().getCurrentUser());
     // Enable delete button if the user isn't themselves.
     deleteButton.setDisable(currentUser != null && currentUser.id().equals(user.id()));
   }
 
+  /**
+   * Handles the editing of the current user.
+   */
   @FXML
   private void handleEdit() {
     try {
@@ -117,6 +147,9 @@ public class UserDetailController extends BaseController {
     }
   }
 
+  /**
+   * Handles the deletion of the current user.
+   */
   @FXML
   private void handleDelete() {
     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -138,6 +171,9 @@ public class UserDetailController extends BaseController {
     }
   }
 
+  /**
+   * Navigates back to the previous screen.
+   */
   @FXML
   private void goBack() {
     LMVMApplication.goBack();

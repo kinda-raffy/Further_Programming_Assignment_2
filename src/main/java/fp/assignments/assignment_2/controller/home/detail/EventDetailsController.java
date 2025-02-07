@@ -20,6 +20,9 @@ import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import javafx.collections.ListChangeListener;
 
+/**
+ * Controller for displaying and managing event details.
+ */
 public class EventDetailsController extends BaseController {
   @FXML
   private Label clientLabel;
@@ -53,6 +56,9 @@ public class EventDetailsController extends BaseController {
   private Button deleteBookingButton;
   private Event currentEvent;
 
+  /**
+   * Initialises the controller and sets up a listener for booking changes.
+   */
   @FXML
   public void initialize() {
     ServiceProvider.run(sp -> sp.bookingService().getBookings().addListener((ListChangeListener<Booking>) c -> {
@@ -62,6 +68,11 @@ public class EventDetailsController extends BaseController {
     }));
   }
 
+  /**
+   * Sets the event to display and updates the UI.
+   *
+   * @param event The event to be displayed.
+   */
   public void setEvent(Event event) {
     this.currentEvent = event;
     titleLabel.setText(event.title());
@@ -76,6 +87,9 @@ public class EventDetailsController extends BaseController {
     refreshBookingDetails();
   }
 
+  /**
+   * Handles the reassigning of a booking by opening the booking form.
+   */
   @FXML
   private void handleReassignBooking() {
     try {
@@ -96,6 +110,9 @@ public class EventDetailsController extends BaseController {
     }
   }
 
+  /**
+   * Refreshes the booking details section of the UI.
+   */
   private void refreshBookingDetails() {
     try {
       Booking booking = ServiceProvider.use(sp -> sp.bookingService().getBookingForEvent(currentEvent.id()));
@@ -128,6 +145,9 @@ public class EventDetailsController extends BaseController {
     }
   }
 
+  /**
+   * Handles the deletion of the current booking.
+   */
   @FXML
   private void handleDeleteBooking() {
     try {
@@ -138,6 +158,9 @@ public class EventDetailsController extends BaseController {
     }
   }
 
+  /**
+   * Navigates back to the previous screen.
+   */
   public void goBack() {
     LMVMApplication.goBack();
   }
